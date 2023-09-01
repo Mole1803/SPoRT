@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {HttpUtilsService} from "./services/http-utils.service";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'SeaPortOptimizerFrontend';
+  constructor(private httpUtilsService: HttpUtilsService) {
+    httpUtilsService.isBackendAlive().subscribe((data) => {
+      console.log(data);
+
+    }
+    );
+  }
 }
