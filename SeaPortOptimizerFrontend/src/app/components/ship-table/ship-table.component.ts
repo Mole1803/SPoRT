@@ -30,6 +30,7 @@ export class ShipTableComponent {
   newShipPrototype: ShipPrototypeDto = new ShipPrototypeDto('', 0, true);
 
   isActiveDropdownOpen: boolean = false;
+  isLargeScreen: boolean = false;
 
   @HostListener('document:click', ['$event']) clickout(event: any) {
     console.log(event.target.id, event.target.role, event.target.parentNode)
@@ -38,6 +39,12 @@ export class ShipTableComponent {
       this.isActiveDropdownOpen = false;
     }
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.detectScreenSize();
+  }
+
 
   constructor() {
     for(let x=0; x<100; x++){
@@ -51,6 +58,15 @@ export class ShipTableComponent {
     this.newShipPrototype = new ShipPrototypeDto('', 0, true);
   }
 
+    detectScreenSize() {
+    // Implement your logic to detect screen size here
+    // For example, you can use window.innerWidth to check the window width
+    if (window.innerWidth >= 1024) {
+      this.isLargeScreen = true;
+    } else {
+      this.isLargeScreen = false;
+    }
+  }
 
-  protected readonly animate = animate;
+
 }

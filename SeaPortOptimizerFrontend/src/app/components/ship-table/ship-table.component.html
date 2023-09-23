@@ -1,8 +1,8 @@
 <div class="px-0 sm:px-0 lg:px-0 py-2">
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
-      <p class="mt-2 text-sm text-gray-700">Only <strong>active</strong> ships can transport <strong>Quest</strong>
-        cargo.</p>
+      <p class="mt-2 text-sm text-gray-700">Only <strong>active</strong> ships will be taken into account for <strong>Quest</strong>
+        calculations.</p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
       <button type="button"
@@ -17,34 +17,31 @@
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-white border-b sticky top-0 z-10 ">
           <tr>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
-            <th scope="col" class="lg:table-cell hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900">ID</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Aktiv</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Kapazität</th>
-            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
-              <span class="sr-only">Edit</span>
+            <th scope="col" class="lg:w-4/12 md:w-5/12 py-3.5  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
+            <th scope="col" class="lg:table-cell hidden   px-3 py-3.5 text-left text-sm font-semibold text-gray-900">ID</th>
+            <th scope="col" class="lg:w-1/12 md:w-1/12 px-3 py-3.5 text-left  text-sm font-semibold text-gray-900">Active</th>
+            <th scope="col" class=" px-3 py-3.5 text-left  text-sm font-semibold text-gray-900">Capacity</th>
+            <th scope="col" class=" relative py-3.5 pl-3 pr-4 sm:pr-0">
           </th>
-
-
           </tr>
+
+
           <tr class="">
-            <th scope="col" colspan="2" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+            <th scope="col" [attr.colspan]="isLargeScreen ? 2 : 1" class=" py-3.5 pl-4 pr-0 text-left text-sm font-semibold text-gray-900 sm:pl-0">
               <label for="ship-name" class=""></label>
               <div class="">
                 <input type="text" name="ship-name" id="ship-name" autocomplete="ship-name"
-                       class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                       class="block w-full rounded-l-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                        [(ngModel)]="newShipPrototype.name">
               </div>
             </th>
-            <th scope="col" class=" hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-300">-</th>
-
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            <th scope="col" class="py-3.5 p-0 text-left text-sm font-semibold text-gray-900">
               <!-- custom dropdown -->
               <div>
                 <div>
                   <div class="inline w-full">
                     <button type="button"
-                            class="inline-flex justify-between gap-x-1.5  bg-white px-3 py-2 text-sm font-semibold text-gray-900 rounded-md shadow-sm ring-1 ring-inset ring-gray-300  hover:bg-gray-50"
+                            class="inline-flex w-full justify-between gap-x-1.5 bg-white px-3 py-2 text-sm font-semibold text-gray-900  shadow-sm ring-1 ring-inset ring-gray-300  hover:bg-gray-50"
                             id="isActive-dropdown-button" aria-expanded="true" aria-haspopup="true"
                             style="min-width: 100px;"
                             [ngClass]="{'ring-indigo-600 ring-2': isActiveDropdownOpen}"
@@ -80,11 +77,11 @@
                 </div>
               </div>
             </th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+            <th scope="col" class="p-0  py-3.5 text-left text-sm font-semibold text-gray-900">
               <label for="ship-capacity" class=""></label>
-              <div class="">
-                <input type="number" name="ship-name" id="ship-capacity" autocomplete="ship-capacity"
-                       class="block w-3/4 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              <div class="inline w-full">
+                <input type="number" name="ship-capacity" id="ship-capacity" autocomplete="ship-capacity"
+                       class="block w-3/4 rounded-r-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                        [(ngModel)]="newShipPrototype.capacity">
               </div>
             </th>
