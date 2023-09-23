@@ -13,7 +13,9 @@ import { QuestViewComponent } from './views/quest-view/quest-view.component';
 import { ShipTableComponent } from './components/ship-table/ship-table.component';
 import { FooterComponent } from './components/footer/footer.component';
 import {FormsModule} from "@angular/forms";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ShipManagerComponent } from './components/ship-manager/ship-manager.component';
+import { DeleteConfirmationModalComponent } from './components/delete-confirmation-modal/delete-confirmation-modal.component'
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     FleetViewComponent,
     QuestViewComponent,
     ShipTableComponent,
-    FooterComponent
+    FooterComponent,
+    ShipManagerComponent,
+    DeleteConfirmationModalComponent
   ],
   imports: [
     BrowserModule,
