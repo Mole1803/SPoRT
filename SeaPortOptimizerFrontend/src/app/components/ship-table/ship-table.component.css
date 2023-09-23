@@ -1,0 +1,9 @@
+.table-wrp  {
+  max-height: 75vh;
+  overflow-y: auto;
+  display:block;
+}
+thead{
+  position:sticky;
+
+}

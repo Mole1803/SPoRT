@@ -1,0 +1,123 @@
+<div class="px-0 sm:px-0 lg:px-0 py-2">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <p class="mt-2 text-sm text-gray-700">Only <strong>active</strong> ships can transport <strong>Quest</strong>
+        cargo.</p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <button type="button"
+              class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        Add Ship
+      </button>
+    </div>
+  </div>
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8 table-wrp">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-white border-b sticky top-0 z-10 ">
+          <tr>
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
+            <th scope="col" class="lg:table-cell hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900">ID</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Aktiv</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Kapazität</th>
+            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+              <span class="sr-only">Edit</span>
+          </th>
+
+
+          </tr>
+          <tr class="">
+            <th scope="col" colspan="2" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+              <label for="ship-name" class=""></label>
+              <div class="">
+                <input type="text" name="ship-name" id="ship-name" autocomplete="ship-name"
+                       class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                       [(ngModel)]="newShipPrototype.name">
+              </div>
+            </th>
+            <th scope="col" class=" hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-300">-</th>
+
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+              <!-- custom dropdown -->
+              <div>
+                <div>
+                  <div class="inline w-full">
+                    <button type="button"
+                            class="inline-flex justify-between gap-x-1.5  bg-white px-3 py-2 text-sm font-semibold text-gray-900 rounded-md shadow-sm ring-1 ring-inset ring-gray-300  hover:bg-gray-50"
+                            id="isActive-dropdown-button" aria-expanded="true" aria-haspopup="true"
+                            style="min-width: 100px;"
+                            [ngClass]="{'ring-indigo-600 ring-2': isActiveDropdownOpen}"
+                            (click)="isActiveDropdownOpen = !isActiveDropdownOpen">
+                      {{ newShipPrototype.isActive ? 'True' : 'False' }}
+                      <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
+                           aria-hidden="true">
+                        <path fill-rule="evenodd"
+                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                              clip-rule="evenodd"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <!--[ngClass]="{'hidden': !isActiveDropdownOpen}"-->
+                  <div
+                    *ngIf="isActiveDropdownOpen" [@fadeInOut]=""
+                    class="absolute  z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+
+                    role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-1" id="isActive-dropdown-menu" role="none">
+                      <a class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                         [ngClass]="{'bg-gray-100 text-gray-900': newShipPrototype.isActive, 'text-gray-700': !newShipPrototype.isActive}"
+                         id="menu-item-0"
+                         (click)="newShipPrototype.isActive = true; isActiveDropdownOpen = false"
+                      >True</a>
+                      <a class=" block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                         [ngClass]="{'bg-gray-100 text-gray-900': !newShipPrototype.isActive, 'text-gray-700': newShipPrototype.isActive}"
+                         id="menu-item-1"
+                         (click)="newShipPrototype.isActive = false; isActiveDropdownOpen = false"
+                      >False</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+              <label for="ship-capacity" class=""></label>
+              <div class="">
+                <input type="number" name="ship-name" id="ship-capacity" autocomplete="ship-capacity"
+                       class="block w-3/4 rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                       [(ngModel)]="newShipPrototype.capacity">
+              </div>
+            </th>
+            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
+              <button
+                (click)="addNewShip()"
+              >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                   stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+              </svg>
+                </button>
+
+            </th>
+          </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+
+
+          <ng-container *ngFor="let ship of ships">
+            <tr>
+              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ship.name}}</td>
+              <td class="lg:table-cell hidden w-3/12 overflow-hidden truncate px-3 py-4 text-sm text-gray-500">{{ship.id}}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ship.isActive}}</td>
+              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ship.capacity}}</td>
+              <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

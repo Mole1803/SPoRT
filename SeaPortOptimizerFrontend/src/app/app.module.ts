@@ -10,6 +10,10 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HarborComponentComponent } from './components/harbor-component/harbor-component.component';
 import { FleetViewComponent } from './views/fleet-view/fleet-view.component';
 import { QuestViewComponent } from './views/quest-view/quest-view.component';
+import { ShipTableComponent } from './components/ship-table/ship-table.component';
+import { FooterComponent } from './components/footer/footer.component';
+import {FormsModule} from "@angular/forms";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 
 @NgModule({
@@ -19,12 +23,16 @@ import { QuestViewComponent } from './views/quest-view/quest-view.component';
     NavBarComponent,
     HarborComponentComponent,
     FleetViewComponent,
-    QuestViewComponent
+    QuestViewComponent,
+    ShipTableComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
