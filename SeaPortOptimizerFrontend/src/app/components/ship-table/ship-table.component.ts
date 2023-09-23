@@ -54,18 +54,12 @@ export class ShipTableComponent {
   }
 
   addNewShip() {
-    this.ships.push(ShipDto.fromShipPrototypeDto(this.newShipPrototype));
+    this.ships.splice(0,0,ShipDto.fromShipPrototypeDto(this.newShipPrototype));
     this.newShipPrototype = new ShipPrototypeDto('', 0, true);
   }
 
-    detectScreenSize() {
-    // Implement your logic to detect screen size here
-    // For example, you can use window.innerWidth to check the window width
-    if (window.innerWidth >= 1024) {
-      this.isLargeScreen = true;
-    } else {
-      this.isLargeScreen = false;
-    }
+  detectScreenSize() {
+    this.isLargeScreen = window.innerWidth >= 1024;
   }
 
 
