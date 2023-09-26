@@ -49,6 +49,4 @@ export class ShipTableComponent extends ShipManagerComponent{
   detectScreenSize() {
     this.isLargeScreen = window.innerWidth >= 1024;
   }
-
-  protected readonly releaseEvents = releaseEvents;
 }

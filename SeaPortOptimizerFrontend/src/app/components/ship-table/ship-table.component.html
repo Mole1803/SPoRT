@@ -2,6 +2,10 @@
                                [itemName]="selectedItem?.name "
                                [isModalOpen]="isDeleteWindowOpen"
 />
+
+<app-edit-ship-modal [isVisible]="isEditWindowOpen" [shipDto]="selectedItem!" (confirmationEmitter)="editShip($event)"></app-edit-ship-modal>
+
+
 <div class="mt-8 flow-root">
   <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8 table-wrp">
@@ -40,16 +44,20 @@
             <!-- custom dropdown -->
             <div>
               <div>
-                <div class="inline w-full">
+                <div class="inline w-full"
+
+                >
                   <button type="button"
                           class="inline-flex w-full justify-between gap-x-1.5 bg-white px-3 py-2 text-sm font-semibold text-gray-900  shadow-sm ring-1 ring-inset ring-gray-300  hover:bg-gray-50"
                           id="isActive-dropdown-button" aria-expanded="true" aria-haspopup="true"
                           style="min-width: 100px;"
                           [ngClass]="{'ring-indigo-600 ring-2': isActiveDropdownOpen}"
-                          (click)="isActiveDropdownOpen = !isActiveDropdownOpen">
+                          (click)="isActiveDropdownOpen = !isActiveDropdownOpen"
+                          >
                     {{ newShipPrototype.isActive ? 'True' : 'False' }}
                     <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
-                         aria-hidden="true">
+                         aria-hidden="true"
+                    >
                       <path fill-rule="evenodd"
                             d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
                             clip-rule="evenodd"/>
@@ -63,12 +71,12 @@
 
                   role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                   <div class="py-1" id="isActive-dropdown-menu" role="none">
-                    <a class="block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                    <a class="block px-4 py-2 text-sm hover:bg-indigo-500 hover:text-white" role="menuitem" tabindex="-1"
                        [ngClass]="{'bg-gray-100 text-gray-900': newShipPrototype.isActive, 'text-gray-700': !newShipPrototype.isActive}"
                        id="menu-item-0"
                        (click)="newShipPrototype.isActive = true; isActiveDropdownOpen = false"
                     >True</a>
-                    <a class=" block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                    <a class=" block px-4 py-2 text-sm hover:bg-indigo-500 hover:text-white" role="menuitem" tabindex="-1"
                        [ngClass]="{'bg-gray-100 text-gray-900': !newShipPrototype.isActive, 'text-gray-700': newShipPrototype.isActive}"
                        id="menu-item-1"
                        (click)="newShipPrototype.isActive = false; isActiveDropdownOpen = false"
@@ -117,7 +125,8 @@
             <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
               <div class="flex justify-end">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-6 h-6 hover:text-indigo-600">
+                     stroke="currentColor" class="w-6 h-6 hover:text-indigo-600"
+                     (click)="markForEdit(ship)">
                   <path stroke-linecap="round" stroke-linejoin="round"
                         d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/>
                 </svg>

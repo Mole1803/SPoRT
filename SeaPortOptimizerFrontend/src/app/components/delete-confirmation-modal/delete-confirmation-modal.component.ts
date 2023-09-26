@@ -1,4 +1,6 @@
 import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
+import {AlertHandlerService} from "../../services/alert-handler.service";
+import {AlertLevel} from "../../enums/alert-level";
 
 @Component({
   selector: 'app-delete-confirmation-modal',
@@ -12,13 +14,14 @@ export class DeleteConfirmationModalComponent {
 
   @Output() emitDeleteConfirmation = new EventEmitter<boolean>();
 
-  constructor() {
+  constructor(private alertHandlerService: AlertHandlerService) {
 
   }
 
   onConfirmDelete() {
     this.emitDeleteConfirmation.emit(true);
     this.closeModal();
+    this.alertHandlerService.showAlertWithAttributes('Success', `${this.itemName} has been deleted.`, AlertLevel.SUCCESS);
   }
 
   cancelDelete() {

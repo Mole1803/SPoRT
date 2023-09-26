@@ -14,6 +14,7 @@ export class ShipManagerComponent {
   selectedItem: ShipDto | undefined = undefined;
 
   isDeleteWindowOpen: boolean = false;
+  isEditWindowOpen: boolean = false;
 
   constructor() {
     for (let x = 0; x < 100; x++) {
@@ -22,6 +23,7 @@ export class ShipManagerComponent {
   }
 
   addNewShip() {
+    if(this.newShipPrototype.name === '' || this.newShipPrototype.capacity === 0) return;
     this.ships.splice(0, 0, ShipDto.fromShipPrototypeDto(this.newShipPrototype));
     this.newShipPrototype = new ShipPrototypeDto('', 0, true);
   }
@@ -36,6 +38,16 @@ export class ShipManagerComponent {
     if (!isDeleteConfirmed) return;
     this.ships = this.ships.filter(s => s.id !== this.selectedItem?.id);
 
+  }
+
+  markForEdit(ship: ShipDto) {
+    this.selectedItem = ship;
+    this.isEditWindowOpen = true;
+  }
+
+  editShip(ship: ShipDto) {
+    this.isEditWindowOpen = false;
+    this.ships = this.ships.map(s => s.id === ship.id ? ship : s);
   }
 
 }

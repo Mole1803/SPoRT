@@ -15,7 +15,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import {FormsModule} from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ShipManagerComponent } from './components/ship-manager/ship-manager.component';
-import { DeleteConfirmationModalComponent } from './components/delete-confirmation-modal/delete-confirmation-modal.component'
+import { DeleteConfirmationModalComponent } from './components/delete-confirmation-modal/delete-confirmation-modal.component';
+import { AlertComponent } from './components/alert/alert.component'
+import {AlertHandlerService} from "./services/alert-handler.service";
+import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-modal.component';
 
 
 @NgModule({
@@ -29,7 +32,9 @@ import { DeleteConfirmationModalComponent } from './components/delete-confirmati
     ShipTableComponent,
     FooterComponent,
     ShipManagerComponent,
-    DeleteConfirmationModalComponent
+    DeleteConfirmationModalComponent,
+    AlertComponent,
+    EditShipModalComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +45,7 @@ import { DeleteConfirmationModalComponent } from './components/delete-confirmati
   ],
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
+      AlertHandlerService
   ],
   bootstrap: [AppComponent]
 })
