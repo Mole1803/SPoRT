@@ -41,7 +41,7 @@ export class ShipManagerComponent {
   }
 
   markForEdit(ship: ShipDto) {
-    this.selectedItem = ship;
+    this.selectedItem = Object.assign({}, ship);
     this.isEditWindowOpen = true;
   }
 
