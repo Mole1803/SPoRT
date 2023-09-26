@@ -9,10 +9,10 @@ import {AlertLevel} from "../../enums/alert-level";
   styleUrls: ['./edit-ship-modal.component.css']
 })
 export class EditShipModalComponent {
-  @Input() isVisible: boolean = true;
+  @Input() @Output() isVisible: boolean = true;
   @Input() shipDto: ShipDto = new ShipDto('', '', -1, false);
 
-  @Output() confirmationEmitter: EventEmitter<ShipDto> = new EventEmitter<ShipDto>();
+  @Output() confirmationEmitter: EventEmitter<ShipDto | undefined> = new EventEmitter<ShipDto | undefined>();
 
   constructor(private alertHandlerService: AlertHandlerService) {
   }
@@ -20,7 +20,7 @@ export class EditShipModalComponent {
 
   close() {
     this.alertHandlerService.showAlertWithAttributes('Information', `No changes are made.`, AlertLevel.INFO);
-
+    this.confirmationEmitter.emit(undefined);
     this._close()
   }
   _close() {

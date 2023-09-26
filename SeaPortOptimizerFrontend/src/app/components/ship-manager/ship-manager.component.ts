@@ -45,8 +45,9 @@ export class ShipManagerComponent {
     this.isEditWindowOpen = true;
   }
 
-  editShip(ship: ShipDto) {
+  editShip(ship: ShipDto | undefined) {
     this.isEditWindowOpen = false;
+    if (ship === undefined) return;
     this.ships = this.ships.map(s => s.id === ship.id ? ship : s);
   }
 
