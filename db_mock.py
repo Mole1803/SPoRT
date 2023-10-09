@@ -40,3 +40,22 @@ class MockDBController:
     def delete_quest(id):
         pass
 
+    @staticmethod
+    def get_all_users():
+        pass
+
+    @staticmethod
+    def get_user():
+        pass
+
+    @staticmethod
+    def create_user(name, id):
+        pass
+
+    @staticmethod
+    def update_user(name, id):
+        pass
+
+    @staticmethod
+    def delete_user(id):
+        pass

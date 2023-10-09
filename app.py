@@ -8,10 +8,10 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 
-
 # CORS(app)
 
 DBController = MockDBController()
+
 
 @app.route('/getShip')
 def get_ship():
@@ -20,7 +20,7 @@ def get_ship():
 
 
 @app.route('/getShips')
-def get_ships():
+def get_all_ships():
     ships = DBController.get_all_ships()
     erg = []
     for ship in ships:
@@ -54,16 +54,30 @@ def delete_ship():
     return DBController.delete_ship(id)
 
 
+@app.route('/getQuest')
+def get_quest():
+    id = request.args.get("id")
+    return DBController.get_quest(id).__dict__()
+
+
+@app.route('/getQuests')
+def get_quests():
+    ships = DBController.get_all_quests()
+    erg = []
+    for ship in ships:
+        erg.append(ship.__dict__())
+    return erg
+
+
 @app.route('/addQuest')
 def add_quest():
     user = request.args.get(" user")
     name = request.args.get("name")
     is_active = request.args.get("is_active")
-    resource= request.args.get("resource")
-    items_per_capacity=request.args.get("items_per_capacity")
-    demand=request.args.get("demand")
+    resource = request.args.get("resource")
+    items_per_capacity = request.args.get("items_per_capacity")
+    demand = request.args.get("demand")
     id = request.args.get("id")
-
     return DBController.create_quest(user, name, id, is_active, resource, items_per_capacity, demand)
 
 
@@ -76,7 +90,6 @@ def update_quest():
     items_per_capacity = request.args.get("items_per_capacity")
     demand = request.args.get("demand")
     id = request.args.get("id")
-
     return DBController.update_quest(user, name, id, is_active, resource, items_per_capacity, demand)
 
 
@@ -84,6 +97,42 @@ def update_quest():
 def delete_quest():
     id = request.args.get("id")
     return DBController.delete_quest(id)
+
+
+@app.route('/getUser')
+def get_user():
+    id = request.args.get("id")
+    return DBController.get_user(id).__dict__()
+
+
+@app.route('/getUsers')
+def get_all_users():
+    users = DBController.get_all_users()
+    erg = []
+    for user in users:
+        erg.append(user.__dict__())
+    return erg
+
+
+@app.route('/addUser')
+def add_ship():
+    name = request.args.get("name")
+    id = request.args.get("id")
+    return DBController.create_user(name, id)
+
+
+@app.route('/updateUser')
+def update_user():
+    name = request.args.get("name")
+    id = request.args.get("id")
+    return DBController.update_user(name, id)
+
+
+@app.route('/deleteUser')
+def delete_user():
+    id = request.args.get("id")
+    return DBController.delete_user(id)
+
 
 
 @app.route('/isAlive')
