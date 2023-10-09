@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;/* You can add global styles to this file, and also import other style files */
+
+@layer utilities {
+  .main-app-small-size{
+    min-height: calc(100vh - 96px - 76px);
+  }
+
+  .main-app-large-size{
+    min-height: calc(100vh - 120px) !important;
+  }
+}
