@@ -5,7 +5,7 @@ class MockDBController:
         pass
 
     @staticmethod
-    def get_all_ships():
+    def get_all_ships(id):
         pass
 
     @staticmethod
@@ -17,15 +17,15 @@ class MockDBController:
         pass
 
     @staticmethod
-    def delete_ship(id):
+    def delete_ship(user):
         pass
 
     @staticmethod
-    def get_all_quests():
+    def get_all_quests(user):
         pass
 
     @staticmethod
-    def get_quest():
+    def get_quest(user):
         pass
 
     @staticmethod

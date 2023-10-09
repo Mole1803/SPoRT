@@ -21,7 +21,8 @@ def get_ship():
 
 @app.route('/getShips')
 def get_all_ships():
-    ships = DBController.get_all_ships()
+    user = request.args.get("user")
+    ships = DBController.get_all_ships(user)
     erg = []
     for ship in ships:
         erg.append(ship.__dict__())
@@ -62,10 +63,11 @@ def get_quest():
 
 @app.route('/getQuests')
 def get_quests():
-    ships = DBController.get_all_quests()
+    user = request.args.get("user")
+    quests = DBController.get_all_quests(user)
     erg = []
-    for ship in ships:
-        erg.append(ship.__dict__())
+    for quest in quests:
+        erg.append(quest.__dict__())
     return erg
 
 
