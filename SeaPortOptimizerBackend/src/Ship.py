@@ -7,4 +7,8 @@ class Ship:
         self.capacity = capacity
 
     def __dict__(self):
-        return {"name": self.name, "id": self.id, "is_active": self.is_active, "capacity": self.capacity}
+        return {"name": self.name,
+                "id": self.id,
+                "is_active": self.is_active,
+                "capacity": self.capacity
+                }

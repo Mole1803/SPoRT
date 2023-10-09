@@ -2,67 +2,88 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from SeaPortOptimizerBackend.src.Ship import Ship
+from db_mock import MockDBController
 
 app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 
 
+# CORS(app)
 
-#CORS(app)
+DBController = MockDBController()
 
 @app.route('/getShip')
-def getShip():
-    id=request.args.get("id")
-    return getShipFromDb(id).__dict__()
+def get_ship():
+    id = request.args.get("id")
+    return DBController.get_ship(id).__dict__()
 
 
 @app.route('/getShips')
-def getShips():
-    ships=getAllShipsFromDb()
-    erg=[]
+def get_ships():
+    ships = DBController.get_all_ships()
+    erg = []
     for ship in ships:
         erg.append(ship.__dict__())
     return erg
+
+
 @app.route('/addShip')
-def addShip():
+def add_ship():
     user = request.args.get(" user")
     name = request.args.get("name")
     is_active = request.args.get("is_active")
     capacity = request.args.get("capacity")
     id = request.args.get("id")
-    return addShipToDb(user, name, id, is_active, capacity)
+    return DBController.create_ship(user, name, id, is_active, capacity)
+
 
 @app.route('/updateShip')
-def updateShip():
+def update_ship():
     user = request.args.get(" user")
     name = request.args.get("name")
     is_active = request.args.get("is_active")
     capacity = request.args.get("capacity")
     id = request.args.get("id")
-    return updateShipToDb(user, name, id, is_active, capacity)
+    return DBController.update_ship(user, name, id, is_active, capacity)
+
 
 @app.route('/deleteShip')
-def deleteShip():
+def delete_ship():
     id = request.args.get("id")
-    return deleteShipFromDb(id)
+    return DBController.delete_ship(id)
 
-def addShipToDb(user, name, id, is_active, capacity):
-    return False
 
-def updateShipToDb(user, name, id, is_active, capacity):
-    return False
+@app.route('/addQuest')
+def add_quest():
+    user = request.args.get(" user")
+    name = request.args.get("name")
+    is_active = request.args.get("is_active")
+    resource= request.args.get("resource")
+    items_per_capacity=request.args.get("items_per_capacity")
+    demand=request.args.get("demand")
+    id = request.args.get("id")
 
-def deleteShipFromDb(id):
-    return False
+    return DBController.create_quest(user, name, id, is_active, resource, items_per_capacity, demand)
 
-def getAllShipsFromDb():
-    erg = [Ship("testuser", "ship_name2", "id1", True, 50), Ship("testuser", "ship_name2", "id2", True, 50)]
-    return erg
 
-def getShipFromDb(id):
-    erg = Ship("testuser","mock_name", id, True, 50)
-    return erg
+@app.route('/updateQuest')
+def update_quest():
+    user = request.args.get(" user")
+    name = request.args.get("name")
+    is_active = request.args.get("is_active")
+    resource = request.args.get("resource")
+    items_per_capacity = request.args.get("items_per_capacity")
+    demand = request.args.get("demand")
+    id = request.args.get("id")
+
+    return DBController.update_quest(user, name, id, is_active, resource, items_per_capacity, demand)
+
+
+@app.route('/deleteQuest')
+def delete_quest():
+    id = request.args.get("id")
+    return DBController.delete_quest(id)
 
 
 @app.route('/isAlive')
