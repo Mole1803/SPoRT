@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -15,19 +14,54 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///project.db'
 db.init_app(app)
 
 
-class User(db.Model):
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
-    email: Mapped[str] = mapped_column(String)
+class Users(db.Model):
+    id: Mapped[str] = mapped_column(db.String, unique=True, primary_key=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False)
 
     def serialize(self):
         return {
             'id': self.id,
-            'username': self.username,
-            'email': self.email
+            'name': self.name
+        }
+
+
+class Ships(db.Model):
+    id: Mapped[str] = mapped_column(db.String, unique=True, primary_key=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False)
+    isActive: Mapped[bool] = mapped_column(db.Boolean, nullable=False)
+    capacity: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    userID: Mapped[str] = mapped_column(db.String, nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'isActive': self.isActive,
+            'capacity': self.capacity,
+            'userID': self.userID
+        }
+
+
+class Quests(db.Model):
+    id: Mapped[str] = mapped_column(db.String, unique=True, primary_key=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False)
+    isActive: Mapped[bool] = mapped_column(db.Boolean, nullable=False)
+    resource: Mapped[str] = mapped_column(db.String, nullable=False)
+    demand: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    userID: Mapped[str] = mapped_column(db.String, nullable=False)
+    itemsPerCapacity: Mapped[int] = mapped_column(db.Integer, nullable=False)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'isActive': self.isActive,
+            'resource': self.resource,
+            'demand': self.demand,
+            'userID': self.userID,
+            'itemsPerCapacity': self.itemsPerCapacity
         }
 
 
 with app.app_context():
-    print('here')
     db.create_all()
