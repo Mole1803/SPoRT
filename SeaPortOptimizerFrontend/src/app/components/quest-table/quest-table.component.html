@@ -1,11 +1,15 @@
-<app-delete-confirmation-modal (emitDeleteConfirmation)="deleteShip($event)"
-                               [itemName]="selectedItem?.name "
-                               [isModalOpen]="isDeleteWindowOpen"
-/>
-
-<app-edit-ship-modal [isVisible]="isEditWindowOpen" [shipDto]="selectedItem!" (confirmationEmitter)="editShip($event)"></app-edit-ship-modal>
-
-
+<div class="mt-8 flow-root">
+  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8 table-wrp">
+      <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <ng-container *ngFor="let quest of quests">
+        <app-quest-grid-element [questDto]="quest"></app-quest-grid-element>
+      </ng-container>
+      </ul>
+    </div>
+  </div>
+</div>
+<!--
 <div class="mt-8 flow-root">
   <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full pb-2 align-middle sm:px-6 lg:px-8 table-wrp">
@@ -16,7 +20,6 @@
               class="lg:w-8/12 md:w-7/12 w-6/12 py-3.5  pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
             Name
           </th>
-          <!--lg:table-cell hidden-->
           <th scope="col" class="hidden   px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
             ID
           </th>
@@ -30,18 +33,17 @@
 
 
         <tr class="">
-          <!--[attr.colspan]="isLargeScreen ? 2 : 1"-->
           <th scope="col"
               class=" py-3.5 pl-4 pr-0 text-left text-sm font-semibold text-gray-900 sm:pl-0">
             <label for="ship-name" class=""></label>
             <div class="">
               <input type="text" name="ship-name" id="ship-name" autocomplete="ship-name"
                      class="block w-full rounded-l-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                     [(ngModel)]="newShipPrototype.name">
+                     [(ngModel)]="newQuestPrototype.name">
             </div>
           </th>
           <th scope="col" class="py-3.5 p-0 text-left text-sm font-semibold text-gray-900">
-            <!-- custom dropdown -->
+
             <div>
               <div>
                 <div class="inline w-full"
@@ -54,7 +56,7 @@
                           [ngClass]="{'ring-indigo-600 ring-2': isActiveDropdownOpen}"
                           (click)="isActiveDropdownOpen = !isActiveDropdownOpen"
                           >
-                    {{ newShipPrototype.isActive ? 'True' : 'False' }}
+                    {{ newQuestPrototype.isActive ? 'True' : 'False' }}
                     <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"
                          aria-hidden="true"
                     >
@@ -71,14 +73,14 @@
                   role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                   <div class="py-1" id="isActive-dropdown-menu" role="none">
                     <a class="block px-4 py-2 text-sm hover:bg-indigo-500 hover:text-white" role="menuitem" tabindex="-1"
-                       [ngClass]="{'bg-gray-100 text-gray-900': newShipPrototype.isActive, 'text-gray-700': !newShipPrototype.isActive}"
+                       [ngClass]="{'bg-gray-100 text-gray-900': newQuestPrototype.isActive, 'text-gray-700': !newQuestPrototype.isActive}"
                        id="menu-item-0"
-                       (click)="newShipPrototype.isActive = true; isActiveDropdownOpen = false"
+                       (click)="newQuestPrototype.isActive = true; isActiveDropdownOpen = false"
                     >True</a>
                     <a class=" block px-4 py-2 text-sm hover:bg-indigo-500 hover:text-white" role="menuitem" tabindex="-1"
-                       [ngClass]="{'bg-gray-100 text-gray-900': !newShipPrototype.isActive, 'text-gray-700': newShipPrototype.isActive}"
+                       [ngClass]="{'bg-gray-100 text-gray-900': !newQuestPrototype.isActive, 'text-gray-700': newQuestPrototype.isActive}"
                        id="menu-item-1"
-                       (click)="newShipPrototype.isActive = false; isActiveDropdownOpen = false"
+                       (click)="newQuestPrototype.isActive = false; isActiveDropdownOpen = false"
                     >False</a>
                   </div>
                 </div>
@@ -91,14 +93,14 @@
             <div class="inline w-full ">
               <input type="number" name="ship-capacity" id="ship-capacity" autocomplete="ship-capacity"
                      class="block w-11/12 sm:w-auto  rounded-r-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                     [(ngModel)]="newShipPrototype.capacity">
+                     [(ngModel)]="newQuestPrototype.demand">
             </div>
 
           </th>
           <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
             <div class="justify-end flex">
               <button
-                (click)="addNewShip()">
+                (click)="addNewQuest()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6  hover:text-indigo-600">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
@@ -112,27 +114,26 @@
         <tbody class="divide-y divide-gray-200">
 
 
-        <ng-container *ngFor="let ship of ships">
+        <ng-container *ngFor="let quest of quests">
           <tr>
-            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ship.name}}</td>
-            <!--lg:table-cell hidden-->
+            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{quest.name}}</td>
             <td
-              class="hidden overflow-hidden truncate px-3 py-4 text-sm text-gray-500">{{ship.id}}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{ship.isActive}}</td>
-            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{ship.capacity}}</td>
+              class="hidden overflow-hidden truncate px-3 py-4 text-sm text-gray-500">{{quest.id}}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{quest.isActive}}</td>
+            <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">{{quest.demand}}</td>
 
             <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
               <div class="flex justify-end">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6 hover:text-indigo-600"
-                     (click)="markForEdit(ship)">
+                     (click)="markForEdit(quest)">
                   <path stroke-linecap="round" stroke-linejoin="round"
                         d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/>
                 </svg>
 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6 ml-2.5 hover:text-red-600"
-                     (click)="markForDeletion(ship)">
+                     (click)="markForDeletion(quest)">
                   <path stroke-linecap="round" stroke-linejoin="round"
                         d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
                 </svg>
@@ -146,4 +147,5 @@
     </div>
   </div>
 </div>
+-->
 

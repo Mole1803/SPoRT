@@ -19,6 +19,9 @@ import { DeleteConfirmationModalComponent } from './components/delete-confirmati
 import { AlertComponent } from './components/alert/alert.component'
 import {AlertHandlerService} from "./services/alert-handler.service";
 import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-modal.component';
+import { QuestTableComponent } from './components/quest-table/quest-table.component';
+import { QuestManagerComponent } from './components/quest-manager/quest-manager.component';
+import { QuestGridElementComponent } from './components/quest-grid-element/quest-grid-element.component';
 
 
 @NgModule({
@@ -34,7 +37,10 @@ import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-m
     ShipManagerComponent,
     DeleteConfirmationModalComponent,
     AlertComponent,
-    EditShipModalComponent
+    EditShipModalComponent,
+    QuestTableComponent,
+    QuestManagerComponent,
+    QuestGridElementComponent
   ],
   imports: [
     BrowserModule,

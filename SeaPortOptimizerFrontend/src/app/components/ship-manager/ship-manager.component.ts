@@ -50,5 +50,4 @@ export class ShipManagerComponent {
     if (ship === undefined) return;
     this.ships = this.ships.map(s => s.id === ship.id ? ship : s);
   }
-
 }

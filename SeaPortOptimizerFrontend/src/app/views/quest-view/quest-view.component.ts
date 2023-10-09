@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./quest-view.component.css']
 })
 export class QuestViewComponent {
+  isGridView: boolean = false;
 
 }
