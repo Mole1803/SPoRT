@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./fleet-view.component.css']
 })
 export class FleetViewComponent {
+  isGridView: boolean = false;
 
 }

@@ -10,6 +10,15 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { HarborComponentComponent } from './components/harbor-component/harbor-component.component';
 import { FleetViewComponent } from './views/fleet-view/fleet-view.component';
 import { QuestViewComponent } from './views/quest-view/quest-view.component';
+import { ShipTableComponent } from './components/ship-table/ship-table.component';
+import { FooterComponent } from './components/footer/footer.component';
+import {FormsModule} from "@angular/forms";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ShipManagerComponent } from './components/ship-manager/ship-manager.component';
+import { DeleteConfirmationModalComponent } from './components/delete-confirmation-modal/delete-confirmation-modal.component';
+import { AlertComponent } from './components/alert/alert.component'
+import {AlertHandlerService} from "./services/alert-handler.service";
+import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-modal.component';
 
 
 @NgModule({
@@ -19,15 +28,24 @@ import { QuestViewComponent } from './views/quest-view/quest-view.component';
     NavBarComponent,
     HarborComponentComponent,
     FleetViewComponent,
-    QuestViewComponent
+    QuestViewComponent,
+    ShipTableComponent,
+    FooterComponent,
+    ShipManagerComponent,
+    DeleteConfirmationModalComponent,
+    AlertComponent,
+    EditShipModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
+      AlertHandlerService
   ],
   bootstrap: [AppComponent]
 })
