@@ -1,9 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-
-from SeaPortOptimizerBackend.src.Ship import Ship
 from db_mock import MockDBController
-
 app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
@@ -117,7 +114,7 @@ def get_all_users():
 
 
 @app.route('/addUser')
-def add_ship():
+def add_user():
     name = request.args.get("name")
     id = request.args.get("id")
     return DBController.create_user(name, id)
