@@ -22,6 +22,8 @@ import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-m
 import { QuestTableComponent } from './components/quest-table/quest-table.component';
 import { QuestManagerComponent } from './components/quest-manager/quest-manager.component';
 import { QuestGridElementComponent } from './components/quest-grid-element/quest-grid-element.component';
+import { EditQuestModalComponent } from './components/edit-quest-modal/edit-quest-modal.component';
+import {EditModalService} from "./services/edit-modal.service";
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import { QuestGridElementComponent } from './components/quest-grid-element/quest
     EditShipModalComponent,
     QuestTableComponent,
     QuestManagerComponent,
-    QuestGridElementComponent
+    QuestGridElementComponent,
+    EditQuestModalComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,8 @@ import { QuestGridElementComponent } from './components/quest-grid-element/quest
   ],
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
-      AlertHandlerService
+      AlertHandlerService,
+    EditModalService
   ],
   bootstrap: [AppComponent]
 })

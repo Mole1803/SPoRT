@@ -1,4 +1,5 @@
-<div *ngIf="editModalService.isVisible" class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+<div *ngIf="editModalService.isVisible" class="relative z-20" aria-labelledby="modal-title" role="dialog"
+     aria-modal="true">
 
   <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
@@ -44,26 +45,56 @@
                   <div
                     class="w-fit rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 max-w-md">
 
-                    <input type="number" name="edit-ship-capacity" id="edit-ship-capacity"
+                    <input type="text" name="edit-quest-ressource" id="edit-quest-ressource"
                            class="block border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
-                           placeholder="Capacity"
-                           [ngModel]="getCapacity()" (ngModelChange)="setCapacity($event)">
+                           placeholder="Ressource"
+                           [ngModel]="getRessource()" (ngModelChange)="setRessource($event)">
                   </div>
                 </div>
                 <div class="inline-flex w-2/4 ml-6 justify-center ">
                   <div class="inline-flex items-center ">
                     <div class="mr-2 text-sm leading-6">
-                      <span  class="text-gray-500"><span class="sr-only">Enabled </span>Enabled</span>
+                      <span class="text-gray-500"><span class="sr-only">Enabled </span>Enabled</span>
 
                     </div>
                     <div class="flex h-6 items-center">
-                      <input id="edit-ship-is-active"  name="edit-ship-is-active" type="checkbox"
+                      <input id="edit-quest-is-active" name="edit-quest-is-active" type="checkbox"
                              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                              [ngModel]="getIsActive()" (ngModelChange)="setIsActive($event)">
 
                     </div>
 
                   </div>
+                </div>
+
+
+              </div>
+            </div>
+
+            <div class="grid w-full mt-2 ">
+              <div class="grid max-w-full  grid-cols-2 gap-x-4 mt-2 justify-between" style="grid-template-columns: repeat(2, minmax(0, 1fr));" [ngClass]="{'safari-inner-spinner-button': editModalService.isSafari(),'other-platform': !editModalService.isSafari()}">
+                <div class="col-span-1 ">
+
+                  <div
+                    class="max-w-fit  rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+
+                    <input type="number" name="edit-quest-demand" id="edit-quest-demand"
+                           class="block border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
+                           placeholder="Capacity"
+                           [ngModel]="getDemand()" (ngModelChange)="setDemand($event)">
+                  </div>
+                </div>
+                <div class="col-span-1">
+                  <div
+                    class="max-w-fit  rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
+
+                    <input type="number" name="edit-quest-items-per-capacity" id="edit-quest-items-per-capacity"
+                           class="block border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
+                           placeholder="Capacity"
+                           [ngModel]="getItemsPerCapacity()" (ngModelChange)="setItemsPerCapacity($event)">
+                  </div>
+
+
                 </div>
 
 
@@ -91,3 +122,4 @@
     </div>
   </div>
 </div>
+

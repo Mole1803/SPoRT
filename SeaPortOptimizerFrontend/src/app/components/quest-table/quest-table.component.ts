@@ -11,5 +11,6 @@ export class QuestTableComponent extends QuestManagerComponent{
   isActiveDropdownOpen = false;
 
 
+
   protected readonly Array = Array;
 }
