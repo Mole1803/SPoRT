@@ -10,6 +10,10 @@ export class HttpUtilsService {
 
   }
 
+  login(username: string, password: string) {
+    return this.http.post(this.baseUrl+"/login", {username: username, password: password});
+  }
+
   isBackendAlive() {
     return this.http.get(this.baseUrl+"/isAlive");
   }

@@ -63,9 +63,9 @@ import {Auth} from "./auth/auth";
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
       AlertHandlerService,
     EditModalService,
-    /*{
+    {
       provide: HTTP_INTERCEPTORS, useClass: Auth, multi: true
-    }*/
+    }
   ],
   bootstrap: [AppComponent]
 })

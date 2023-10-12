@@ -5,10 +5,37 @@ from sqlalchemy.orm import DeclarativeBase
 from _DatabaseCall import app
 from instance import DBController
 
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    set_access_cookies, unset_jwt_cookies
+)
+
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 
-#CORS(app
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+
+app.config["JWT_COOKIE_SECURE"] = False
+
+app.config["JWT_SECRET_KEY"] = "cf65d36897822be9be6afe519020fbfc111676854c4778d62ceca2af46e1ef47"
+
+jwt = JWTManager(app)
+@app.route('/login', methods=['POST'])
+def login():
+    #if not request.is_json:
+    #    return jsonify({"msg": "Missing JSON in request"}), 400
+    #username = request.json.get('username', None)
+    #password = request.json.get('password', None)
+    #print(username)
+    #print(password)
+    username = "test"
+    access_token = create_access_token(identity=username)
+    return jsonify(access_token=access_token), 200
+
+@app.route('/test_jwt', methods=['GET'])
+@jwt_required()
+def test_jwt():
+    return jsonify({"msg": "Test JWT Works"}), 200
 
 
 @app.route('/getShip')
@@ -130,6 +157,10 @@ def update_user():
 def delete_user():
     id = request.args.get("id")
     return DBController.delete_user_db(id)
+
+@app.route('/isAlive')
+def is_alive():
+    return jsonify({"msg": "Alive"}), 200
 
 
 if __name__ == '__main__':
