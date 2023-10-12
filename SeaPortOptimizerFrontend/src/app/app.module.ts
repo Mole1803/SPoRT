@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {environment} from "../environments/environment";
 import { HomeComponent } from './views/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -26,6 +26,8 @@ import { EditQuestModalComponent } from './components/edit-quest-modal/edit-ques
 import {EditModalService} from "./services/edit-modal.service";
 import { ResultTableComponent } from './components/home/result-table/result-table.component';
 import { RadioGroupComponent } from './components/home/radio-group/radio-group.component';
+import { LoginComponent } from './views/login/login.component';
+import {Auth} from "./auth/auth";
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { RadioGroupComponent } from './components/home/radio-group/radio-group.c
     QuestGridElementComponent,
     EditQuestModalComponent,
     ResultTableComponent,
-    RadioGroupComponent
+    RadioGroupComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,10 @@ import { RadioGroupComponent } from './components/home/radio-group/radio-group.c
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
       AlertHandlerService,
-    EditModalService
+    EditModalService,
+    /*{
+      provide: HTTP_INTERCEPTORS, useClass: Auth, multi: true
+    }*/
   ],
   bootstrap: [AppComponent]
 })
