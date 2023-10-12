@@ -13,4 +13,14 @@ export class HttpUtilsService {
   isBackendAlive() {
     return this.http.get(this.baseUrl+"/isAlive");
   }
+
+  getShips() {
+    return this.http.get(this.baseUrl+"/getShips");
+  }
+
+  addShip(ship: any) {
+    return this.http.post(this.baseUrl+"/addShip", ship);
+  }
+
+
 }

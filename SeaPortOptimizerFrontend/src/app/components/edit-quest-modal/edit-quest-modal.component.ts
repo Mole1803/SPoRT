@@ -4,6 +4,7 @@ import {ShipDto} from "../../models/ship-dto";
 import {AlertHandlerService} from "../../services/alert-handler.service";
 import {QuestDto} from "../../models/quest-dto";
 import {EditModalService} from "../../services/edit-modal.service";
+import {ModalMode} from "../../enums/modal-mode";
 
 @Component({
   selector: 'app-edit-quest-modal',
@@ -55,4 +56,6 @@ export class EditQuestModalComponent {
   }
 
 
+  protected readonly ModalMode = ModalMode;
+  protected readonly EditModalService = EditModalService;
 }

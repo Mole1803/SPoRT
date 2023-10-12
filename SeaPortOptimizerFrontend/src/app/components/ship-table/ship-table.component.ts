@@ -53,9 +53,6 @@ export class ShipTableComponent extends ShipManagerComponent{
     this.isLargeScreen = window.innerWidth >= 1024;
   }
 
-  openEditModal(ship: ShipDto) {
-    this.editModalService._open(ship);
-  }
 
 
 

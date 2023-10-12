@@ -1,0 +1,14 @@
+<div>
+  <label class="text-base font-semibold text-gray-900"></label>
+  <p class="text-sm text-gray-500">Choose the algorithm you would like to use</p>
+  <fieldset class="mt-4">
+    <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+      <ng-container *ngFor="let algorithm of availableAlgorithms; index as i">
+      <div class="flex items-center">
+        <input id="algorithm-{{i}}" name="algorithm" type="radio" [value]="algorithm" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+        <label for="algorithm-{{i}}" class="ml-3 block text-sm font-medium leading-6 text-gray-900">{{algorithm}}</label>
+      </div>
+      </ng-container>
+    </div>
+  </fieldset>
+</div>

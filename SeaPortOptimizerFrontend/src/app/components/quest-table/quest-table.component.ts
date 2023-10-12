@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {QuestPrototypeDto} from "../../models/quest-prototype-dto";
 import {QuestManagerComponent} from "../quest-manager/quest-manager.component";
+import {EditModalService} from "../../services/edit-modal.service";
 
 @Component({
   selector: 'app-quest-table',
@@ -9,6 +10,11 @@ import {QuestManagerComponent} from "../quest-manager/quest-manager.component";
 })
 export class QuestTableComponent extends QuestManagerComponent{
   isActiveDropdownOpen = false;
+
+  constructor(public override editModalService: EditModalService) {
+    super(editModalService);
+
+  }
 
 
 

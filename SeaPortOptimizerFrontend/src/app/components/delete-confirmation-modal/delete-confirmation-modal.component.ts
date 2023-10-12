@@ -1,6 +1,8 @@
 import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
 import {AlertHandlerService} from "../../services/alert-handler.service";
 import {AlertLevel} from "../../enums/alert-level";
+import {EditModalService} from "../../services/edit-modal.service";
+import {ModalMode} from "../../enums/modal-mode";
 
 @Component({
   selector: 'app-delete-confirmation-modal',
@@ -14,19 +16,21 @@ export class DeleteConfirmationModalComponent {
 
   @Output() emitDeleteConfirmation = new EventEmitter<boolean>();
 
-  constructor(private alertHandlerService: AlertHandlerService) {
+  constructor(private alertHandlerService: AlertHandlerService, public editModalService: EditModalService) {
 
   }
 
-  onConfirmDelete() {
-    this.emitDeleteConfirmation.emit(true);
-    this.closeModal();
-    this.alertHandlerService.showAlertWithAttributes('Success', `${this.itemName} has been deleted.`, AlertLevel.SUCCESS);
+  confirmDelete() {
+    //this.emitDeleteConfirmation.emit(true);
+    this.editModalService.confirm();
+    //this.closeModal();
+    //this.alertHandlerService.showAlertWithAttributes('Success', `${this.itemName} has been deleted.`, AlertLevel.SUCCESS);
   }
 
   cancelDelete() {
-    this.emitDeleteConfirmation.emit(false);
-    this.closeModal();
+    this.editModalService.close();
+    //this.emitDeleteConfirmation.emit(false);
+    //this.closeModal();
   }
 
 
@@ -35,4 +39,5 @@ export class DeleteConfirmationModalComponent {
   }
 
   protected readonly close = close;
+  protected readonly ModalMode = ModalMode;
 }

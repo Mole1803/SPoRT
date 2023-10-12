@@ -1,4 +1,4 @@
-<div *ngIf="editModalService.isVisible" class="relative z-20" aria-labelledby="modal-title" role="dialog"
+<div *ngIf="editModalService.isVisible && editModalService.mode === ModalMode.EDIT || editModalService.mode === ModalMode.ADD" class="relative z-20" aria-labelledby="modal-title" role="dialog"
      aria-modal="true">
 
   <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -20,7 +20,7 @@
 
           </div>
           <div class="mt-5 text-center ">
-            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Edit Ship</h3>
+            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{{ editModalService.mode === ModalMode.EDIT ? "Edit Quest"  : "Add Quest"}}</h3>
 
 
             <div class="grid w-full mt-2 ">
@@ -110,12 +110,10 @@
                   (click)="editModalService.close()">
             Cancel
           </button>
-
-
           <button type="button"
                   class="inline-flex w-1/2 ml-2 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
                   (click)="editModalService.confirm()">
-            Save
+            {{ editModalService.mode === ModalMode.EDIT ? 'Save' : 'Add'}}
           </button>
         </div>
       </div>

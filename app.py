@@ -28,7 +28,7 @@ def get_all_ships():
 
 @app.route('/addShip')
 def add_ship():
-    user = request.args.get(" user")
+    user = request.args.get("user")
     name = request.args.get("name")
     is_active = request.args.get("is_active")
     capacity = request.args.get("capacity")
@@ -38,7 +38,7 @@ def add_ship():
 
 @app.route('/updateShip')
 def update_ship():
-    user = request.args.get(" user")
+    user = request.args.get("user")
     name = request.args.get("name")
     is_active = request.args.get("is_active")
     capacity = request.args.get("capacity")

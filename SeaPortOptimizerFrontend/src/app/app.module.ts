@@ -24,6 +24,8 @@ import { QuestManagerComponent } from './components/quest-manager/quest-manager.
 import { QuestGridElementComponent } from './components/quest-grid-element/quest-grid-element.component';
 import { EditQuestModalComponent } from './components/edit-quest-modal/edit-quest-modal.component';
 import {EditModalService} from "./services/edit-modal.service";
+import { ResultTableComponent } from './components/home/result-table/result-table.component';
+import { RadioGroupComponent } from './components/home/radio-group/radio-group.component';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import {EditModalService} from "./services/edit-modal.service";
     QuestTableComponent,
     QuestManagerComponent,
     QuestGridElementComponent,
-    EditQuestModalComponent
+    EditQuestModalComponent,
+    ResultTableComponent,
+    RadioGroupComponent
   ],
   imports: [
     BrowserModule,

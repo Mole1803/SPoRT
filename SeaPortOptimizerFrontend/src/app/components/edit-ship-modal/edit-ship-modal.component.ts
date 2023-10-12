@@ -3,6 +3,7 @@ import {ShipDto} from "../../models/ship-dto";
 import {AlertHandlerService} from "../../services/alert-handler.service";
 import {AlertLevel} from "../../enums/alert-level";
 import {EditModalService} from "../../services/edit-modal.service";
+import {ModalMode} from "../../enums/modal-mode";
 
 @Component({
   selector: 'app-edit-ship-modal',
@@ -35,4 +36,6 @@ export class EditShipModalComponent {
     // @ts-ignore
     return this.editModalService.model.isActive;
   }
+
+  protected readonly ModalMode = ModalMode;
 }

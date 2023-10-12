@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {QuestDto} from "../../models/quest-dto";
 import {EditModalService} from "../../services/edit-modal.service";
+import {ModalMode} from "../../enums/modal-mode";
 
 @Component({
   selector: 'app-quest-grid-element',
@@ -11,13 +12,17 @@ export class QuestGridElementComponent {
   @Input() questDto?: QuestDto;
 
   constructor(public editModalService: EditModalService) {
-    editModalService.confirmationEmitter.subscribe((model) => {
-      // @ts-ignore
-      if (model.id === this.questDto?.id) {
-        // @ts-ignore
-        this.questDto = model;
-      }
-    })
+  }
+
+  deleteQuest() {
+    this.editModalService.mode = ModalMode.DELETE;
+    // @ts-ignore
+    this.editModalService._open(this.questDto);
+  }
+
+  editQuest() {
+    this.editModalService.mode = ModalMode.EDIT;
+    this.editModalService._open(this.createCopy());
   }
 
   createCopy() {
