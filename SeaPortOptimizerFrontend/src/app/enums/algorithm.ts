@@ -1,6 +1,6 @@
 export enum Algorithm {
-  MARCEL = 'MARCELLO',
-  RUBEN = 'RÜÜBLI',
-  TIM = 'TRIPLE T',
-  MORITZ = 'MORITZ'
+  MARCEL = 'Marcel',
+  RUBEN = 'Ruben',
+  TIM = 'Tim',
+  MORITZ = 'Moritz'
 }
