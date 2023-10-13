@@ -14,6 +14,10 @@ export class HttpUtilsService {
     return this.http.post(this.baseUrl+"/login", {username: username, password: password});
   }
 
+  jwtTokenTest(){
+    return this.http.get(this.baseUrl+"/test_jwt");
+  }
+
   isBackendAlive() {
     return this.http.get(this.baseUrl+"/isAlive");
   }

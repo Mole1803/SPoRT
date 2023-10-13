@@ -25,9 +25,20 @@ export class AppComponent {
         console.log(data);
       }
     );
-
+    if(!this.jwtTokenSet()){
+      this.redirectToLogin();
+    }
     // Routing
     this.setActiveRoute(this.sanitizeRoute(location.hash));
+
+
+    this.httpUtilsService.jwtTokenTest().subscribe(
+        (data) => {
+          console.log(data)
+        }
+      )
+
+
   }
 
   sanitizeRoute(route: string | undefined) {
@@ -71,6 +82,18 @@ export class AppComponent {
 
   redirectTo(tab: Tab) {
     this.router.navigate([tab.route]).then(() => this.setActiveRoute(this.sanitizeRoute(this.router.url)));
+  }
+
+  jwtTokenSet(){
+    return localStorage.getItem("token") != null;
+  }
+
+  redirectToLogin(){
+    this.router.navigate([AppRoutes.LOGIN]).then(() => this.setActiveRoute(this.sanitizeRoute(this.router.url)));
+  }
+
+  isFooterAndHeaderHidden(){
+    return this.router.url !== "/"+AppRoutes.LOGIN;
   }
 
 

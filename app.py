@@ -9,6 +9,7 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     set_access_cookies, unset_jwt_cookies
 )
+import jwt as jwt_lib
 
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
@@ -24,17 +25,19 @@ jwt = JWTManager(app)
 def login():
     #if not request.is_json:
     #    return jsonify({"msg": "Missing JSON in request"}), 400
-    #username = request.json.get('username', None)
-    #password = request.json.get('password', None)
-    #print(username)
-    #print(password)
-    username = "test"
+    username = request.json.get('username', None)
+    password = request.json.get('password', None)
+
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token), 200
 
 @app.route('/test_jwt', methods=['GET'])
 @jwt_required()
 def test_jwt():
+    # Beispiel um user zu bekommen
+    token = request.headers.get("Authorization")[7::]
+    user = jwt_lib.decode(token, app.config["JWT_SECRET_KEY"], algorithms=["HS256"])
+    print(user, flush=True)
     return jsonify({"msg": "Test JWT Works"}), 200
 
 
