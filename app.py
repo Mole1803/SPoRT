@@ -1,6 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+from SeaPortOptimizerBackend.src.Solver.MarcelSolver import MarcelSolver
+from SeaPortOptimizerBackend.src.Solver.MoritzSolver import MoritzSolver
+from SeaPortOptimizerBackend.src.Solver.RubenSolver import RubenSolver
+from SeaPortOptimizerBackend.src.Solver.TimSolver import TimSolver
 from db_mock import MockDBController
+
 app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
@@ -19,7 +25,7 @@ def get_ship():
 @app.route('/getShips')
 def get_all_ships():
     user = request.args.get("user")
-    ships = DBController.get_all_ships(user)
+    ships = DBController.get_all_ships_from_user_id_db(user)
     erg = []
     for ship in ships:
         erg.append(ship.__dict__())
@@ -61,7 +67,7 @@ def get_quest():
 @app.route('/getQuests')
 def get_quests():
     user = request.args.get("user")
-    quests = DBController.get_all_quests(user)
+    quests = DBController.get_all_quests_from_user_id_db(user)
     erg = []
     for quest in quests:
         erg.append(quest.__dict__())
@@ -132,6 +138,21 @@ def delete_user():
     id = request.args.get("id")
     return DBController.delete_user(id)
 
+
+@app.route('/calculate')
+def calculate():
+    result = None
+    possible_solver = {"Ruben": RubenSolver, "Moritz": MoritzSolver, "Tim": TimSolver, "Marcel": MarcelSolver}
+    id = request.args.get("id")
+    strategy = request.args.get("strategy")
+    name = request.args.get("name")
+    usedSolver = possible_solver.get(name)
+    solver = usedSolver(id)
+    if strategy == "time":
+        result = solver.calculate_time_optimized()
+    elif strategy == "resource":
+        result = solver.calculate_resource_optimized()
+    return result
 
 
 @app.route('/isAlive')
