@@ -1,6 +1,3 @@
-from db_mock import MockDBController
-
-DBController = MockDBController()
 
 class User:
     def __init__(self, id, name, salt, hashed_pw):
@@ -15,6 +12,3 @@ class User:
                 "hashed_pw": self.hashed_pw,
                 }
 
-    @staticmethod
-    def authorize(name, password):
-        hashed_pw=DBController.get_user_hash(name)
