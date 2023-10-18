@@ -1,7 +1,5 @@
-from flask import Flask, jsonify, url_for, request, render_template, redirect
+from flask import request
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from _DatabaseCall import app
 from instance import DBController
 
