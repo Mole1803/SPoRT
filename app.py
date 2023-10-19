@@ -48,67 +48,77 @@ def test_jwt():
     return jsonify({"msg": "Test JWT Works"}), 200
 
 
-@app.route('/getShip')
+@jwt_required()
+@app.route('/ship/get')
 def get_ship():
     id = request.args.get("id")
-    return DBController.get_ship_db(id).__dict__()
+    return DBController.get_ship_db(id, __get_user(request)).__dict__()
 
 
-@app.route('/getShips')
+@jwt_required()
+@app.route('/ship/list')
 def get_all_ships():
-    ships = DBController.get_all_ships_db()
+    user = request.args.get("user")
+    ships = DBController.get_all_ships_from_user_id_db(user)
     erg = []
     for ship in ships:
         erg.append(ship.__dict__())
     return erg
 
 
-@app.route('/addShip')
+@jwt_required()
+@app.route('/ship/add')
 def add_ship():
     user = request.args.get("user")
     name = request.args.get("name")
-    is_active = request.args.get("is_active")
+    is_active = bool(request.args.get("is_active"))
     capacity = request.args.get("capacity")
     id = request.args.get("id")
     return DBController.create_ship_db(user, name, id, is_active, capacity)
 
 
-@app.route('/updateShip')
+@jwt_required()
+@app.route('/ship/update')
 def update_ship():
     user = request.args.get("user")
     name = request.args.get("name")
-    is_active = request.args.get("is_active")
+    is_active = bool(request.args.get("is_active"))
     capacity = request.args.get("capacity")
     id = request.args.get("id")
     return DBController.update_ship_db(user, name, id, is_active, capacity)
 
 
-@app.route('/deleteShip')
+@jwt_required()
+@app.route('/ship/delete')
 def delete_ship():
     id = request.args.get("id")
     return DBController.delete_ship_db(id)
 
 
-@app.route('/getQuest')
+@jwt_required()
+@app.route('/quest/get')
 def get_quest():
     id = request.args.get("id")
     return DBController.get_quest_db(id).__dict__()
 
 
-@app.route('/getQuests')
+@jwt_required()
+@app.route('/quest/list')
 def get_quests():
-    ships = DBController.get_all_quests_db()
+    user = request.args.get("user")
+    ships = DBController.get_all_quests_from_user_id_db(user)
     erg = []
     for ship in ships:
         erg.append(ship.__dict__())
     return erg
 
 
-@app.route('/addQuest')
+@jwt_required()
+@app.route('/quest/add')
 def add_quest():
-    user = request.args.get(" user")
+    user = request.args.get("user")
     name = request.args.get("name")
-    is_active = request.args.get("is_active")
+    is_active = bool(request.args.get("is_active"))
     resource = request.args.get("resource")
     items_per_capacity = request.args.get("items_per_capacity")
     demand = request.args.get("demand")
@@ -116,11 +126,12 @@ def add_quest():
     return DBController.create_quest_db(user, name, id, is_active, resource, items_per_capacity, demand)
 
 
-@app.route('/updateQuest')
+@jwt_required()
+@app.route('/quest/update')
 def update_quest():
-    user = request.args.get(" user")
+    user = request.args.get("user")
     name = request.args.get("name")
-    is_active = request.args.get("is_active")
+    is_active = bool(request.args.get("is_active"))
     resource = request.args.get("resource")
     items_per_capacity = request.args.get("items_per_capacity")
     demand = request.args.get("demand")
@@ -128,19 +139,22 @@ def update_quest():
     return DBController.update_quest_db(user, name, id, is_active, resource, items_per_capacity, demand)
 
 
-@app.route('/deleteQuest')
+@jwt_required()
+@app.route('/quest/delete')
 def delete_quest():
     id = request.args.get("id")
     return DBController.delete_quest_db(id)
 
 
-@app.route('/getUser')
+@jwt_required()
+@app.route('/user/get')
 def get_user():
     id = request.args.get("id")
     return DBController.get_user_db(id).__dict__()
 
 
-@app.route('/getUsers')
+@jwt_required()
+@app.route('/user/list')
 def get_all_users():
     users = DBController.get_all_users_db()
     erg = []
@@ -149,21 +163,25 @@ def get_all_users():
     return erg
 
 
-@app.route('/addUser')
+@jwt_required()
+@app.route('/user/add')
 def add_user():
     name = request.args.get("name")
     id = request.args.get("id")
-    return DBController.create_user_db(name, id)
+    password = request.args.get("password")
+    return DBController.create_user_db(name, id, password)
 
 
-@app.route('/updateUser')
+@jwt_required()
+@app.route('/user/update')
 def update_user():
     name = request.args.get("name")
     id = request.args.get("id")
     return DBController.update_user_db(name, id)
 
 
-@app.route('/deleteUser')
+@jwt_required()
+@app.route('/user/delete')
 def delete_user():
     id = request.args.get("id")
     return DBController.delete_user_db(id)
