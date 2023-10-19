@@ -2,8 +2,9 @@ from math import inf
 
 from SeaPortOptimizerBackend.src.Model.Result import Result
 from SeaPortOptimizerBackend.src.Model.Round import Round
-from SeaPortOptimizerBackend.src.Solver.Solver import Solver
 from SeaPortOptimizerBackend.src.Model.Step import Step
+from SeaPortOptimizerBackend.src.Solver.Solver import Solver
+
 
 
 class RubenSolver(Solver):
@@ -87,7 +88,7 @@ class RubenSolver(Solver):
         for steps in quest.all_steps:
             sum = 0
             for step in steps:
-                sum += step.spare_capacity
+                sum += step.quest_capacity
             if sum < min:
                 best_steps = [steps]
                 min = sum
@@ -107,9 +108,9 @@ class RubenSolver(Solver):
             else:
                 quest.all_steps.append(steps.copy())
                 last_step = steps.pop(-1)
-                quest.remaining_demand += last_step.spare_capacity
+                quest.remaining_demand += last_step.quest_capacity
                 return i + 1
         if len(steps) > 0:
             last_step = steps.pop(-1)
-            quest.remaining_demand += last_step.spare_capacity
+            quest.remaining_demand += last_step.quest_capacity
         return index + 1
