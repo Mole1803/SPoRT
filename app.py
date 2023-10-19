@@ -33,8 +33,10 @@ def __get_user(request):
 def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
-    user = DBController.get_user_db(username)
-
+    try:
+        user = DBController.get_user_db(username)
+    except:
+        user = None
     if user:
         salted_pw = password + user.salt
         hashed_pw = hashlib.sha256(bytes(salted_pw, 'utf-8')).hexdigest()

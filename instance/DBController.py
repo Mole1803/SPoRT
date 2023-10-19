@@ -38,10 +38,7 @@ def delete_user_db(name):
 
 
 def get_user_db(name):
-    try:
-        user = db.get_or_404(UserDB, name)
-    except:
-        user = None
+    user = db.get_or_404(UserDB, name)
     if user:
         return User(user.id, user.name, user.password, user.salt)
     return None
