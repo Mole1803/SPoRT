@@ -10,7 +10,8 @@ from flask_jwt_extended import (
     set_access_cookies, unset_jwt_cookies
 )
 import jwt as jwt_lib
-
+import uuid
+import hashlib
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 
@@ -22,21 +23,35 @@ app.config["JWT_SECRET_KEY"] = "cf65d36897822be9be6afe519020fbfc111676854c4778d6
 
 jwt = JWTManager(app)
 
+
 def __get_user(request):
     token = request.headers.get("Authorization")[7::]
     return jwt_lib.decode(token, app.config["JWT_SECRET_KEY"], algorithms=["HS256"])
+
 
 @app.route('/login', methods=['POST'])
 def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
-    # Todo: verify user
-    #user = verify_user(username, password)
-    #if not user:
-    #    return jsonify({"msg": "Bad username or password"}), 401
+    user = DBController.get_user_db(username)
+
+    if user:
+        salted_pw = password + user.salt
+        hashed_pw = hashlib.sha256(bytes(salted_pw, 'utf-8')).hexdigest()
+        verified = hashed_pw == user.password
+        if not verified:
+            return jsonify({"msg": "Bad username or password"}), 401
+    else:
+        myuuid = uuid.uuid4()
+        id = str(myuuid)
+        salt = id
+        salted_pw = password + salt
+        hashed_pw = hashlib.sha256(bytes(salted_pw, 'utf-8')).hexdigest()
+        DBController.create_user_db(username, id, hashed_pw, salt)
 
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token), 200
+
 
 @app.route('/test_jwt', methods=['GET'])
 @jwt_required()
@@ -164,12 +179,17 @@ def get_all_users():
 
 
 @jwt_required()
-@app.route('/user/add')
+@app.route('/user/add', methods=['POST'])
 def add_user():
     name = request.args.get("name")
-    id = request.args.get("id")
+    myuuid = uuid.uuid4()
+    id = str(myuuid)
     password = request.args.get("password")
-    return DBController.create_user_db(name, id, password)
+    salt = id
+    salted_pw = password + salt
+    hashed_pw = hashlib.sha256(salted_pw)
+
+    return DBController.create_user_db(name, id, hashed_pw, salt)
 
 
 @jwt_required()
@@ -177,7 +197,9 @@ def add_user():
 def update_user():
     name = request.args.get("name")
     id = request.args.get("id")
-    return DBController.update_user_db(name, id)
+    password = request.args.get("password")
+    salt = id
+    return DBController.update_user_db(name, id, password, salt)
 
 
 @jwt_required()
@@ -185,6 +207,7 @@ def update_user():
 def delete_user():
     id = request.args.get("id")
     return DBController.delete_user_db(id)
+
 
 @app.route('/isAlive')
 def is_alive():

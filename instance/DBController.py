@@ -26,7 +26,7 @@ def get_all_users_db():
     users = db.session.execute(db.select(UserDB).order_by(UserDB.name)).scalars()
     returnList = []
     for user in users:
-        returnList.append(User(user.id, user.name))
+        returnList.append(User(user.id, user.name, user.password, user.salt))
     return returnList
 
 
@@ -38,9 +38,12 @@ def delete_user_db(name):
 
 
 def get_user_db(name):
-    user = db.get_or_404(UserDB, name)
+    try:
+        user = db.get_or_404(UserDB, name)
+    except:
+        user = None
     if user:
-        return User(user.id, user.name)
+        return User(user.id, user.name, user.password, user.salt)
     return None
 
 
