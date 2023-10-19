@@ -27,7 +27,7 @@ def get_all_users_db():
     returnList = []
     for user in users:
         returnList.append(User(user.id, user.name))
-    return users
+    return returnList
 
 
 def delete_user_db(name):
