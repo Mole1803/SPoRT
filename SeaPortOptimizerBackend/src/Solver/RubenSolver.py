@@ -24,42 +24,41 @@ class RubenSolver(Solver):
             optimal_substeps[quest.id] = quest.all_steps
             self.filter_steps(quest)
         solutions = self.arrange_steps(self.quests)
-        ships_by_solutions = self.filter_solutions_by_ships(solutions,self.ships)
+        ships_by_solutions = self.filter_solutions_by_ships(solutions, self.ships)
         best_solutions, rounds = self.get_best_solutions(ships_by_solutions)
         results = self.parse_solutions_to_results(best_solutions, rounds)
         print(results)
 
-    def parse_solutions_to_results(self,best_solutions,number_of_rounds):
-        results=[]
+    def parse_solutions_to_results(self, best_solutions, number_of_rounds):
+        results = []
         for solution in best_solutions:
-            rounds=[]
+            rounds = []
             for round_index in range(number_of_rounds):
-                round=Round([])
+                round = Round([])
                 for ship in solution:
-                    if len(solution[ship])>round_index:
+                    if len(solution[ship]) > round_index:
                         round.add_step(solution[ship][round_index])
                 rounds.append(round)
             results.append(Result(rounds))
         return results
 
-
     def get_best_solutions(self, ships_by_solutions):
         min = inf
-        best_solutions=[]
+        best_solutions = []
         for solution in ships_by_solutions:
             take_rounds = 0
             for ship in solution:
                 if len(solution[ship]) > take_rounds:
                     take_rounds = len(solution[ship])
             if take_rounds < min:
-                min=take_rounds
+                min = take_rounds
                 best_solutions = [solution]
             elif take_rounds == min:
                 best_solutions.append(solution)
-        return best_solutions,min
+        return best_solutions, min
 
     def filter_solutions_by_ships(self, solutions, ships):
-        ships_by_solutions=[]
+        ships_by_solutions = []
         for solution in solutions:
             ship_quests = {}
             for ship in ships:
@@ -70,29 +69,31 @@ class RubenSolver(Solver):
         return ships_by_solutions
 
     def arrange_steps(self, quests):
-        solutions=[]
+        solutions = []
         for quest in quests:
-            if len(solutions)==0:
-                solutions=quest.all_steps
+            if len(solutions) == 0:
+                solutions = quest.all_steps
             else:
                 new_solutions = []
                 for solution in solutions:
                     for steps in quest.all_steps:
-                        new_solutions.append(solution+steps)
-                solutions=new_solutions
+                        new_solutions.append(solution + steps)
+                solutions = new_solutions
         return solutions
 
-    # TODO in case there is no perfect solution find the best solution
     def filter_steps(self, quest):
-        to_delete = []
+        min = inf
+        best_steps = []
         for steps in quest.all_steps:
             sum = 0
             for step in steps:
                 sum += step.spare_capacity
-            if sum != quest.demand:
-                to_delete.append(steps)
-        for delete in to_delete:
-            quest.all_steps.remove(delete)
+            if sum < min:
+                best_steps = [steps]
+                min = sum
+            elif sum == min:
+                best_steps.append(steps)
+        quest.all_steps = best_steps
 
     def calculate_all_steps(self, quest, ships, steps, index=0):
         i = index
