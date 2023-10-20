@@ -15,13 +15,17 @@ db.init_app(app)
 
 
 class Users(db.Model):
-    id: Mapped[str] = mapped_column(db.String, unique=True, primary_key=True)
-    name: Mapped[str] = mapped_column(db.String, nullable=False)
+    id: Mapped[str] = mapped_column(db.String, unique=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False, primary_key=True, unique=True)
+    password: Mapped[str] = mapped_column(db.String, nullable=False)
+    salt: Mapped[str] = mapped_column(db.String, nullable=False)
 
     def serialize(self):
         return {
             'id': self.id,
-            'name': self.name
+            'name': self.name,
+            'password': self.password,
+            'salt': self.salt
         }
 
 
@@ -30,7 +34,7 @@ class Ships(db.Model):
     name: Mapped[str] = mapped_column(db.String, nullable=False)
     isActive: Mapped[bool] = mapped_column(db.Boolean, nullable=False)
     capacity: Mapped[int] = mapped_column(db.Integer, nullable=False)
-    userID: Mapped[str] = mapped_column(db.String, nullable=False)
+    username: Mapped[str] = mapped_column(db.String, nullable=False)
 
     def serialize(self):
         return {
@@ -38,7 +42,7 @@ class Ships(db.Model):
             'name': self.name,
             'isActive': self.isActive,
             'capacity': self.capacity,
-            'userID': self.userID
+            'username': self.username
         }
 
 
@@ -48,7 +52,7 @@ class Quests(db.Model):
     isActive: Mapped[bool] = mapped_column(db.Boolean, nullable=False)
     resource: Mapped[str] = mapped_column(db.String, nullable=False)
     demand: Mapped[int] = mapped_column(db.Integer, nullable=False)
-    userID: Mapped[str] = mapped_column(db.String, nullable=False)
+    username: Mapped[str] = mapped_column(db.String, nullable=False)
     itemsPerCapacity: Mapped[int] = mapped_column(db.Integer, nullable=False)
 
     def serialize(self):
@@ -58,7 +62,7 @@ class Quests(db.Model):
             'isActive': self.isActive,
             'resource': self.resource,
             'demand': self.demand,
-            'userID': self.userID,
+            'username': self.username,
             'itemsPerCapacity': self.itemsPerCapacity
         }
 

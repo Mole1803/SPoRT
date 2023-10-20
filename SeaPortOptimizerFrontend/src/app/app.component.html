@@ -1,10 +1,10 @@
 <div class="md:main-app-large-size  main-app-small-size" >
 
-  <app-nav-bar (tabChanged)="redirectTo($event)" [tabs]="tabs" ></app-nav-bar>
+  <app-nav-bar (tabChanged)="redirectTo($event)" [tabs]="tabs" *ngIf="isFooterAndHeaderHidden()"></app-nav-bar>
   <app-alert></app-alert>
   <div class="py-5"></div>
 
-  <header>
+  <header *ngIf="isFooterAndHeaderHidden()">
     <div class="mx-auto  max-w-7xl px-4  sm:px-6 lg:px-8">
       <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">{{this.title}}</h1>
     </div>
@@ -18,4 +18,4 @@
 
 </div>
 
-<app-footer ></app-footer>
+<app-footer *ngIf="isFooterAndHeaderHidden()"></app-footer>

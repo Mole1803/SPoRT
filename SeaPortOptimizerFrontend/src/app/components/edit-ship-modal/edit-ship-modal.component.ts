@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ShipDto} from "../../models/ship-dto";
 import {AlertHandlerService} from "../../services/alert-handler.service";
 import {AlertLevel} from "../../enums/alert-level";
+import {EditModalService} from "../../services/edit-modal.service";
+import {ModalMode} from "../../enums/modal-mode";
 
 @Component({
   selector: 'app-edit-ship-modal',
@@ -9,28 +11,31 @@ import {AlertLevel} from "../../enums/alert-level";
   styleUrls: ['./edit-ship-modal.component.css']
 })
 export class EditShipModalComponent {
-  @Input() @Output() isVisible: boolean = true;
-  @Input() shipDto: ShipDto = new ShipDto('', '', -1, false);
+  //shipDto: ShipDto = new ShipDto('', '', -1, false);
 
-  @Output() confirmationEmitter: EventEmitter<ShipDto | undefined> = new EventEmitter<ShipDto | undefined>();
+  constructor(public editModalService: EditModalService) {
 
-  constructor(private alertHandlerService: AlertHandlerService) {
   }
 
-
-  close() {
-    this.alertHandlerService.showAlertWithAttributes('Information', `No changes are made.`, AlertLevel.INFO);
-    this.confirmationEmitter.emit(undefined);
-    this._close()
-  }
-  _close() {
-    this.isVisible = false;
+  setCapacity(capacity: number) {
+    // @ts-ignore
+    this.editModalService.model.capacity = capacity;
   }
 
-  confirm() {
-    this.confirmationEmitter.emit(this.shipDto);
-    this.alertHandlerService.showAlertWithAttributes('Success', `${this.shipDto.name} has been edited.`, AlertLevel.SUCCESS);
-    this._close()
+  getCapacity() {
+    // @ts-ignore
+    return this.editModalService.model.capacity;
   }
 
+  setIsActive(isActive: boolean) {
+    // @ts-ignore
+    this.editModalService.model.isActive = isActive;
+  }
+
+  getIsActive() {
+    // @ts-ignore
+    return this.editModalService.model.isActive;
+  }
+
+  protected readonly ModalMode = ModalMode;
 }

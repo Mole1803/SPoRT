@@ -1,4 +1,4 @@
-<ng-container *ngIf="isModalOpen">
+<ng-container *ngIf="editModalService.isVisible && editModalService.mode===ModalMode.DELETE">
   <div class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -20,7 +20,7 @@
             <div class=" text-center mt-5">
               <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Delete Action</h3>
               <div class="mt-2">
-                <p class="text-sm text-gray-500">Are you sure that you want to delete:<br><strong>{{itemName}}</strong>
+                <p class="text-sm text-gray-500">Are you sure that you want to delete:<br><strong>{{ this.editModalService.model?.name}}</strong>
                 </p>
               </div>
             </div>
@@ -36,7 +36,7 @@
 
             <button type="button"
                     class="inline-flex w-1/2 ml-2 justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
-                    (click)="onConfirmDelete()">
+                    (click)="confirmDelete()">
               Delete
             </button>
           </div>

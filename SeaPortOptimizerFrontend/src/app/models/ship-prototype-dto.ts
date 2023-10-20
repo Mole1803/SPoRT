@@ -1,11 +1,13 @@
-export class ShipPrototypeDto {
-  name: string;
+import {ModelBaseDto} from "./model-base-dto";
+
+export class ShipPrototypeDto extends ModelBaseDto {
+
   capacity: number;
 
   isActive: boolean;
 
   constructor(name: string, capacity: number, isActive: boolean) {
-    this.name = name;
+    super(name);
     this.capacity = capacity;
     this.isActive = isActive;
   }

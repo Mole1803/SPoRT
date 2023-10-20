@@ -1,17 +1,14 @@
 import {ShipPrototypeDto} from "./ship-prototype-dto";
 import {GuidGenerator} from "../utilities/guid-generator";
 
-export class ShipDto implements ShipPrototypeDto {
-  name: string;
-  capacity: number;
+export class ShipDto extends ShipPrototypeDto {
+
   id: string;
-  isActive: boolean;
+
 
   constructor(id: string,name: string, capacity: number, isActive: boolean) {
-    this.name = name;
-    this.capacity = capacity;
+    super(name, capacity, isActive)
     this.id = id;
-    this.isActive = isActive;
   }
 
   static fromShipPrototypeDto(shipPrototypeDto: ShipPrototypeDto): ShipDto {

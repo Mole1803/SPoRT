@@ -3,6 +3,8 @@ import {Component, HostListener, Input} from '@angular/core';
 import {style, state, animate, transition, trigger} from '@angular/animations';
 
 import {ShipManagerComponent} from "../ship-manager/ship-manager.component";
+import {EditModalService} from "../../services/edit-modal.service";
+import {ShipDto} from "../../models/ship-dto";
 
 @Component({
   selector: 'app-ship-table',
@@ -41,14 +43,18 @@ export class ShipTableComponent extends ShipManagerComponent{
 
 
 
-  constructor() {
-    super();
+  constructor(public override editModalService: EditModalService) {
+    super(editModalService);
+
   }
 
 
   detectScreenSize() {
     this.isLargeScreen = window.innerWidth >= 1024;
   }
+
+
+
 
   protected readonly Object = Object;
 }

@@ -1,9 +1,11 @@
-export class ResourceDto {
-  name: string;
+import {ModelBaseDto} from "./model-base-dto";
+
+export class ResourceDto extends ModelBaseDto{
   picturePath: string;
 
   constructor(name: string, picturePath: string) {
-    this.name = name;
+    super(name);
+
     this.picturePath = picturePath;
   }
 }
