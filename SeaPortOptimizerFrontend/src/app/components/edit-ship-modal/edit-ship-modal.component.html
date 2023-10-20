@@ -1,4 +1,4 @@
-<div *ngIf="isVisible" class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+<div *ngIf="editModalService.isVisible && editModalService.mode === ModalMode.EDIT" class="relative z-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
   <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
@@ -32,7 +32,7 @@
                     <input type="text" name="edit-ship-name" id="edit-ship-name"
                            class="block  border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
                            placeholder="Name"
-                           [(ngModel)]="shipDto.name">
+                           [(ngModel)]="editModalService.model!.name">
                   </div>
                 </div>
               </div>
@@ -47,7 +47,7 @@
                     <input type="number" name="edit-ship-capacity" id="edit-ship-capacity"
                            class="block border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
                            placeholder="Capacity"
-                           [(ngModel)]="shipDto.capacity">
+                           [ngModel]="getCapacity()" (ngModelChange)="setCapacity($event)">
                   </div>
                 </div>
                 <div class="inline-flex w-2/4 ml-6 justify-center ">
@@ -59,7 +59,7 @@
                     <div class="flex h-6 items-center">
                       <input id="edit-ship-is-active"  name="edit-ship-is-active" type="checkbox"
                              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                             [(ngModel)]="shipDto.isActive">
+                             [ngModel]="getIsActive()" (ngModelChange)="setIsActive($event)">
 
                     </div>
 
@@ -76,14 +76,14 @@
           <button type="button"
                   class="inline-flex w-1/2 mr-2 justify-center opacity-50 rounded-md bg-gray-300  px-3 py-2  text-sm font-semibold  shadow-sm hover:bg-gray-500 hover:text-white"
                   style="outline: none;"
-                  (click)="close()">
+                  (click)="editModalService.close()">
             Cancel
           </button>
 
 
           <button type="button"
                   class="inline-flex w-1/2 ml-2 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-                  (click)="confirm()">
+                  (click)="editModalService.confirm()">
             Save
           </button>
         </div>

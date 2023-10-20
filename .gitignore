@@ -2,3 +2,4 @@
 .idea/
 SeaPortOptimizerFrontend/dist/
 /instance/project.db
+**/__pycache__/

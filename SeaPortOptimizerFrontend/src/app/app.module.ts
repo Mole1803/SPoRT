@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {environment} from "../environments/environment";
 import { HomeComponent } from './views/home/home.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -19,6 +19,15 @@ import { DeleteConfirmationModalComponent } from './components/delete-confirmati
 import { AlertComponent } from './components/alert/alert.component'
 import {AlertHandlerService} from "./services/alert-handler.service";
 import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-modal.component';
+import { QuestTableComponent } from './components/quest-table/quest-table.component';
+import { QuestManagerComponent } from './components/quest-manager/quest-manager.component';
+import { QuestGridElementComponent } from './components/quest-grid-element/quest-grid-element.component';
+import { EditQuestModalComponent } from './components/edit-quest-modal/edit-quest-modal.component';
+import {EditModalService} from "./services/edit-modal.service";
+import { ResultTableComponent } from './components/home/result-table/result-table.component';
+import { RadioGroupComponent } from './components/home/radio-group/radio-group.component';
+import { LoginComponent } from './views/login/login.component';
+import {Auth} from "./auth/auth";
 
 
 @NgModule({
@@ -34,7 +43,14 @@ import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-m
     ShipManagerComponent,
     DeleteConfirmationModalComponent,
     AlertComponent,
-    EditShipModalComponent
+    EditShipModalComponent,
+    QuestTableComponent,
+    QuestManagerComponent,
+    QuestGridElementComponent,
+    EditQuestModalComponent,
+    ResultTableComponent,
+    RadioGroupComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +61,11 @@ import { EditShipModalComponent } from './components/edit-ship-modal/edit-ship-m
   ],
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
-      AlertHandlerService
+      AlertHandlerService,
+    EditModalService,
+    {
+      provide: HTTP_INTERCEPTORS, useClass: Auth, multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

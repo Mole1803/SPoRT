@@ -1,9 +1,10 @@
-import {Component, EventEmitter, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpUtilsService} from "./services/http-utils.service";
 import {Tab} from "./models/tab";
 import {AppRoutes} from "./enums/app-routes";
 import {Router} from "@angular/router";
-import {NavBarComponent} from "./components/nav-bar/nav-bar.component";
+import {AlertHandlerService} from "./services/alert-handler.service";
+import {AlertLevel} from "./enums/alert-level";
 
 @Component({
   selector: 'app-root',
@@ -19,15 +20,29 @@ export class AppComponent {
     new Tab('Quest', AppRoutes.QUEST, false),
   ];
 
-  constructor(private httpUtilsService: HttpUtilsService, private router: Router) {
+  constructor(private httpUtilsService: HttpUtilsService, private router: Router,private alertHandlerService: AlertHandlerService) {
     // Example of service usage
     httpUtilsService.isBackendAlive().subscribe((data) => {
-        console.log(data);
+       console.log(data)
+      }, (error) => {
+        this.alertHandlerService.showAlertWithAttributes("Error","Backend is not reachable!", AlertLevel.ERROR);
       }
     );
 
+    if(!this.jwtTokenSet()){
+      this.redirectToLogin();
+    }
     // Routing
     this.setActiveRoute(this.sanitizeRoute(location.hash));
+
+
+    this.httpUtilsService.jwtTokenTest().subscribe(
+        (data) => {
+          console.log(data)
+        }
+      )
+
+
   }
 
   sanitizeRoute(route: string | undefined) {
@@ -71,6 +86,18 @@ export class AppComponent {
 
   redirectTo(tab: Tab) {
     this.router.navigate([tab.route]).then(() => this.setActiveRoute(this.sanitizeRoute(this.router.url)));
+  }
+
+  jwtTokenSet(){
+    return localStorage.getItem("token") != null;
+  }
+
+  redirectToLogin(){
+    this.router.navigate([AppRoutes.LOGIN]).then(() => this.setActiveRoute(this.sanitizeRoute(this.router.url)));
+  }
+
+  isFooterAndHeaderHidden(){
+    return this.router.url !== "/"+AppRoutes.LOGIN;
   }
 
 
