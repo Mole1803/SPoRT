@@ -1,9 +1,7 @@
-import sqlalchemy
-
 from _DatabaseCall import db, Users as UserDB, Ships as ShipDB, Quests as QuestDB
-from SeaPortOptimizerBackend.src.Quest import Quest
-from SeaPortOptimizerBackend.src.Ship import Ship
-from SeaPortOptimizerBackend.src.User import User
+from SeaPortOptimizerBackend.src.Model.Quest import Quest
+from SeaPortOptimizerBackend.src.Model.Ship import Ship
+from SeaPortOptimizerBackend.src.Model.User import User
 
 
 def create_user_db(name, id, password, salt):

@@ -1,13 +1,10 @@
-from flask import Flask, jsonify, url_for, request, render_template, redirect
+from flask import request, jsonify
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from _DatabaseCall import app
 from instance import DBController
 
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
-    set_access_cookies, unset_jwt_cookies
 )
 import jwt as jwt_lib
 import uuid
