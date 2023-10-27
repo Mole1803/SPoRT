@@ -1,46 +1,39 @@
 from _DatabaseCall import db, Users as UserDB, Ships as ShipDB, Quests as QuestDB
 from SeaPortOptimizerBackend.src.Model.Quest import Quest
 from SeaPortOptimizerBackend.src.Model.Ship import Ship
-from SeaPortOptimizerBackend.src.Model.User import User
+#from SeaPortOptimizerBackend.src.Model.User import User
 
 
-def create_user_db(name, id):
-    user = UserDB(
-        id=id,
-        name=name,
-    )
-    db.session.add(user)
-    db.session.commit()
 
 
-def get_all_users_db():
-    users = db.session.execute(db.select(UserDB).order_by(UserDB.name)).scalars()
-    returnList = []
-    for user in users:
-        returnList.append(User(user.id, user.name))
-    return users
+#def get_all_users_db():
+#    users = db.session.execute(db.select(UserDB).order_by(UserDB.name)).scalars()
+#    returnList = []
+#    for user in users:
+#        returnList.append(User(user.id, user.name))
+#    return users
 
 
-def delete_user_db(id):
-    user = db.get_or_404(UserDB, id)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
+#def delete_user_db(id):
+#    user = db.get_or_404(UserDB, id)
+#    if user:
+#        db.session.delete(user)
+#        db.session.commit()
 
 
-def get_user_db(id):
-    user = db.get_or_404(UserDB, id)
-    if user:
-        return User(user.id, user.name)
-    return None
+#def get_user_db(id):
+#    user = db.get_or_404(UserDB, id)
+#    if user:
+#        return User(user.id, user.name)
+#    return None
 
 
-def update_user_db(name, id):
-    user = db.get_or_404(UserDB, id)
-    if user:
-        user.id = id
-        user.name = name
-        db.session.commit()
+#def update_user_db(name, id):
+#    user = db.get_or_404(UserDB, id)
+#    if user:
+#        user.id = id
+#        user.name = name
+#        db.session.commit()
 
 
 def create_ship_db(userID, name, id, isActive, capacity):

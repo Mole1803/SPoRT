@@ -1,14 +1,12 @@
-from flask import request
+from flask import request,jsonify
 from flask_cors import CORS
 from _DatabaseCall import app
 from instance import DBController
+from controller import LoginController
 
 from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    set_access_cookies, unset_jwt_cookies
+    JWTManager
 )
-import jwt as jwt_lib
-
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 
@@ -20,36 +18,19 @@ app.config["JWT_SECRET_KEY"] = "cf65d36897822be9be6afe519020fbfc111676854c4778d6
 
 jwt = JWTManager(app)
 
-def __get_user(request):
-    token = request.headers.get("Authorization")[7::]
-    return jwt_lib.decode(token, app.config["JWT_SECRET_KEY"], algorithms=["HS256"])
+login_controller = LoginController.LoginController()
 
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
-    # Todo: verify user
-    #user = verify_user(username, password)
-    #if not user:
-    #    return jsonify({"msg": "Bad username or password"}), 401
-
-    access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token), 200
-
-@app.route('/test_jwt', methods=['GET'])
-@jwt_required()
-def test_jwt():
-    # Beispiel um user zu bekommen
-    token = request.headers.get("Authorization")[7::]
-    user = jwt_lib.decode(token, app.config["JWT_SECRET_KEY"], algorithms=["HS256"])
-    print(user, flush=True)
-    return jsonify({"msg": "Test JWT Works"}), 200
 
 
 @app.route('/getShip')
 def get_ship():
     id = request.args.get("id")
     return DBController.get_ship_db(id).__dict__()
+
+
+
+
+
 
 
 @app.route('/getShips')
