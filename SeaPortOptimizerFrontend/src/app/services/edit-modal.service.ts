@@ -34,6 +34,14 @@ export class EditModalService {
     this.reset()
   }
 
+  changeModel(model: ModelBaseDto){
+    this.model=model
+    this.mode = ModalMode.EDIT
+    this.showAlert()
+    this.confirmationEmitter.emit(model)
+    this.reset()
+  }
+
   showAlert(){
     if(this.mode !== ModalMode.DELETE) this.alertHandlerService.showAlertWithAttributes('Success', `${this.model?.name} has been deleted.`, AlertLevel.SUCCESS);
     if(this.mode === ModalMode.EDIT) this.alertHandlerService.showAlertWithAttributes('Success', `${this.model?.name} has been edited.`, AlertLevel.SUCCESS);

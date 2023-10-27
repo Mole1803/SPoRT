@@ -74,25 +74,35 @@ def create_quest_db(username, name, id, isActive, resource, itemsPerCapacity, de
         username=username,
         itemsPerCapacity=itemsPerCapacity
     )
-    db.session.add(quest)
-    db.session.commit()
+    try:
+        db.session.add(quest)
+        db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_all_quests_from_user_id_db(username):
-    quests = db.session.query(ShipDB).filter_by(username=username).all()
+    quests = db.session.query(QuestDB).filter_by(username=username).all()
     returnList = []
     for quest in quests:
         returnList.append(
-            Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapactiy,
+            Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity,
                   quest.demand))
     return returnList
 
 
-def delete_quest_db(id):
-    quest = db.get_or_404(QuestDB, id)
-    if quest:
+def delete_quest_db(user, id):
+    quest = db.session.query(QuestDB).filter_by(username=user, id=id).all()
+    if len(quest) == 0:
+        return False
+    quest = quest[0]
+    try:
         db.session.delete(quest)
         db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_quest_db(id):
@@ -113,4 +123,9 @@ def update_quest_db(username, name, id, isActive, resource, itemsPerCapacity, de
         quest.resource = resource
         quest.itemsPerCapacity = itemsPerCapacity
         quest.demand = demand
-        db.session.commit()
+        try:
+            db.session.commit()
+            return True
+        except:
+            return False
+    return False

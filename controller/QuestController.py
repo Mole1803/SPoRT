@@ -19,41 +19,56 @@ class QuestController(BaseController, base_route="/quest"):
     @BaseController.controllerRoute('/list')
     def get_quests():
         user = UtilityFunctions.get_user_from_jwt(request)
-        ships = DBController.get_all_quests_from_user_id_db(user)
+        quests = DBController.get_all_quests_from_user_id_db(user)
         erg = []
-        for ship in ships:
-            erg.append(ship.__dict__())
+        for quest in quests:
+            erg.append(quest.__dict__())
         return erg
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/add')
+    @BaseController.controllerRoute('/add', methods=["POST"])
     def add_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
-        name = request.args.get("name")
-        is_active = bool(request.args.get("is_active"))
-        resource = request.args.get("resource")
-        items_per_capacity = request.args.get("items_per_capacity")
-        demand = request.args.get("demand")
-        id = request.args.get("id")
-        return DBController.create_quest_db(user, name, id, is_active, resource, items_per_capacity, demand)
+        body = request.get_json()
+        print(body)
+        name = body["name"]
+        is_active = bool(body["isActive"])
+        resource = body["resource"]
+        items_per_capacity = body["itemsPerCapacity"]
+        demand = body["demand"]
+        id = body["id"]
+        if DBController.create_quest_db(user, name, id, is_active, resource, items_per_capacity, demand):
+            return jsonify(success=True), 200
+        else:
+            return jsonify(success=False), 409
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/update')
+    @BaseController.controllerRoute('/update', methods=["POST"])
     def update_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
-        name = request.args.get("name")
-        is_active = bool(request.args.get("is_active"))
-        resource = request.args.get("resource")
-        items_per_capacity = request.args.get("items_per_capacity")
-        demand = request.args.get("demand")
-        id = request.args.get("id")
-        return DBController.update_quest_db(user, name, id, is_active, resource, items_per_capacity, demand)
+        body = request.get_json()
+        print(body)
+        name = body["name"]
+        is_active = bool(body["isActive"])
+        resource = body["resource"]
+        items_per_capacity = body["itemsPerCapacity"]
+        demand = body["demand"]
+        id = body["id"]
+        if DBController.update_quest_db(user, name, id, is_active, resource, items_per_capacity, demand):
+            return jsonify(success=True), 200
+        else:
+            return jsonify(success=False), 409
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/delete')
+    @BaseController.controllerRoute('/delete', methods=["POST"])
     def delete_quest():
-        id = request.args.get("id")
-        return DBController.delete_quest_db(id)
+        user = UtilityFunctions.get_user_from_jwt(request)
+        body = request.get_json()
+        id = body["id"]
+        if DBController.delete_quest_db(user, id):
+            return jsonify(success=True), 200
+        else:
+            return jsonify(success=False), 409
