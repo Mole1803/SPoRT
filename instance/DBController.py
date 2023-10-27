@@ -1,39 +1,6 @@
-from _DatabaseCall import db, Users as UserDB, Ships as ShipDB, Quests as QuestDB
+from _DatabaseCall import db, Ships as ShipDB, Quests as QuestDB
 from SeaPortOptimizerBackend.src.Model.Quest import Quest
 from SeaPortOptimizerBackend.src.Model.Ship import Ship
-#from SeaPortOptimizerBackend.src.Model.User import User
-
-
-
-
-#def get_all_users_db():
-#    users = db.session.execute(db.select(UserDB).order_by(UserDB.name)).scalars()
-#    returnList = []
-#    for user in users:
-#        returnList.append(User(user.id, user.name))
-#    return users
-
-
-#def delete_user_db(id):
-#    user = db.get_or_404(UserDB, id)
-#    if user:
-#        db.session.delete(user)
-#        db.session.commit()
-
-
-#def get_user_db(id):
-#    user = db.get_or_404(UserDB, id)
-#    if user:
-#        return User(user.id, user.name)
-#    return None
-
-
-#def update_user_db(name, id):
-#    user = db.get_or_404(UserDB, id)
-#    if user:
-#        user.id = id
-#        user.name = name
-#        db.session.commit()
 
 
 def create_ship_db(username, name, id, isActive, capacity):
@@ -44,8 +11,12 @@ def create_ship_db(username, name, id, isActive, capacity):
         capacity=capacity,
         username=username
     )
-    db.session.add(ship)
-    db.session.commit()
+    try:
+        db.session.add(ship)
+        db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_all_ships_from_user_id_db(username):

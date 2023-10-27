@@ -16,13 +16,13 @@ db.init_app(app)
 
 class Users(db.Model):
     name: Mapped[str] = mapped_column(db.String, nullable=False, primary_key=True)
-    hashed_pw: Mapped[str] = mapped_column(db.String, nullable=False)
+    password: Mapped[str] = mapped_column(db.String, nullable=False)
     salt: Mapped[str] = mapped_column(db.String, nullable=False)
 
     def serialize(self):
         return {
             'name': self.name,
-            'hashed_pw': self.hashed_pw,
+            'password': self.password,
             'salt': self.salt
         }
 

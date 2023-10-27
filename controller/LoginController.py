@@ -7,11 +7,8 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token
 )
 
-import jwt as jwt_lib
 
 jwt = JWTManager(app)
-
-
 
 
 class LoginController(BaseController, base_route="/auth"):
@@ -49,7 +46,3 @@ class LoginController(BaseController, base_route="/auth"):
     def is_jwt_working():
         return jsonify({"msg": "Test JWT Works"}), 200
 
-    @staticmethod
-    def get_user_from_jwt(_request):
-        token = _request.headers.get("Authorization")[7::]
-        return jwt_lib.decode(token, app.config["JWT_SECRET_KEY"], algorithms=["HS256"])["sub"]

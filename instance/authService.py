@@ -1,5 +1,4 @@
-from SeaPortOptimizerBackend.src.Model.User import User
-from _DatabaseCall import db, Users as UserDB, Ships as ShipDB, Quests as QuestDB
+from _DatabaseCall import db, Users as UserDB
 from hashlib import sha256
 import os
 
@@ -10,7 +9,7 @@ class AuthService:
         salt = self.__create_salt()
         password_hash = sha256(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
 
-        user = UserDB(name=username, hashed_pw=password_hash, salt=salt)
+        user = UserDB(name=username, password=password_hash, salt=salt)
         db.session.add(user)
         db.session.commit()
         return user
@@ -19,7 +18,7 @@ class AuthService:
         salt = self.__get_salt(username)
         password_hash = sha256(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
 
-        return UserDB.query.filter_by(name=username, hashed_pw=password_hash).first()
+        return UserDB.query.filter_by(name=username, password=password_hash).first()
 
     @staticmethod
     def __get_salt(username):
