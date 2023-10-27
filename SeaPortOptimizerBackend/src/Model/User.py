@@ -7,6 +7,4 @@ class User:
 
     def __dict__(self):
         return {"name": self.name,
-                "hashed_pw": self.hashed_pw,
                 }
-
