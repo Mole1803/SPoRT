@@ -27,11 +27,17 @@ def get_all_ships_from_user_id_db(username):
     return returnList
 
 
-def delete_ship_db(id):
-    ship = db.get_or_404(ShipDB, id)
-    if ship:
+def delete_ship_db(user, id):
+    ship = db.session.query(ShipDB).filter_by(username=user, id=id).all()
+    if len(ship) == 0:
+        return False
+    ship = ship[0]
+    try:
         db.session.delete(ship)
         db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_ship_db(id, username):
@@ -42,14 +48,20 @@ def get_ship_db(id, username):
 
 
 def update_ship_db(username, name, id, isActive, capacity):
-    ship = db.get_or_404(ShipDB, id)
-    if ship:
-        ship.id = id
-        ship.name = name
-        ship.username = username
-        ship.capacity = capacity
-        ship.isActive = isActive
+    ship = db.session.query(ShipDB).filter_by(username=username, id=id).all()
+    if len(ship) == 0:
+        return False
+    ship = ship[0]
+    ship.id = id
+    ship.name = name
+    ship.username = username
+    ship.capacity = capacity
+    ship.isActive = isActive
+    try:
         db.session.commit()
+        return True
+    except:
+        return False
 
 
 def create_quest_db(username, name, id, isActive, resource, itemsPerCapacity, demand):
@@ -70,7 +82,9 @@ def get_all_quests_from_user_id_db(username):
     quests = db.session.query(ShipDB).filter_by(username=username).all()
     returnList = []
     for quest in quests:
-        returnList.append(Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapactiy, quest.demand))
+        returnList.append(
+            Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapactiy,
+                  quest.demand))
     return returnList
 
 
@@ -84,7 +98,8 @@ def delete_quest_db(id):
 def get_quest_db(id):
     quest = db.get_or_404(QuestDB, id)
     if quest:
-        return Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity, quest.demand)
+        return Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity,
+                     quest.demand)
     return None
 
 
@@ -99,4 +114,3 @@ def update_quest_db(username, name, id, isActive, resource, itemsPerCapacity, de
         quest.itemsPerCapacity = itemsPerCapacity
         quest.demand = demand
         db.session.commit()
-

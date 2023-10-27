@@ -6,13 +6,13 @@ export class ShipDto extends ShipPrototypeDto {
   id: string;
 
 
-  constructor(id: string,name: string, capacity: number, isActive: boolean) {
-    super(name, capacity, isActive)
+  constructor(id: string,name: string, capacity: number, is_active: boolean) {
+    super(name, capacity, is_active)
     this.id = id;
   }
 
   static fromShipPrototypeDto(shipPrototypeDto: ShipPrototypeDto): ShipDto {
-    return new ShipDto(GuidGenerator.newGuidV4(), shipPrototypeDto.name, shipPrototypeDto.capacity, shipPrototypeDto.isActive);
+    return new ShipDto(GuidGenerator.newGuidV4(), shipPrototypeDto.name, shipPrototypeDto.capacity, shipPrototypeDto.is_active);
 
   }
 }

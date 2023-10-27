@@ -27,13 +27,15 @@ class ShipController(BaseController, base_route="/ship"):
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute(rule='/add')
+    @BaseController.controllerRoute(rule='/add', methods=["POST"])
     def add_ship():
         user = UtilityFunctions.get_user_from_jwt(request)
-        name = request.args.get("name")
-        is_active = bool(request.args.get("is_active"))
-        capacity = request.args.get("capacity")
-        id = request.args.get("id")
+        body = request.get_json()
+        print(body)
+        name = body["name"]
+        is_active = body["is_active"]
+        capacity = body["capacity"]
+        id = body["id"]
         if DBController.create_ship_db(user, name, id, is_active, capacity):
             return jsonify(success=True), 200
         else:
@@ -41,19 +43,26 @@ class ShipController(BaseController, base_route="/ship"):
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute(rule='/update')
+    @BaseController.controllerRoute(rule='/update', methods=["POST"])
     def update_ship():
         user = UtilityFunctions.get_user_from_jwt(request)
-        name = request.args.get("name")
-        is_active = bool(request.args.get("is_active"))
-        capacity = request.args.get("capacity")
-        id = request.args.get("id")
-        return DBController.update_ship_db(user, name, id, is_active, capacity)
+        body = request.get_json()
+        name = body["name"]
+        is_active = body["is_active"]
+        capacity = body["capacity"]
+        id = body["id"]
+        if DBController.update_ship_db(user, name, id, is_active, capacity):
+            return jsonify(success=True), 200
+        return jsonify(success=False), 204
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/ship/delete')
+    @BaseController.controllerRoute('/delete', methods=["POST"])
     def delete_ship():
-        id = request.args.get("id")
-        return DBController.delete_ship_db(id)
+        user = UtilityFunctions.get_user_from_jwt(request)
+        body = request.get_json()
+        id = body["id"]
+        if DBController.delete_ship_db(user, id):
+            return jsonify(success=True), 200
+        return jsonify(success=False), 204
 

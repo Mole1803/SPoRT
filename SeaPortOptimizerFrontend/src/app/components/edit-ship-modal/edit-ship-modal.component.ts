@@ -29,12 +29,12 @@ export class EditShipModalComponent {
 
   setIsActive(isActive: boolean) {
     // @ts-ignore
-    this.editModalService.model.isActive = isActive;
+    this.editModalService.model.is_active = isActive;
   }
 
   getIsActive() {
     // @ts-ignore
-    return this.editModalService.model.isActive;
+    return this.editModalService.model.is_active;
   }
 
   protected readonly ModalMode = ModalMode;
