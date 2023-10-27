@@ -20,6 +20,12 @@ export class QuestGridElementComponent {
     this.editModalService._open(this.questDto);
   }
 
+  changeIsActive(isActive: boolean) {
+    this.questDto!.isActive=isActive
+    // @ts-ignore
+    this.editModalService.changeModel(this.questDto)
+  }
+
   editQuest() {
     this.editModalService.mode = ModalMode.EDIT;
     this.editModalService._open(this.createCopy());

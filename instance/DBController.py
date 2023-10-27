@@ -1,55 +1,6 @@
-from _DatabaseCall import db, Users as UserDB, Ships as ShipDB, Quests as QuestDB
+from _DatabaseCall import db, Ships as ShipDB, Quests as QuestDB
 from SeaPortOptimizerBackend.src.Model.Quest import Quest
 from SeaPortOptimizerBackend.src.Model.Ship import Ship
-from SeaPortOptimizerBackend.src.Model.User import User
-
-
-def create_user_db(name, id, password, salt):
-    user = UserDB(
-        id=id,
-        name=name,
-        password=password,
-        salt=salt
-    )
-    db.session.add(user)
-    db.session.commit()
-
-
-def get_hashed_password_of_user(name):
-    hashedPassword = db.get_or_404(UserDB, name).password
-    return hashedPassword
-
-
-def get_all_users_db():
-    users = db.session.execute(db.select(UserDB).order_by(UserDB.name)).scalars()
-    returnList = []
-    for user in users:
-        returnList.append(User(user.id, user.name, user.password, user.salt))
-    return returnList
-
-
-def delete_user_db(name):
-    user = db.get_or_404(UserDB, name)
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-
-
-def get_user_db(name):
-    user = db.get_or_404(UserDB, name)
-    if user:
-        return User(user.id, user.name, user.password, user.salt)
-    return None
-
-
-def update_user_db(name, id, password, salt):
-    user = db.get_or_404(UserDB, name)
-    if user:
-        user.id = id
-        user.name = name
-        user.password = password
-        user.salt = salt
-        db.session.commit()
 
 
 def create_ship_db(username, name, id, isActive, capacity):
@@ -60,8 +11,12 @@ def create_ship_db(username, name, id, isActive, capacity):
         capacity=capacity,
         username=username
     )
-    db.session.add(ship)
-    db.session.commit()
+    try:
+        db.session.add(ship)
+        db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_all_ships_from_user_id_db(username):
@@ -72,11 +27,17 @@ def get_all_ships_from_user_id_db(username):
     return returnList
 
 
-def delete_ship_db(id):
-    ship = db.get_or_404(ShipDB, id)
-    if ship:
+def delete_ship_db(user, id):
+    ship = db.session.query(ShipDB).filter_by(username=user, id=id).all()
+    if len(ship) == 0:
+        return False
+    ship = ship[0]
+    try:
         db.session.delete(ship)
         db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_ship_db(id, username):
@@ -87,14 +48,20 @@ def get_ship_db(id, username):
 
 
 def update_ship_db(username, name, id, isActive, capacity):
-    ship = db.get_or_404(ShipDB, id)
-    if ship:
-        ship.id = id
-        ship.name = name
-        ship.username = username
-        ship.capacity = capacity
-        ship.isActive = isActive
+    ship = db.session.query(ShipDB).filter_by(username=username, id=id).all()
+    if len(ship) == 0:
+        return False
+    ship = ship[0]
+    ship.id = id
+    ship.name = name
+    ship.username = username
+    ship.capacity = capacity
+    ship.isActive = isActive
+    try:
         db.session.commit()
+        return True
+    except:
+        return False
 
 
 def create_quest_db(username, name, id, isActive, resource, itemsPerCapacity, demand):
@@ -107,29 +74,42 @@ def create_quest_db(username, name, id, isActive, resource, itemsPerCapacity, de
         username=username,
         itemsPerCapacity=itemsPerCapacity
     )
-    db.session.add(quest)
-    db.session.commit()
+    try:
+        db.session.add(quest)
+        db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_all_quests_from_user_id_db(username):
-    quests = db.session.query(ShipDB).filter_by(username=username).all()
+    quests = db.session.query(QuestDB).filter_by(username=username).all()
     returnList = []
     for quest in quests:
-        returnList.append(Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapactiy, quest.demand))
+        returnList.append(
+            Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity,
+                  quest.demand))
     return returnList
 
 
-def delete_quest_db(id):
-    quest = db.get_or_404(QuestDB, id)
-    if quest:
+def delete_quest_db(user, id):
+    quest = db.session.query(QuestDB).filter_by(username=user, id=id).all()
+    if len(quest) == 0:
+        return False
+    quest = quest[0]
+    try:
         db.session.delete(quest)
         db.session.commit()
+        return True
+    except:
+        return False
 
 
 def get_quest_db(id):
     quest = db.get_or_404(QuestDB, id)
     if quest:
-        return Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity, quest.demand)
+        return Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity,
+                     quest.demand)
     return None
 
 
@@ -143,5 +123,9 @@ def update_quest_db(username, name, id, isActive, resource, itemsPerCapacity, de
         quest.resource = resource
         quest.itemsPerCapacity = itemsPerCapacity
         quest.demand = demand
-        db.session.commit()
-
+        try:
+            db.session.commit()
+            return True
+        except:
+            return False
+    return False

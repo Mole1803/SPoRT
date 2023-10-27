@@ -4,12 +4,12 @@ export class ShipPrototypeDto extends ModelBaseDto {
 
   capacity: number;
 
-  isActive: boolean;
+  is_active: boolean;
 
-  constructor(name: string, capacity: number, isActive: boolean) {
+  constructor(name: string, capacity: number, is_active: boolean) {
     super(name);
     this.capacity = capacity;
-    this.isActive = isActive;
+    this.is_active = is_active;
   }
 
 }

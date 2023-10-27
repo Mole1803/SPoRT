@@ -11,11 +11,11 @@ export class HttpUtilsService {
   }
 
   login(username: string, password: string) {
-    return this.http.post(this.baseUrl+"/login", {username: username, password: password});
+    return this.http.post(this.baseUrl+"/auth/login", {username: username, password: password});
   }
 
   jwtTokenTest(){
-    return this.http.get(this.baseUrl+"/test_jwt");
+    return this.http.get(this.baseUrl+"/auth/test_jwt");
   }
 
   isBackendAlive() {
