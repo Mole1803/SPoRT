@@ -1,4 +1,3 @@
-from copy import copy
 from math import inf
 
 from SeaPortOptimizerBackend.src.Model.Result import Result
@@ -43,8 +42,9 @@ def filter_solutions_by_ships(solutions, ships):
         ship_quests = {}
         for ship in ships:
             ship_quests[ship.id] = []
-        for step in solution:
-            ship_quests[step.ship_id].append(step)
+        for quest in solution:
+            for step in solution[quest]:
+                ship_quests[step.ship_id].append(step)
         ships_by_solutions.append(ship_quests)
     return ships_by_solutions
 
@@ -62,7 +62,7 @@ def filter_solutions_by_quests(solutions_by_ships, quests):
     return quests_by_solutions
 
 
-def combine_steps(quests):
+def combine_steps(quests, ships):
     solutions = []
     for quest in quests:
         if len(solutions) == 0:
@@ -73,7 +73,15 @@ def combine_steps(quests):
                 for steps in quest.all_steps:
                     new_solutions.append(solution + steps)
             solutions = new_solutions
-    return solutions
+    ships_by_solutions = []
+    for solution in solutions:
+        ship_quests = {}
+        for ship in ships:
+            ship_quests[ship.id] = []
+        for step in solution:
+            ship_quests[step.ship_id].append(step)
+        ships_by_solutions.append(ship_quests)
+    return ships_by_solutions
 
 
 def filter_steps(quest):
@@ -105,6 +113,7 @@ def filter_solutions_by_capacity(solutions):
         elif sum == min:
             best_solutions.append(solution)
     return best_solutions
+
 
 def calculate_all_steps(quest, ships, steps, index=0):
     i = index
@@ -139,9 +148,8 @@ class RubenSolver(Solver):
         for quest in self.quests:
             quest.all_steps = []
             calculate_all_steps(quest, self.ships, [])
-        solutions = combine_steps(self.quests)
-        ships_by_solutions = filter_solutions_by_ships(solutions, self.ships)
-        best_solutions, rounds = get_best_solutions(ships_by_solutions)
+        solutions = combine_steps(self.quests, self.ships)
+        best_solutions, rounds = get_best_solutions(solutions)
         quests_by_solutions = filter_solutions_by_quests(best_solutions, self.quests)
         best_resource_solutions = filter_solutions_by_capacity(quests_by_solutions)
         ships_by_solutions = filter_solutions_by_ships(best_resource_solutions, self.ships)
@@ -153,8 +161,7 @@ class RubenSolver(Solver):
             quest.all_steps = []
             calculate_all_steps(quest, self.ships, [])
             filter_steps(quest)
-        solutions = combine_steps(self.quests)
-        ships_by_solutions = filter_solutions_by_ships(solutions, self.ships)
-        best_solutions, rounds = get_best_solutions(ships_by_solutions)
+        solutions = combine_steps(self.quests, self.ships)
+        best_solutions, rounds = get_best_solutions(solutions)
         results = parse_solutions_to_results(best_solutions, rounds)
         return results

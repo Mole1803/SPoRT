@@ -12,7 +12,7 @@ if __name__ == '__main__':
               Quest("user", "quest3", "q3", True, "Holz", 1, 400),
               ]
     ruben_solver = RubenSolver(ships, quests)
-    results = ruben_solver.calculate_resource_optimized()
+    results = ruben_solver.calculate_time_optimized()
     for i in range(len(results)):
         print(f"Result {i+1}:")
         print(results[i])
