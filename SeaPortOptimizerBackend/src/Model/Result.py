@@ -10,3 +10,9 @@ class Result:
                 res += f"ship: {step.ship_id}, quest: {step.quest_id}, capacity: {step.quest_capacity} "
             res += "\n"
         return res
+
+    def __dict__(self):
+        result_list = {}
+        for i in range(len(self.rounds)):
+            result_list["Round"+(i+1).__str__()] = self.rounds[i].__dict__()
+        return result_list

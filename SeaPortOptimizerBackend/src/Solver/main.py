@@ -13,6 +13,7 @@ if __name__ == '__main__':
               ]
     ruben_solver = RubenSolver(ships, quests)
     results = ruben_solver.calculate_time_optimized()
+    results_list = {}
     for i in range(len(results)):
-        print(f"Result {i+1}:")
-        print(results[i])
+        results_list["Result"+(i+1).__str__()] = results[i].__dict__()
+    print(results_list)
