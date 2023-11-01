@@ -1,5 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {QuestDto} from "../models/quest-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +14,8 @@ export class QuestHttpRequestService {
     return this.http.get(this.baseUrl+"/quest/get"+id);
   }
 
-  list() {
-    return this.http.get(this.baseUrl+"/quest/list");
+  list(): Observable<QuestDto[]> {
+    return this.http.get<QuestDto[]>(this.baseUrl+"/quest/list");
   }
 
   addQuest(quest: any) {

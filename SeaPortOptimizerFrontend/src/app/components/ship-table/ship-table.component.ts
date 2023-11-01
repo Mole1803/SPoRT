@@ -5,6 +5,7 @@ import {style, state, animate, transition, trigger} from '@angular/animations';
 import {ShipManagerComponent} from "../ship-manager/ship-manager.component";
 import {EditModalService} from "../../services/edit-modal.service";
 import {ShipDto} from "../../models/ship-dto";
+import {ShipHttpRequestService} from "../../services/ship-http-request.service";
 
 @Component({
   selector: 'app-ship-table',
@@ -43,8 +44,8 @@ export class ShipTableComponent extends ShipManagerComponent{
 
 
 
-  constructor(public override editModalService: EditModalService) {
-    super(editModalService);
+  constructor(public override editModalService: EditModalService, public override shipHttpRequestService: ShipHttpRequestService) {
+    super(editModalService,shipHttpRequestService);
 
   }
 

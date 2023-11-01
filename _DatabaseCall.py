@@ -15,14 +15,12 @@ db.init_app(app)
 
 
 class Users(db.Model):
-    id: Mapped[str] = mapped_column(db.String, unique=True)
-    name: Mapped[str] = mapped_column(db.String, nullable=False, primary_key=True, unique=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False, primary_key=True)
     password: Mapped[str] = mapped_column(db.String, nullable=False)
     salt: Mapped[str] = mapped_column(db.String, nullable=False)
 
     def serialize(self):
         return {
-            'id': self.id,
             'name': self.name,
             'password': self.password,
             'salt': self.salt

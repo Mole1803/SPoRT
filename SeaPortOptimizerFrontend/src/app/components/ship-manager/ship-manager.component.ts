@@ -4,6 +4,7 @@ import {ShipPrototypeDto} from "../../models/ship-prototype-dto";
 import {GuidGenerator} from "../../utilities/guid-generator";
 import {EditModalService} from "../../services/edit-modal.service";
 import {ModalMode} from "../../enums/modal-mode";
+import {ShipHttpRequestService} from "../../services/ship-http-request.service";
 
 @Component({
   selector: 'app-ship-manager',
@@ -15,22 +16,25 @@ export class ShipManagerComponent {
   newShipPrototype: ShipPrototypeDto = new ShipPrototypeDto('', 0, true);
 
 
-
-  constructor(public editModalService: EditModalService) {
+  constructor(public editModalService: EditModalService, public shipHttpRequestService: ShipHttpRequestService) {
     this.editModalService.reset();
 
-    editModalService.confirmationEmitter.subscribe((ship: ShipDto | undefined ) => {
-      if(ship === undefined) return;
-      if(editModalService.mode === ModalMode.EDIT) this.editShip(ship);
-      if(editModalService.mode === ModalMode.DELETE) this.deleteShip(ship);
+    editModalService.confirmationEmitter.subscribe((ship: ShipDto | undefined) => {
+        if (ship === undefined) return;
+        if (editModalService.mode === ModalMode.EDIT) this.editShip(ship);
+        if (editModalService.mode === ModalMode.DELETE) this.deleteShip(ship);
 
-    }
-
+      }
     )
+    this.fetchShipDto()
+  }
 
-    for (let x = 0; x < 100; x++) {
-      this.ships.push(new ShipDto(GuidGenerator.newGuidV4(), `Ship ${x}`, 100, true));
-    }
+  fetchShipDto() {
+    this.shipHttpRequestService.list().subscribe((params => {
+      console.log(params)
+      this.ships = params
+    }))
+
   }
 
 
@@ -45,27 +49,24 @@ export class ShipManagerComponent {
   }
 
   addNewShip() {
-    if(this.newShipPrototype.name === '' || this.newShipPrototype.capacity === 0) return;
-    this.ships.splice(0, 0, ShipDto.fromShipPrototypeDto(this.newShipPrototype));
+    if (this.newShipPrototype.name === '' || this.newShipPrototype.capacity === 0) return;
+    let ship = ShipDto.fromShipPrototypeDto(this.newShipPrototype)
+    this.ships.splice(0, 0, ship);
+    this.shipHttpRequestService.addShip(ship).subscribe()
     this.newShipPrototype = new ShipPrototypeDto('', 0, true);
-    // Todo send to backend
   }
-
 
 
   deleteShip(ship: ShipDto | undefined = undefined) {
-    console.log(ship)
-    if(ship === undefined) return;
+    if (ship === undefined) return;
+    this.shipHttpRequestService.deleteShip(ship).subscribe()
     this.ships = this.ships.filter(s => s.id !== ship.id);
-    // Todo send to backend
   }
 
 
-
   editShip(ship: ShipDto | undefined) {
-    console.log(ship)
     if (ship === undefined) return;
+    this.shipHttpRequestService.updateShip(ship).subscribe()
     this.ships = this.ships.map(s => s.id === ship.id ? ship : s);
-    // Todo send to backend
   }
 }

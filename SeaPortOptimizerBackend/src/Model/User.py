@@ -1,11 +1,11 @@
+# TODO delete this file
+
 class User:
-    def __init__(self, id, name, password, salt):
-        self.id = id
+    def __init__(self, name, salt, password):
         self.name = name
-        self.password = password
         self.salt = salt
+        self.password = password
 
     def __dict__(self):
         return {"name": self.name,
-                "id": self.id,
                 }

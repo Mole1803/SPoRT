@@ -37,7 +37,7 @@ export class AppComponent {
 
 
     this.httpUtilsService.jwtTokenTest().subscribe(
-        (data) => {
+      (data) => {
           console.log(data)
         }
       )
