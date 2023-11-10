@@ -13,10 +13,18 @@ export class NavBarComponent{
 
   // Routing tabs
   @Input() tabs: Tab[] = []
-
   @Output() tabChanged = new EventEmitter<Tab>();
+  logoutHovered: boolean = false;
 
+  setLogoutHovered(b:boolean){
+    this.logoutHovered=b
+  }
 
+  logout(){
+    localStorage.removeItem("token")
+    this.router.navigate(['/'+AppRoutes.LOGIN])
+
+  }
 
   // Indicator to show/hide the mobile menu
   isMobileMenuOpen: boolean = false;
@@ -24,7 +32,7 @@ export class NavBarComponent{
   // Indicator to prevent unnatural fast opening/closing of the mobile menu
   blockTrigger: boolean = false;
 
-  constructor(){
+  constructor(public router: Router){
   }
 
 

@@ -29,9 +29,9 @@ export class AppComponent {
       }
     );
 
-    if(!this.jwtTokenSet()){
-      this.redirectToLogin();
-    }
+    //if(!this.jwtTokenSet()){
+    //  this.redirectToLogin();
+    //}
     // Routing
     this.setActiveRoute(this.sanitizeRoute(location.hash));
 

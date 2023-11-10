@@ -28,6 +28,8 @@ import { ResultTableComponent } from './components/home/result-table/result-tabl
 import { RadioGroupComponent } from './components/home/radio-group/radio-group.component';
 import { LoginComponent } from './views/login/login.component';
 import {Auth} from "./auth/auth";
+import {AuthService} from "./auth/auth.service";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 
 @NgModule({
@@ -61,8 +63,10 @@ import {Auth} from "./auth/auth";
   ],
   providers: [
     {provide: 'BASE_URL', useValue: environment.BASE_URL},
-      AlertHandlerService,
+    AlertHandlerService,
     EditModalService,
+    AuthService,
+    JwtHelperService,
     {
       provide: HTTP_INTERCEPTORS, useClass: Auth, multi: true
     }
