@@ -7,6 +7,7 @@ class Quest:
         self.resource = resource
         self.items_per_capacity = items_per_capacity
         self.demand = demand
+        self.remaining_demand = demand
 
     def __dict__(self):
         return {"name": self.name,

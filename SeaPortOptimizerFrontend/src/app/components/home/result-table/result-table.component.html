@@ -13,21 +13,24 @@
           </tr>
           </thead>
           <tbody class="bg-white">
-          <ng-container *ngFor="let round of result?.rounds; index as i">
+          <ng-container *ngFor="let res of results; index as i">
+            <a>Result {{i+1}}</a>
+            <ng-container *ngFor="let round of res?.rounds; index as j">
 
-            <tr class="border-t border-gray-200">
-              <th colspan="5" scope="colgroup"
-                  class="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
-                Round {{i + 1}}</th>
-            </tr>
-            <ng-container *ngFor="let step of round.steps">
-              <tr class="border-t border-gray-300">
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">{{step.shipId}}</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{step.usedCapacity}}</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{step.questId}}</td>
+              <tr class="border-t border-gray-200">
+                <th colspan="5" scope="colgroup"
+                    class="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
+                  Round {{j + 1}}</th>
               </tr>
-            </ng-container>
+              <ng-container *ngFor="let step of round?.steps">
+                <tr class="border-t border-gray-300">
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">{{mapIdToShip(step.shipId)}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{step.usedCapacity}}</td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{mapIdToQuest(step.questId)}}</td>
+                </tr>
+              </ng-container>
 
+            </ng-container>
           </ng-container>
 
 

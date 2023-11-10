@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_cors import CORS
 from _DatabaseCall import app
-from controller import LoginController, ShipController, QuestController
+from controller import LoginController, ShipController, QuestController, SolveController
 from flask_jwt_extended import (
     JWTManager, jwt_required
 )
@@ -19,7 +19,7 @@ jwt = JWTManager(app)
 login_controller = LoginController.LoginController()
 ship_controller = ShipController.ShipController()
 quest_controller = QuestController.QuestController()
-
+solve_controller = SolveController.SolveController()
 
 @app.route('/isAlive')
 def is_alive():
