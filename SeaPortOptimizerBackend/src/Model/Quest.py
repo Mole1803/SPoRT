@@ -11,7 +11,7 @@ class Quest:
     def __dict__(self):
         return {"name": self.name,
                 "id": self.id,
-                "isActive": self.is_active,
+                "is_active": self.is_active,
                 "resource": self.resource,
                 "itemsPerCapacity": self.items_per_capacity,
                 "demand": self.demand

@@ -12,8 +12,8 @@ if __name__ == '__main__':
               Quest("user", "quest3", "q3", True, "Holz", 1, 400),
               ]
     tim_solver = TimSolver(ships, quests)
-    results = tim_solver.calculate_time_optimized()
-    results_list = {}
-    for i in range(len(results)):
-        results_list["Result"+(i+1).__str__()] = results[i].__dict__()
-    print(results_list)
+    result = tim_solver.calculate_resource_optimized()
+    for round in result:
+        print('Round: ' + result.index(round))
+        for step in round:
+            print(step.__dict__())
