@@ -12,7 +12,8 @@ class TestRubenSolver:
                   Quest("user", "quest2", "q2", True, "Holz", 1, 120),
                   Quest("user", "quest3", "q3", True, "Münzen", 1, 110),
                   ]
-        ruben_solver = RubenSolver(ships, quests)
+        ruben_solver = RubenSolver()
+        ruben_solver.set(ships, quests)
         results = ruben_solver.calculate_resource_optimized()
         assert len(results) == 3
         for result in results:
@@ -27,7 +28,8 @@ class TestRubenSolver:
                   Quest("user", "quest2", "q2", True, "Stein", 1, 200),
                   Quest("user", "quest3", "q3", True, "Holz", 1, 400),
                   ]
-        ruben_solver = RubenSolver(ships, quests)
+        ruben_solver = RubenSolver()
+        ruben_solver.set(ships, quests)
         results = ruben_solver.calculate_resource_optimized()
         print(results)
         assert len(results) == 8
@@ -42,7 +44,8 @@ class TestRubenSolver:
                   Quest("user", "quest2", "q2", True, "Holz", 1, 120),
                   Quest("user", "quest3", "q3", True, "Münzen", 1, 110),
                   ]
-        ruben_solver = RubenSolver(ships, quests)
+        ruben_solver = RubenSolver()
+        ruben_solver.set(ships, quests)
         results = ruben_solver.calculate_time_optimized()
         assert len(results) == 12
         for result in results:
@@ -57,7 +60,8 @@ class TestRubenSolver:
                   Quest("user", "quest2", "q2", True, "Stein", 1, 200),
                   Quest("user", "quest3", "q3", True, "Holz", 1, 400),
                   ]
-        ruben_solver = RubenSolver(ships, quests)
+        ruben_solver = RubenSolver()
+        ruben_solver.set(ships, quests)
         results = ruben_solver.calculate_time_optimized()
         print(results)
         assert len(results) == 30

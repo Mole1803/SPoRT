@@ -11,7 +11,8 @@ if __name__ == '__main__':
               Quest("user", "quest2", "q2", True, "Stein", 1, 200),
               Quest("user", "quest3", "q3", True, "Holz", 1, 400),
               ]
-    ruben_solver = RubenSolver(ships, quests)
+    ruben_solver = RubenSolver()
+    ruben_solver.set(ships, quests)
     results = ruben_solver.calculate_time_optimized()
     results_list = {}
     for i in range(len(results)):
