@@ -6,5 +6,4 @@ export class Result {
   constructor(rounds: Round[]) {
     this.rounds = rounds;
   }
-
 }

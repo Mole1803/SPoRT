@@ -15,5 +15,5 @@ if __name__ == '__main__':
     results = ruben_solver.calculate_time_optimized()
     results_list = {}
     for i in range(len(results)):
-        results_list["Result"+(i+1).__str__()] = results[i].__dict__()
+        results_list["ResultDto"+(i+1).__str__()] = results[i].__dict__()
     print(results_list)

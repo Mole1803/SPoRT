@@ -1,7 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Result} from "../../models/result";
-import {Step} from "../../models/step";
-import {Round} from "../../models/round";
+import {ResultHttpRequestService} from "../../services/result-http-request.service";
+import {AlgorithmChoice} from "../../models/algorithm-choice";
+import {ShipHttpRequestService} from "../../services/ship-http-request.service";
+import {QuestHttpRequestService} from "../../services/quest-http-request.service";
+import {ShipDto} from "../../models/ship-dto";
+import {QuestDto} from "../../models/quest-dto";
+import {forkJoin, Observable, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -9,20 +14,25 @@ import {Round} from "../../models/round";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  result?: Result;
+  @Input() results: Result[] = [];
+  ships: ShipDto[] = [];
+  quests: QuestDto[] = []
 
-  constructor() {
-    let round: Round[] = [];
+  constructor(public resultHttpRequestService: ResultHttpRequestService,
+              public shipHttpRequestService: ShipHttpRequestService,
+              public questHttpRequestService: QuestHttpRequestService) {
+  }
 
-    for(let j = 0; j < 10; j++) {
-      let step: Step[] = [];
-      for(let i = 0; i < 10; i++) {
-        step.push(new Step("ship "+i.toString(),"quest "+ i.toString(), i));
+
+  getResult(algorithmChoice: AlgorithmChoice) {
+    let sources: [Observable<QuestDto[]>, Observable<ShipDto[]>] = [this.questHttpRequestService.list(), this.shipHttpRequestService.list()]
+    forkJoin(sources).pipe(switchMap((results: [QuestDto[], ShipDto[]]) => {
+        this.quests = results[0]
+        this.ships = results[1]
+        return this.resultHttpRequestService.getResult(algorithmChoice.algorithm, algorithmChoice.method)
       }
-      round.push(new Round(step));
-    }
-
-    this.result = new Result(round);
-    console.log(this.result)
+    )).subscribe((params => {
+      this.results = params
+    }))
   }
 }

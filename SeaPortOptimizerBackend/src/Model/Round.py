@@ -7,7 +7,9 @@ class Round:
         self.steps.append(step)
 
     def __dict__(self):
-        round_list = []
+        round_list = {"steps": []}
+        #round_list = []
         for step in self.steps:
-            round_list.append(step.__dict__())
+            round_list["steps"].append(step.__dict__())
+            #round_list.append(step.__dict__())
         return round_list

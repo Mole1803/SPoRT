@@ -27,6 +27,14 @@ def get_all_ships_from_user_id_db(username):
     return returnList
 
 
+def get_all_active_ships_from_user_id_db(username):
+    ships = db.session.query(ShipDB).filter_by(username=username, isActive=True).all()
+    returnList = []
+    for ship in ships:
+        returnList.append(Ship(ship.username, ship.name, ship.id, ship.isActive, ship.capacity))
+    return returnList
+
+
 def delete_ship_db(user, id):
     ship = db.session.query(ShipDB).filter_by(username=user, id=id).all()
     if len(ship) == 0:
@@ -84,6 +92,16 @@ def create_quest_db(username, name, id, isActive, resource, itemsPerCapacity, de
 
 def get_all_quests_from_user_id_db(username):
     quests = db.session.query(QuestDB).filter_by(username=username).all()
+    returnList = []
+    for quest in quests:
+        returnList.append(
+            Quest(quest.username, quest.name, quest.id, quest.isActive, quest.resource, quest.itemsPerCapacity,
+                  quest.demand))
+    return returnList
+
+
+def get_all_active_quests_from_user_id_db(username):
+    quests = db.session.query(QuestDB).filter_by(username=username, isActive=True).all()
     returnList = []
     for quest in quests:
         returnList.append(
