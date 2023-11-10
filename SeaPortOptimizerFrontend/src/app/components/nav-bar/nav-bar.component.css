@@ -1,0 +1,23 @@
+.logout-icon:hover{
+  opacity: 1;
+}
+
+.logout-icon-invisible{
+  opacity: 0;
+}
+
+.imageBox {
+  position: relative;
+  float: left;
+}
+
+.imageBox .hoverImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+}
+
+.imageBox:hover .hoverImg {
+  display: block;
+}

@@ -22,8 +22,6 @@ export class LoginComponent {
     result.subscribe(jwt => {
       this.saveToken(jwt);
       this.redirectToHome()
-
-
     }
     );
 
