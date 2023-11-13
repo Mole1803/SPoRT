@@ -120,6 +120,8 @@ def calculate_all_steps(quest, ships, steps, index=0):
     while i < len(ships):
         if quest.remaining_demand > 0:
             ship = ships[i]
+            if ship.capacity < 1:
+                return i+1
             quest.remaining_demand -= quest.items_per_capacity * ship.capacity
             step = Step(ship.id, quest.id, quest.items_per_capacity * ship.capacity)
             if quest.remaining_demand < 0:
@@ -128,8 +130,9 @@ def calculate_all_steps(quest, ships, steps, index=0):
             i = calculate_all_steps(quest, ships, steps, i)
         else:
             quest.all_steps.append(steps.copy())
-            last_step = steps.pop(-1)
-            quest.remaining_demand += last_step.quest_capacity
+            if len(steps) > 0:
+                last_step = steps.pop(-1)
+                quest.remaining_demand += last_step.quest_capacity
             return i + 1
     if len(steps) > 0:
         last_step = steps.pop(-1)
