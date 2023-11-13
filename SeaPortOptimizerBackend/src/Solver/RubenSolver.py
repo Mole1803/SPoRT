@@ -144,9 +144,6 @@ class RubenSolver(Solver):
     def __init__(self, id):
         super().__init__(id)
 
-    # def __init__(self, ships, quests):
-    #    super().__init__(ships, quests)
-
     def calculate_time_optimized(self):
         for quest in self.quests:
             quest.all_steps = []
