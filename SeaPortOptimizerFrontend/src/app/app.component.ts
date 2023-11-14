@@ -97,7 +97,7 @@ export class AppComponent {
   }
 
   isFooterAndHeaderHidden(){
-    return this.router.url !== "/"+AppRoutes.LOGIN;
+    return this.router.url !== "/"+AppRoutes.LOGIN && this.router.url !== "/"+AppRoutes.REGISTER;
   }
 
 

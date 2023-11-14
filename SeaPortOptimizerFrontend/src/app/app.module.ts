@@ -30,6 +30,7 @@ import { LoginComponent } from './views/login/login.component';
 import {Auth} from "./auth/auth";
 import {AuthService} from "./auth/auth.service";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import { RegisterComponent } from './views/register/register.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {JwtHelperService} from "@auth0/angular-jwt";
     EditQuestModalComponent,
     ResultTableComponent,
     RadioGroupComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

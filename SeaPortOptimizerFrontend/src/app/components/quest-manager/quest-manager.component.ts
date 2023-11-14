@@ -36,17 +36,17 @@ export class QuestManagerComponent {
 
   fetchQuests(){
     this.questHttpRequestService.list().subscribe((params => {
-      console.log(params)
       this.quests = params
     }))
   }
 
 
-  addNewQuest(questPrototypeDto: QuestPrototypeDto) {
+  async addNewQuest(questPrototypeDto: QuestPrototypeDto) {
     let questDto = QuestDto.fromQuestPrototypeDto(questPrototypeDto);
     // validate questDto
     if (questDto.name === '' || questDto.demand < 0) return;
-    this.questHttpRequestService.addQuest(questDto).subscribe()
+    let result = await this.questHttpRequestService.addQuest(questDto)
+    result.subscribe()
     this.quests.unshift(questDto);
   }
 
@@ -61,8 +61,9 @@ export class QuestManagerComponent {
     this.quests = this.quests.filter(s => s.name !== quest.name);
   }
 
-  editQuest(quest: QuestDto) {
-    this.questHttpRequestService.updateQuest(quest).subscribe()
+  async editQuest(quest: QuestDto) {
+    let result = await this.questHttpRequestService.updateQuest(quest)
+    result.subscribe()
     this.quests = this.quests.map(q =>  q.id === quest.id ? quest : q);
   }
 }

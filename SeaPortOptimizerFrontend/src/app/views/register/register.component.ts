@@ -2,29 +2,30 @@ import { Component } from '@angular/core';
 import {HttpUtilsService} from "../../services/http-utils.service";
 import {Router} from "@angular/router";
 import {AppRoutes} from "../../enums/app-routes";
-import {AppComponent} from "../../app.component";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent {
+export class RegisterComponent {
   username : string = "";
   password : string = "";
+  confirm_password : string = "";
 
-  constructor(private httpUtilsService: HttpUtilsService, private router: Router, private cmp: AppComponent) {
+  constructor(private httpUtilsService: HttpUtilsService, private router: Router) {
 
   }
 
-  async login(username: string, password: string) {
+  async register(username: string, password: string, confirm_password: string) {
     if(username == "" || password == "") return
-    let result = await this.httpUtilsService.login(username, password);
+    if(password !== confirm_password) return
+    let result = await this.httpUtilsService.register(username, password);
     result.subscribe(jwt => {
       this.saveToken(jwt);
-      this.redirectToHome()
     }
     );
+    return this.redirectToHome()
 
 
   }
@@ -35,11 +36,9 @@ export class LoginComponent {
 
   redirectToHome() {
     this.router.navigate([AppRoutes.HOME]);
-    this.cmp.redirectTo(this.cmp.tabs[0])
-
   }
-  redirectToRegister() {
-    return "#/"+AppRoutes.REGISTER
+  redirectToLogin(){
+    return "#/"+AppRoutes.LOGIN
   }
 
 }
