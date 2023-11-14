@@ -15,8 +15,6 @@ class AuthService:
         return user
 
     def verify_user(self, username, password) -> UserDB:
-        print(username,flush=True)
-        print(UserDB.query.filter_by(name=username),flush=True)
         salt = self.__get_salt(username)
         password_hash = sha256(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
 
