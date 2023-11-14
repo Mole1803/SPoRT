@@ -12,3 +12,14 @@ class Ship:
                 "is_active": self.is_active,
                 "capacity": self.capacity
                 }
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        return self.id == other.id
+
+    def __gt__(self, other):
+        return self.id > other.id
+
+

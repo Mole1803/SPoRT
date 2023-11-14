@@ -10,3 +10,4 @@ class Result:
             result_list["rounds"].append(round.__dict__())
             #result_list.append(self.rounds[i].__dict__())
         return result_list
+
