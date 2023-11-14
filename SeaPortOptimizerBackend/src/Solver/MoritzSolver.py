@@ -6,40 +6,7 @@ from SeaPortOptimizerBackend.src.Model.Ship import Ship
 from SeaPortOptimizerBackend.src.Model.Step import Step
 
 
-class BaseStep:
-    def __init__(self, quest, ship):
-        self.ship = ship
-        self.quest = quest
-
-    def get_as_tuple(self):
-        return (self.ship, self.quest)
-
-    def __dict__(self):
-        return {"shipId": self.ship,
-                "questId": self.quest
-                }
-
-    def __hash__(self):
-        return hash(self.get_as_tuple())
-
-    def __eq__(self, other):
-        return self.get_as_tuple() == other.get_as_tuple()
-
-class Performance:
-    pass
-
-
-class RoundPerformance(Performance):
-    def __init__(self, outstanding, performance=None):
-        self.outstanding = outstanding
-        self.performance = outstanding
-        if performance is not None:
-            self.performance = performance
-
-    def __str__(self):
-        return "(outstanding: " + str(self.outstanding) + ", performance: " + str(self.performance) + ")"
-
-class BestResourceSolution:
+class BestSolution:
     def __init__(self, value=float('-inf')):
         self.value = value
         self.results = []
@@ -63,28 +30,78 @@ class BestResourceSolution:
             return
 
 
-
 class MoritzSolver(Solver):
     def __init__(self, id):
         super().__init__(id)
 
-    def solve(self):
-        pass
+    def calculate_time_optimized(self) -> list[Result]:
+        for quest in self.quests:
+            quest.demand = quest.demand / quest.items_per_capacity
 
-    def calculate_time_optimized(self):
-        pass
-
+        return MoritzSolver._calculate_time_optimized(self.quests, self.ships)
 
     def calculate_resource_optimized(self):
         return MoritzSolver._calculate_resource_optimized(self.quests, self.ships)
+
+    @staticmethod
+    def _calculate_time_optimized(quests: [Quest], ships: [Ship]) -> list[Result]:
+        best_solution = BestSolution(float("inf"))
+        MoritzSolver.time_optimized_rec(quests[0].demand, ships, [], best_solution, 0, quests, 0, [])
+        filtered_best_solutions = MoritzSolver._time_optimized_filtered_by_resource(best_solution)
+        filtered_best_solutions.results = MoritzSolver.filter_permutations(filtered_best_solutions.results)
+
+        steps_list = MoritzSolver.solution_to_steps(filtered_best_solutions.results, quests)
+        build_rounds = MoritzSolver.build_rounds(steps_list, best_solution.value)
+        return build_rounds
+
+    @staticmethod
+    def _time_optimized_filtered_by_resource(bestSolution: BestSolution) -> BestSolution:
+        filtered_best_solutions = BestSolution(float("inf"))
+        for solution in bestSolution.results:
+            filtered_best_solutions.append_solution_inverted(solution, MoritzSolver.calculate_performance(solution))
+        return filtered_best_solutions
+
+    @staticmethod
+    def calculate_performance(solution: tuple[tuple]):
+        performance = 0
+        for i, quest in enumerate(solution):
+            for ship in quest:
+                performance += ship.capacity
+        return performance
+
+    @staticmethod
+    def time_optimized_rec(remaining_resource: float, ships: list[Ship], current_steps: list,
+                           best_solution: BestSolution, current_ship: int, quests: list[Quest], current_quest: int,
+                           current_solution: list):
+        if current_quest >= len(quests):
+            # Todo prüfe ob aktuelle quest lösung besser ist als bisherige
+            max_rounds = MoritzSolver.calculate_max_rounds_from_array(current_solution)
+            best_solution.append_solution_inverted(current_solution, max_rounds)
+            return
+
+        if remaining_resource <= 0:
+            current_solution.append(tuple(current_steps))
+            MoritzSolver.time_optimized_rec(quests[current_quest].demand, ships, [], best_solution, 0, quests,
+                                            current_quest + 1, current_solution)
+            current_solution.pop()
+            return
+
+        for i, ship in enumerate(ships):
+            if ship in current_steps and ship is not current_steps[-1]:
+                continue
+            current_steps.append(ship)
+            MoritzSolver.time_optimized_rec(remaining_resource - ship.capacity, ships, current_steps, best_solution, i,
+                                            quests, current_quest, current_solution)
+            current_steps.pop()
 
     @staticmethod
     def _calculate_resource_optimized(quests, ships):
         solutions_per_quest = {}
         for quest in quests:
             solutions_per_quest[quest.id] = MoritzSolver.calculate_optimal_quest_solutions(quest, ships)
-        best_resource_solution = BestResourceSolution(float("inf"))
-        MoritzSolver.permutate_quest_solutions(solutions_per_quest, list(solutions_per_quest.keys()), [], best_resource_solution)
+        best_resource_solution = BestSolution(float("inf"))
+        MoritzSolver.permutate_quest_solutions(solutions_per_quest, list(solutions_per_quest.keys()), [],
+                                               best_resource_solution)
         best_resource_solution.results = MoritzSolver.filter_permutations(best_resource_solution.results)
         steps_list = MoritzSolver.solution_to_steps(best_resource_solution.results, quests)
         build_rounds = MoritzSolver.build_rounds(steps_list, best_resource_solution.value)
@@ -98,7 +115,6 @@ class MoritzSolver(Solver):
             cache = []
             for i, quest in enumerate(solution):
                 for ship in quest:
-
                     cache.append(Step(ship.id, quests[i].id, ship.capacity))
             _solutions.append(cache)
 
@@ -106,14 +122,11 @@ class MoritzSolver(Solver):
 
     @staticmethod
     def build_rounds(steps_list: list[list[Step]], max_rounds: int):
-        print(max_rounds)
         results: list[list] = [[Round() for y in range(max_rounds)] for x in range(len(steps_list))]
-        print(results)
         for i, solution in enumerate(steps_list):
             for step in solution:
                 for round_index in range(len(results[i])):
                     if results[i][round_index].step_in_round(step):
-                        print("continue")
                         continue
                     results[i][round_index].add_step(step)
                     break
@@ -122,7 +135,6 @@ class MoritzSolver(Solver):
             _results.append(Result(result))
 
         return _results
-
 
     @staticmethod
     def filter_permutations(results: list[tuple[tuple]]) -> list[tuple[tuple]]:
@@ -136,18 +148,16 @@ class MoritzSolver(Solver):
             results[result_index] = tuple(result)
         return set(results)
 
-
-
-
-
-
     @staticmethod
-    def permutate_quest_solutions(solutions: dict[str: list[list]], keys: list[str], current_solution: [], bestResourceSolution: BestResourceSolution):
+    def permutate_quest_solutions(solutions: dict[str: list[list]], keys: list[str], current_solution: [],
+                                  bestResourceSolution: BestSolution):
         key = keys.pop()
         for solution in solutions[key]:
             if len(keys) == 0:
                 current_solution.append(solution)
-                bestResourceSolution.append_solution_inverted(current_solution, MoritzSolver.calculate_max_rounds_from_array(current_solution))
+                bestResourceSolution.append_solution_inverted(current_solution,
+                                                              MoritzSolver.calculate_max_rounds_from_array(
+                                                                  current_solution))
                 current_solution.pop()
                 continue
             current_solution.append(solution)
@@ -157,7 +167,7 @@ class MoritzSolver(Solver):
         keys.append(key)
 
     @staticmethod
-    def calculate_max_rounds_from_array(solution: list[list]):
+    def calculate_max_rounds_from_array(solution: list[list]) -> int:
         _solution = sum([list(ele) for ele in solution], [])
         _map = {}
         for element in _solution:
@@ -168,86 +178,38 @@ class MoritzSolver(Solver):
 
         return max(_map.values())
 
-
-
-
-
-
     @staticmethod
     def calculate_optimal_quest_solutions(quest: Quest, ships: list[Ship]) -> list:
-        best_solutions = BestResourceSolution()
-        MoritzSolver.calculate_optimal_quest_solutions_rec(quest.demand, ships, [], best_solutions)
+        best_solutions = BestSolution()
+        MoritzSolver.calculate_optimal_quest_solutions_rec(quest.demand / quest.items_per_capacity, ships, [],
+                                                           best_solutions)
         return best_solutions.results
 
-
     @staticmethod
-    def calculate_optimal_quest_solutions_rec(remaining_resources: int, ships: list[Ship], current_steps: list[Ship], bestSolution: BestResourceSolution, currentIndex=0):
+    def calculate_optimal_quest_solutions_rec(remaining_resources: int, ships: list[Ship], current_steps: list[Ship],
+                                              bestSolution: BestSolution, currentIndex=0):
         if remaining_resources <= 0:
             bestSolution.append_solution(current_steps, remaining_resources)
             return
 
         for i in range(currentIndex, len(ships)):
             ship = ships[i]
-            #if ship in current_steps and ship is not current_steps[-1]:
+            # if ship in current_steps and ship is not current_steps[-1]:
             #    continue
             current_steps.append(ship)
-            MoritzSolver.calculate_optimal_quest_solutions_rec(remaining_resources - ship.capacity, ships, current_steps, bestSolution, i)
+            MoritzSolver.calculate_optimal_quest_solutions_rec(remaining_resources - ship.capacity, ships,
+                                                               current_steps, bestSolution, i)
             current_steps.pop()
 
 
+if __name__ == '__main__':
+    ships = [
+        Ship("TestUser", "ship1", "id_1", True, 20),
+        Ship("TestUser", "ship2", "id_2", True, 50),
+        Ship("TestUser", "ship3", "id_3", True, 10),
+    ]
 
+    quests = [Quest("TestUser", "quest1", "quest_id_1", True, "Stein", 1, 100),
+              Quest("TestUser", "quest2", "quest_id_2", True, "Stein", 1, 100)]
 
-
-    @staticmethod
-    def calculate_remaining_resources(ships: list[Ship], steps: list[Step]) -> RoundPerformance:
-        performance = RoundPerformance(0)
-        for step in steps:
-            MoritzSolver.apply_step(
-                MoritzSolver.get_ship_by_id(step.ship_id, ships),
-                step)
-            performance.outstanding += step.quest_capacity
-            performance.performance += step.spare_capacity
-        return performance
-
-    @staticmethod
-    def apply_step(ship: Ship, step: Step):
-        step.spare_capacity = step.quest_capacity - ship.capacity
-        step.quest_capacity = max(step.quest_capacity - ship.capacity, 0)
-
-    @staticmethod
-    def create_all_permutations(ships, quests) -> set:
-        mapping = []
-        if ships > quests:
-            while len(quests) < len(ships):
-                quests.append(None)
-        for ships in ships:
-            for quest in quests:
-                mapping.append(BaseStep(quest, ships))
-
-        return set(mapping)
-
-
-    @staticmethod
-    def sort_mapping_by_quest_id(mapping: set[BaseStep]):
-        sorted_mapping = {}
-        for element in mapping:
-            if not element.quest in mapping:
-                sorted_mapping[element.quest] = []
-            sorted_mapping[element.quest].append(element.ship)
-        return sorted_mapping
-
-    @staticmethod
-    def get_ship_by_id(ship_id: str, ships: list[Ship]) -> Ship:
-        if ship_id == None:
-            return None
-        for ship in ships:
-            if ship.id == ship_id:
-                return ship
-        return None
-
-    @staticmethod
-    def get_quest_by_id(quest_id: str, quests: list[Quest]) -> Quest:
-        for quest in quests:
-            if quest.id == quest_id:
-                return quest
-        return None
+    print(len(MoritzSolver._calculate_time_optimized(quests, ships)))
