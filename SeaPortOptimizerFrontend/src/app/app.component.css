@@ -1,19 +1,1 @@
-.column {
-}
-
-.column.left {
-  float: left;
-}
-
-
-/* Left and right column */
-.column.side {
-  width: 25%;
-}
-
-/* Middle column */
-.column.middle {
-  width: 75%;
-}
-
 
