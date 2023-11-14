@@ -10,6 +10,10 @@ export class HttpUtilsService {
 
   }
 
+  register(username: string, password: string) {
+    return this.http.post(this.baseUrl+"/auth/register", {username: username, password: password});
+  }
+
   login(username: string, password: string) {
     return this.http.post(this.baseUrl+"/auth/login", {username: username, password: password});
   }

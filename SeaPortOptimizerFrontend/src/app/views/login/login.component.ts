@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {HttpUtilsService} from "../../services/http-utils.service";
 import {Router} from "@angular/router";
 import {AppRoutes} from "../../enums/app-routes";
+import {AppComponent} from "../../app.component";
+import {HomeComponent} from "../home/home.component";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,7 @@ export class LoginComponent {
   username : string = "";
   password : string = "";
 
-  constructor(private httpUtilsService: HttpUtilsService, private router: Router) {
+  constructor(private httpUtilsService: HttpUtilsService, private router: Router, private cmp: AppComponent) {
 
   }
 
@@ -34,6 +36,11 @@ export class LoginComponent {
 
   redirectToHome() {
     this.router.navigate([AppRoutes.HOME]);
+    this.cmp.redirectTo(this.cmp.tabs[0])
+
+  }
+  redirectToRegister() {
+    return "#/"+AppRoutes.REGISTER
   }
 
 }

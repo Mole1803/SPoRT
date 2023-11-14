@@ -36,6 +36,19 @@ class TestRubenSolver:
         for result in results:
             assert len(result.rounds) == 3
 
+    def test_calculate_resource_optimized3(self):
+        ships = [Ship("user", "ship1", "s1", True, 20),
+                 Ship("user", "ship2", "s2", True, 50),
+                 Ship("user", "ship3", "s3", True, 10), ]
+        quests = [Quest("user", "quest1", "q1", True, "Stein", 1, 100),
+                  ]
+        ruben_solver = RubenSolver(None)
+        ruben_solver.set(ships, quests)
+        results = ruben_solver.calculate_resource_optimized()
+        assert len(results) == 2
+        for result in results:
+            assert len(result.rounds) == 2
+
     def test_calculate_time_optimized(self):
         ships = [Ship("user", "ship1", "s1", True, 100),
                  Ship("user", "ship2", "s2", True, 50),

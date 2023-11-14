@@ -36,9 +36,9 @@ def get_best_solutions(ships_by_solutions):
     return best_solutions, min
 
 
-def filter_solutions_by_ships(solutions, ships):
+def filter_solutions_by_ships(best_resource_solution, ships):
     ships_by_solutions = []
-    for solution in solutions:
+    for solution in best_resource_solution:
         ship_quests = {}
         for ship in ships:
             ship_quests[ship.id] = []
@@ -99,35 +99,40 @@ def filter_steps(quest):
     quest.all_steps = best_steps
 
 
-def filter_solutions_by_capacity(solutions):
+def filter_solutions_by_capacity(solutions_by_ships, quests, ships):
     best_solutions = []
-    min = inf
-    for solution in solutions:
-        sum = 0
-        for quest in solution:
-            for step in solution[quest]:
-                sum += step.spare_capacity
-        if sum < min:
+    min_spare = inf
+    for solution in solutions_by_ships:
+        sums = {}
+        for quest in quests:
+            sums[quest.id] = -1 * quest.demand
+        for ship in solution:
+            for step in solution[ship]:
+                sums[step.quest_id] += step.quest_capacity
+        total_sum = 0
+        for s_id in sums:
+            total_sum += sums[s_id]
+        if total_sum < min_spare:
             best_solutions = [solution]
-            min = sum
-        elif sum == min:
+            min_spare = total_sum
+        elif total_sum == min_spare:
             best_solutions.append(solution)
     return best_solutions
 
 
-def calculate_all_steps(quest, ships, steps, index=0):
+def calculate_all_steps_time(quest, ships, steps, index=0):
     i = index
     while i < len(ships):
         if quest.remaining_demand > 0:
             ship = ships[i]
             if ship.capacity < 1:
-                return i+1
+                return i + 1
             quest.remaining_demand -= quest.items_per_capacity * ship.capacity
             step = Step(ship.id, quest.id, quest.items_per_capacity * ship.capacity)
             if quest.remaining_demand < 0:
                 step.set_spare_capacity(-quest.remaining_demand)
             steps.append(step)
-            i = calculate_all_steps(quest, ships, steps, i)
+            i = calculate_all_steps_time(quest, ships, steps, i)
         else:
             quest.all_steps.append(steps.copy())
             if len(steps) > 0:
@@ -139,6 +144,30 @@ def calculate_all_steps(quest, ships, steps, index=0):
         quest.remaining_demand += last_step.quest_capacity
     return index + 1
 
+def calculate_all_steps_resource(quest, ships, steps, minimum_spare,index=0):
+    i = index
+    while i < len(ships):
+        if quest.remaining_demand > 0:
+            ship = ships[i]
+            if ship.capacity < 1:
+                return i + 1
+            quest.remaining_demand -= quest.items_per_capacity * ship.capacity
+            step = Step(ship.id, quest.id, quest.items_per_capacity * ship.capacity)
+            if quest.remaining_demand < 0:
+                step.set_spare_capacity(-quest.remaining_demand)
+                # TODO
+            steps.append(step)
+            i = calculate_all_steps_resource(quest, ships, steps, minimum_spare, i)
+        else:
+            quest.all_steps.append(steps.copy())
+            if len(steps) > 0:
+                last_step = steps.pop(-1)
+                quest.remaining_demand += last_step.quest_capacity
+            return i + 1
+    if len(steps) > 0:
+        last_step = steps.pop(-1)
+        quest.remaining_demand += last_step.quest_capacity
+    return index + 1
 
 class RubenSolver(Solver):
     def __init__(self, id):
@@ -147,19 +176,17 @@ class RubenSolver(Solver):
     def calculate_time_optimized(self):
         for quest in self.quests:
             quest.all_steps = []
-            calculate_all_steps(quest, self.ships, [])
+            calculate_all_steps_time(quest, self.ships, [])
         solutions = combine_steps(self.quests, self.ships)
         best_solutions, rounds = get_best_solutions(solutions)
-        quests_by_solutions = filter_solutions_by_quests(best_solutions, self.quests)
-        best_resource_solutions = filter_solutions_by_capacity(quests_by_solutions)
-        ships_by_solutions = filter_solutions_by_ships(best_resource_solutions, self.ships)
+        ships_by_solutions = filter_solutions_by_capacity(best_solutions, self.quests, self.ships)
         results = parse_solutions_to_results(ships_by_solutions, rounds)
         return results
 
     def calculate_resource_optimized(self):
         for quest in self.quests:
             quest.all_steps = []
-            calculate_all_steps(quest, self.ships, [])
+            calculate_all_steps_resource(quest, self.ships, [],inf)
             filter_steps(quest)
         solutions = combine_steps(self.quests, self.ships)
         best_solutions, rounds = get_best_solutions(solutions)

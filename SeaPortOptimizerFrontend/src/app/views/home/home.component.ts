@@ -24,14 +24,15 @@ export class HomeComponent {
   }
 
 
-  getResult(algorithmChoice: AlgorithmChoice) {
+  async getResult(algorithmChoice: AlgorithmChoice) {
     let sources: [Observable<QuestDto[]>, Observable<ShipDto[]>] = [this.questHttpRequestService.list(), this.shipHttpRequestService.list()]
-    forkJoin(sources).pipe(switchMap((results: [QuestDto[], ShipDto[]]) => {
+    let result = await forkJoin(sources).pipe(switchMap((results: [QuestDto[], ShipDto[]]) => {
         this.quests = results[0]
         this.ships = results[1]
         return this.resultHttpRequestService.getResult(algorithmChoice.algorithm, algorithmChoice.method)
       }
-    )).subscribe((params => {
+    ))
+    result.subscribe((params => {
       this.results = params
     }))
   }
