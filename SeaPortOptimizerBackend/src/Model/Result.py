@@ -1,7 +1,7 @@
 class Result:
     def __init__(self, rounds):
         self.rounds = rounds
-        self.remaining_demand = -1
+
 
     def __dict__(self):
         result_list = {"rounds": []}

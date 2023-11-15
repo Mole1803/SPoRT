@@ -48,11 +48,12 @@ export class ShipManagerComponent {
     this.editModalService._open(ship);
   }
 
-  addNewShip() {
+  async addNewShip() {
     if (this.newShipPrototype.name === '' || this.newShipPrototype.capacity === 0) return;
     let ship = ShipDto.fromShipPrototypeDto(this.newShipPrototype)
     this.ships.splice(0, 0, ship);
-    this.shipHttpRequestService.addShip(ship).subscribe()
+    let result = await this.shipHttpRequestService.addShip(ship)
+    result.subscribe()
     this.newShipPrototype = new ShipPrototypeDto('', 0, true);
   }
 
@@ -64,9 +65,10 @@ export class ShipManagerComponent {
   }
 
 
-  editShip(ship: ShipDto | undefined) {
+  async editShip(ship: ShipDto | undefined) {
     if (ship === undefined) return;
-    this.shipHttpRequestService.updateShip(ship).subscribe()
+    let result = await this.shipHttpRequestService.updateShip(ship)
+    result.subscribe()
     this.ships = this.ships.map(s => s.id === ship.id ? ship : s);
   }
 }
