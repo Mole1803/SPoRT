@@ -32,7 +32,7 @@
                     <input type="text" name="edit-ship-name" id="edit-ship-name"
                            class="block  border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
                            placeholder="Name"
-                           [(ngModel)]="editModalService.model!.name">
+                           [ngModel]="getName()" (ngModelChange)="setName($event)">
                   </div>
                 </div>
               </div>
@@ -81,8 +81,8 @@
           </button>
 
 
-          <button type="button"
-                  class="inline-flex w-1/2 ml-2 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+          <button type="button" id="confirm"
+                  class="btn inline-flex w-1/2 ml-2 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
                   (click)="editModalService.confirm()">
             Save
           </button>

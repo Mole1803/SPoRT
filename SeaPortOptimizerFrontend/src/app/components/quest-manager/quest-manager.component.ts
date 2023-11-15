@@ -11,7 +11,7 @@ import {QuestHttpRequestService} from "../../services/quest-http-request.service
   styleUrls: ['./quest-manager.component.css']
 })
 export class QuestManagerComponent {
-  newQuestPrototype: QuestPrototypeDto = new QuestPrototypeDto("", true, "", 1, 0)
+  newQuestPrototype: QuestPrototypeDto = new QuestPrototypeDto("", true, "", -1, -1)
   quests: QuestDto[] = [];
 
   constructor(public editModalService: EditModalService, public questHttpRequestService: QuestHttpRequestService) {
@@ -52,7 +52,7 @@ export class QuestManagerComponent {
 
   openAddQuestModal() {
     this.editModalService.mode = ModalMode.ADD;
-    this.editModalService._open(new QuestPrototypeDto("", true, "", 1, 0));
+    this.editModalService._open(new QuestPrototypeDto("", true, "", -1, -1));
   }
 
 
