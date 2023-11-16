@@ -17,7 +17,7 @@ class QuestController:
     @quest_controller.route('/get')
     def get_quest():
         id = request.args.get("id")
-        return DBController.get_quest_db(id).__dict__()
+        return DBController.get_quest_db(id).dict()
 
     @staticmethod
     @jwt_required()
@@ -27,7 +27,7 @@ class QuestController:
         quests = DBController.get_all_quests_from_user_id_db(user)
         erg = []
         for quest in quests:
-            erg.append(quest.__dict__())
+            erg.append(quest.dict())
         return erg
 
     @staticmethod
@@ -36,7 +36,6 @@ class QuestController:
     def add_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()
-        print(body)
         name = body["name"]
         is_active = bool(body["isActive"])
         resource = body["resource"]
@@ -53,8 +52,8 @@ class QuestController:
     @quest_controller.route('/update', methods=["POST"])
     def update_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
+        print(request.json)
         body = request.get_json()
-        print(body)
         name = body["name"]
         is_active = bool(body["isActive"])
         resource = body["resource"]

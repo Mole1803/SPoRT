@@ -1,21 +1,24 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {QuestPrototypeDto} from "../../models/quest-prototype-dto";
 import {QuestDto} from "../../models/quest-dto";
 import {EditModalService} from "../../services/edit-modal.service";
 import {ModalMode} from "../../enums/modal-mode";
 import {QuestHttpRequestService} from "../../services/quest-http-request.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-quest-manager',
   templateUrl: './quest-manager.component.html',
   styleUrls: ['./quest-manager.component.css']
 })
-export class QuestManagerComponent {
-  newQuestPrototype: QuestPrototypeDto = new QuestPrototypeDto("", true, "", -1, -1)
+export class QuestManagerComponent implements OnDestroy{
+  //newQuestPrototype: QuestPrototypeDto = new QuestPrototypeDto("", true, "", -1, -1)
   quests: QuestDto[] = [];
+  subscription: Subscription=new Subscription();
 
   constructor(public editModalService: EditModalService, public questHttpRequestService: QuestHttpRequestService) {
-    editModalService.confirmationEmitter.subscribe((model) => {
+    editModalService.reset()
+    this.subscription.add(editModalService.confirmationEmitter.subscribe((model:QuestDto) => {
         if (this.editModalService.mode === ModalMode.ADD) {
           let questPrototypeDto = model as QuestPrototypeDto;
           this.addNewQuest(questPrototypeDto);
@@ -30,8 +33,12 @@ export class QuestManagerComponent {
         }
 
       }
-    )
+    ))
     this.fetchQuests()
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 
   fetchQuests(){

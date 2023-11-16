@@ -21,7 +21,7 @@ export class ResultTableComponent{
   fetchResults(){
   }
 
-  checkNextPage(){
+  /*checkNextPage(){
     let next=document.getElementById("next")!
     let previous=document.getElementById("previous")!
     previous.removeAttribute("disabled")
@@ -37,20 +37,24 @@ export class ResultTableComponent{
     if(this.current<1) {
       previous.setAttribute("disabled", "disabled")
     }
+  }*/
+  hasNextPage(){
+    return this.current<this.results!.length-1
+  }
+  hasPreviousPage(){
+    return this.current>0
   }
 
   nextPage(){
     if(this.current<this.results!.length-1){
       this.current+=1
     }
-    this.checkNextPage()
 
   }
   previousPage(){
     if(this.current>0){
       this.current-=1
     }
-    this.checkPreviousPage()
   }
 
   getResult(i: number){

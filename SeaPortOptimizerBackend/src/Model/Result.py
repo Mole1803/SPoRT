@@ -2,10 +2,10 @@ class Result:
     def __init__(self, rounds):
         self.rounds = rounds
 
-    def __dict__(self):
+    def dict(self):
         result_list = {"rounds": []}
         for round in self.rounds:
-            result_list["rounds"].append(round.__dict__())
+            result_list["rounds"].append(round.dict())
         return result_list
 
     def __len__(self):

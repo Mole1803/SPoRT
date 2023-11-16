@@ -6,6 +6,6 @@ class User:
         self.salt = salt
         self.password = password
 
-    def __dict__(self):
+    def dict(self):
         return {"name": self.name,
                 }

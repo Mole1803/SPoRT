@@ -9,7 +9,7 @@ class Step:
     def set_spare_capacity(self, spare_capacity):
         self.spare_capacity = spare_capacity
 
-    def __dict__(self):
+    def dict(self):
         return {"shipId": self.ship_id,
                 "questId": self.quest_id,
                 "usedCapacity": self.quest_capacity

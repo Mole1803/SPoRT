@@ -9,7 +9,7 @@ class Quest:
         self.demand = demand
         self.remaining_demand = demand
 
-    def __dict__(self):
+    def dict(self):
         return {"name": self.name,
                 "id": self.id,
                 "isActive": self.is_active,

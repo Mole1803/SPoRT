@@ -1,4 +1,4 @@
-<ng-container *ngIf=" results!=undefined">
+<div *ngIf=" results!=undefined">
 
   <div class="divide-y divide-gray-200 overflow-hidden rounded-t-lg bg-white shadow">
     <div class="px-4  sm:px-6 flex justify-between">
@@ -11,7 +11,7 @@
           <button type="button" id="previous"
                   class="rounded-l-md paginate-button px-4 border-r-0 py-1.5 my-6"
                   (click)="previousPage()"
-                  disabled="disabled">
+                  [disabled]="!hasPreviousPage()">
             <
           </button>
 
@@ -22,6 +22,7 @@
           <button type="button" id="next"
                   class="rounded-r-md paginate-button px-4 py-1.5 my-6"
                   (click)="nextPage()"
+                  [disabled]="!hasNextPage()"
           >
             >
           </button>
@@ -70,4 +71,4 @@
     </div>
   </div>
 
-</ng-container>
+</div>

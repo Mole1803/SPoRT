@@ -45,8 +45,8 @@ class SolveController:
         #results_list = {"results": []}
         results_list = []
         for result in results:
-            #results_list["results"].append(results[i].__dict__())
-            results_list.append(result.__dict__())
+            #results_list["results"].append(results[i].dict())
+            results_list.append(result.dict())
         print(results_list)
         print(len(results_list))
         return results_list, 200
