@@ -1,18 +1,20 @@
-from flask import request
+from flask import request,Blueprint
 from flask_jwt_extended import jwt_required
 
 from SeaPortOptimizerBackend.src.Solver.MarcelSolver import MarcelSolver
 from SeaPortOptimizerBackend.src.Solver.MoritzSolver import MoritzSolver
 from SeaPortOptimizerBackend.src.Solver.RubenSolver import RubenSolver
 from SeaPortOptimizerBackend.src.Solver.TimSolver import TimSolver
-from controller.BaseController import BaseController
 from utils.utility_functions import UtilityFunctions
 
+solver_controller = Blueprint('solver_controller', __name__, url_prefix='/solve')
 
-class SolveController(BaseController, base_route="/solve"):
+class SolveController:
+    def __init__(self,app):
+        app.register_blueprint(solver_controller)
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('', methods=["POST"])
+    @solver_controller.route('', methods=["POST"])
     def Solve():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()
@@ -30,6 +32,9 @@ class SolveController(BaseController, base_route="/solve"):
         else:
             return "Invalid developer", 418
 
+        if not solver.verify_valid():
+            return [], 200
+
         if "Time" in algorithm:
             results = solver.calculate_time_optimized()
         elif "Resource" in algorithm:
@@ -42,4 +47,5 @@ class SolveController(BaseController, base_route="/solve"):
             #results_list["results"].append(results[i].__dict__())
             results_list.append(result.__dict__())
         print(results_list)
+        print(len(results_list))
         return results_list, 200

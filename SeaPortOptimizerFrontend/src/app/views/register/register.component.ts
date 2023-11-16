@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {HttpUtilsService} from "../../services/http-utils.service";
 import {Router} from "@angular/router";
 import {AppRoutes} from "../../enums/app-routes";
+import {AlertHandlerService} from "../../services/alert-handler.service";
+import {AlertLevel} from "../../enums/alert-level";
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,7 @@ export class RegisterComponent {
   password : string = "";
   confirm_password : string = "";
 
-  constructor(private httpUtilsService: HttpUtilsService, private router: Router) {
+  constructor(private httpUtilsService: HttpUtilsService, private router: Router, public alertHandlerService: AlertHandlerService) {
 
   }
 
@@ -23,9 +25,13 @@ export class RegisterComponent {
     let result = await this.httpUtilsService.register(username, password);
     result.subscribe(jwt => {
       this.saveToken(jwt);
+      this.redirectToHome()
+    }
+    , error => {
+      this.alertHandlerService.showAlertWithAttributes(error.error.message, "", AlertLevel.ERROR);
     }
     );
-    return this.redirectToHome()
+    return
 
 
   }
@@ -35,7 +41,7 @@ export class RegisterComponent {
   }
 
   redirectToHome() {
-    this.router.navigate([AppRoutes.HOME]);
+    this.router.navigate([""+AppRoutes.HOME]);
   }
   redirectToLogin(){
     return "#/"+AppRoutes.LOGIN

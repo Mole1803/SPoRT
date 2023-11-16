@@ -7,6 +7,8 @@ import {QuestHttpRequestService} from "../../services/quest-http-request.service
 import {ShipDto} from "../../models/ship-dto";
 import {QuestDto} from "../../models/quest-dto";
 import {forkJoin, Observable, switchMap} from "rxjs";
+import {AlertHandlerService} from "../../services/alert-handler.service";
+import {AlertLevel} from "../../enums/alert-level";
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,8 @@ export class HomeComponent {
 
   constructor(public resultHttpRequestService: ResultHttpRequestService,
               public shipHttpRequestService: ShipHttpRequestService,
-              public questHttpRequestService: QuestHttpRequestService) {
+              public questHttpRequestService: QuestHttpRequestService,
+              public alertHandlerService:AlertHandlerService) {
   }
 
 
@@ -29,6 +32,18 @@ export class HomeComponent {
     let result = await forkJoin(sources).pipe(switchMap((results: [QuestDto[], ShipDto[]]) => {
         this.quests = results[0]
         this.ships = results[1]
+        //verify at least one ship is set to true
+        let shipSet = false
+        for (let ship of this.ships) {
+          if (ship.is_active) {
+            shipSet = true
+            break
+          }
+        }
+        if(!shipSet){
+          this.alertHandlerService.showAlertWithAttributes("No ship selected","Please select at least one ship",AlertLevel.ERROR)
+          return new Observable<Result[]>()
+        }
         return this.resultHttpRequestService.getResult(algorithmChoice.algorithm, algorithmChoice.method)
       }
     ))

@@ -18,10 +18,12 @@ app.config["JWT_SECRET_KEY"] = "cf65d36897822be9be6afe519020fbfc111676854c4778d6
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
-login_controller = LoginController.LoginController()
-ship_controller = ShipController.ShipController()
-quest_controller = QuestController.QuestController()
-solve_controller = SolveController.SolveController()
+login_controller = LoginController.LoginController(app)
+ship_controller = ShipController.ShipController(app)
+quest_controller = QuestController.QuestController(app)
+solve_controller = SolveController.SolveController(app)
+
+
 
 @app.route('/isAlive')
 def is_alive():
