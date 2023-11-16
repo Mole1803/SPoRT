@@ -1,9 +1,9 @@
 <div>
   <label class="text-base font-semibold text-gray-900"></label>
   <p class="text-sm text-gray-500">Choose the algorithm you would like to use</p>
-  <div class="sm:inline-flex sm:justify-between w-full">
-    <fieldset class="mt-4">
-      <div class="space-y-4 sm:flex  sm:items-center sm:space-x-10 sm:space-y-0">
+  <div class="sm:inline-flex items-center sm:justify-between w-full divide-y divide-gray-200 sm:divide-y-0 sm:divide-x xl:divide-x-0">
+    <fieldset class="items-center">
+      <div class="space-y-4 my-3 sm:my-auto sm:flex align-middle  sm:items-center sm:space-x-10 sm:space-y-0">
         <ng-container *ngFor="let algorithm of availableAlgorithms; index as i">
           <div class="flex items-center">
             <input id="algorithm-{{i}}" name="algorithm" type="radio" [value]="algorithm" (click)="algo=algorithm"
@@ -14,8 +14,8 @@
         </ng-container>
       </div>
     </fieldset>
-    <fieldset class="mt-4">
-      <div class="space-y-4 sm:flex  sm:items-center sm:space-x-10 sm:space-y-0">
+    <fieldset class="sm:pl-3  sm:my-auto items-baseline sm:mx-6">
+      <div class="space-y-4 mt-3 sm:mt-auto sm:flex  sm:items-center sm:space-x-10 sm:space-y-0">
         <ng-container *ngFor="let method of availableMethods; index as i">
           <div class="flex items-center">
             <input id="method-{{i}}" name="method" type="radio" [value]="method" (click)="metho=method"
@@ -26,7 +26,7 @@
         </ng-container>
       </div>
     </fieldset>
-   <button type="button" (click)="start()" class="mt-4 sm:mt-2  align-middle rounded-md bg-indigo-600 px-7 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+   <button type="button" (click)="start()" class="mt-4 sm:my-auto w-full sm:w-auto  align-middle rounded-md bg-indigo-600 px-7 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
      Start</button>
 
   </div>
