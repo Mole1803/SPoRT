@@ -1,7 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ShipDto} from "../../models/ship-dto";
-import {AlertHandlerService} from "../../services/alert-handler.service";
-import {AlertLevel} from "../../enums/alert-level";
+import {Component} from '@angular/core';
 import {EditModalService} from "../../services/edit-modal.service";
 import {ModalMode} from "../../enums/modal-mode";
 
@@ -17,9 +14,19 @@ export class EditShipModalComponent {
 
   }
 
+  getName(){
+    return this.editModalService.model?.name
+  }
+
+  setName(name: string){
+    this.editModalService.model!.name=name
+    this.checkAll()
+  }
+
   setCapacity(capacity: number) {
     // @ts-ignore
     this.editModalService.model.capacity = capacity;
+    this.checkAll()
   }
 
   getCapacity() {
@@ -35,6 +42,18 @@ export class EditShipModalComponent {
   getIsActive() {
     // @ts-ignore
     return this.editModalService.model.is_active;
+  }
+
+  checkAll(){
+    let confirm=document.getElementById("confirm")!
+    if(typeof this.getName()=="string" && this.getName()!="" && this.getCapacity()>0){
+      if (confirm.hasAttribute("disabled")) {
+        confirm.removeAttribute("disabled")
+      }
+    }
+    else if(!confirm.hasAttribute("disabled")) {
+      confirm.setAttribute("disabled","disabled")
+    }
   }
 
   protected readonly ModalMode = ModalMode;

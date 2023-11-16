@@ -31,7 +31,6 @@ export class ShipManagerComponent {
 
   fetchShipDto() {
     this.shipHttpRequestService.list().subscribe((params => {
-      console.log(params)
       this.ships = params
     }))
 
@@ -49,7 +48,7 @@ export class ShipManagerComponent {
   }
 
   async addNewShip() {
-    if (this.newShipPrototype.name === '' || this.newShipPrototype.capacity === 0) return;
+    if (this.newShipPrototype.name === '' || this.newShipPrototype.capacity < 1) return;
     let ship = ShipDto.fromShipPrototypeDto(this.newShipPrototype)
     this.ships.splice(0, 0, ship);
     let result = await this.shipHttpRequestService.addShip(ship)

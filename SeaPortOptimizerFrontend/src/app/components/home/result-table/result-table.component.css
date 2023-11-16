@@ -1,0 +1,24 @@
+.inline-block {
+  display: inline-block;
+}
+
+.float-right {
+  float: right;
+}
+
+.paginate-button{
+  border: 1px solid lightgrey;
+  background-color: white;
+}
+
+.paginate-button:hover{
+  background-color: #dddddd;
+}
+
+.paginate-button:disabled{
+  background-color: darkgrey;
+}
+
+.div-border-bottom{
+  border-bottom: 1px solid lightgrey;
+}

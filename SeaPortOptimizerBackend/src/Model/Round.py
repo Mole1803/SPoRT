@@ -10,10 +10,8 @@ class Round:
 
     def __dict__(self):
         round_list = {"steps": []}
-        #round_list = []
         for step in self.steps:
             round_list["steps"].append(step.__dict__())
-            #round_list.append(step.__dict__())
         return round_list
 
     def __iter__(self):
