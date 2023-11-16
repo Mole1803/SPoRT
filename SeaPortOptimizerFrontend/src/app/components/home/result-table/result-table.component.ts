@@ -12,7 +12,7 @@ export class ResultTableComponent{
   @Input() results?: Result[]
   @Input() shipDto?: ShipDto[];
   @Input() questDto?: QuestDto[];
-  current: number=0;
+  @Input() current: number=0;
 
   constructor() {
     this.fetchResults()

@@ -19,6 +19,7 @@ export class HomeComponent {
   @Input() results?: Result[];
   ships: ShipDto[] = [];
   quests: QuestDto[] = []
+  pageNumber: number = 0;
 
   constructor(public resultHttpRequestService: ResultHttpRequestService,
               public shipHttpRequestService: ShipHttpRequestService,
@@ -44,11 +45,13 @@ export class HomeComponent {
           this.alertHandlerService.showAlertWithAttributes("No ship selected","Please select at least one ship",AlertLevel.ERROR)
           return new Observable<Result[]>()
         }
+
         return this.resultHttpRequestService.getResult(algorithmChoice.algorithm, algorithmChoice.method)
       }
     )
       )
     result.subscribe((params => {
+      this.pageNumber = 0
       this.results = params
     }),error => {
       if(error.status == 400) {
