@@ -52,7 +52,6 @@ class MoritzSolver(Solver):
         MoritzSolver.time_optimized_rec(quests[0].demand, ships, [], best_solution, 0, quests, 0, [],max_round_dict)
         filtered_best_solutions = MoritzSolver._time_optimized_filtered_by_resource(best_solution)
         filtered_best_solutions.results = MoritzSolver.filter_permutations(filtered_best_solutions.results)
-        print(filtered_best_solutions.results)
         steps_list = MoritzSolver.solution_to_steps(filtered_best_solutions.results, quests)
         build_rounds = MoritzSolver.build_rounds(steps_list, best_solution.value)
         return build_rounds
