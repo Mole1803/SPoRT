@@ -15,9 +15,7 @@ class Round:
         return round_list
 
     def step_in_round(self, step):
-        #print(self.steps)
         for _step in self.steps:
             if _step.ship_id == step.ship_id:
-                #print(_step.ship_id, step.ship_id)
                 return True
         return False

@@ -14,3 +14,4 @@ class Step:
                 "questId": self.quest_id,
                 "usedCapacity": self.quest_capacity
                 }
+
