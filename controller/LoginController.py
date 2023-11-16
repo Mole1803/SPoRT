@@ -33,7 +33,6 @@ class LoginController(BaseController, base_route="/auth"):
     @staticmethod
     @BaseController.controllerRoute(rule='/register', methods=['POST'])
     def register():
-        print(request.json, flush=True)
         username = request.json.get('username', None)
         password = request.json.get('password', None)
         user = AuthService().create_user(username, password)
