@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 
 from flask import request, jsonify
@@ -7,14 +8,16 @@ from controller import LoginController, ShipController, QuestController, SolveCo
 from flask_jwt_extended import (
     JWTManager, jwt_required
 )
+from dotenv import load_dotenv
+load_dotenv()
 
 CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 
 app.config["JWT_COOKIE_SECURE"] = False
-
-app.config["JWT_SECRET_KEY"] = "cf65d36897822be9be6afe519020fbfc111676854c4778d62ceca2af46e1ef47"
+print(os.getenv('SECRET_KEY'),flush=True)
+app.config["JWT_SECRET_KEY"] = str(os.getenv('SECRET_KEY')) #"cf65d36897822be9be6afe519020fbfc111676854c4778d62ceca2af46e1ef47"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
 
