@@ -18,7 +18,7 @@
           <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
         </div>
         <div class="mt-2">
-          <input id="password" [(ngModel)]="password" name="password" type="password" autocomplete="initial-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          <input id="password" [(ngModel)]="password" [(ngModel)]="confirm_password" [ngClass]="{'bg-red-200': confirm_password!=password && confirm_password!='' && password!=''}" name="password" type="password" autocomplete="initial-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
         </div>
       </div>
       <div>
@@ -26,7 +26,7 @@
           <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Repeat password</label>
         </div>
         <div class="mt-2">
-          <input id="confirm_password" [(ngModel)]="confirm_password" name="confirm-password" type="password" autocomplete="initial-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          <input id="confirm_password" [(ngModel)]="confirm_password" [ngClass]="{'bg-red-200': confirm_password!=password && confirm_password!='' && password!=''}" name="confirm-password" type="password" autocomplete="initial-password" required class="block w-full  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
         </div>
       </div>
 
@@ -37,7 +37,7 @@
 
     <p class="mt-10 text-center text-sm text-gray-500">
       Already a member?
-      <a [href]="redirectToLogin()" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Click here to log in</a>
+      <a [href]="redirectToLogin()" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Sign in</a>
     </p>
   </div>
 </div>

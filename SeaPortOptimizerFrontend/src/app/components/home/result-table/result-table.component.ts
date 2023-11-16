@@ -2,8 +2,6 @@ import {Component, Input} from '@angular/core';
 import {Result} from "../../../models/result";
 import {ShipDto} from "../../../models/ship-dto";
 import {QuestDto} from "../../../models/quest-dto";
-import {HomeComponent} from "../../../views/home/home.component";
-import {ResultHttpRequestService} from "../../../services/result-http-request.service";
 
 @Component({
   selector: 'app-result-table',
@@ -14,12 +12,51 @@ export class ResultTableComponent{
   @Input() results?: Result[]
   @Input() shipDto?: ShipDto[];
   @Input() questDto?: QuestDto[];
+  @Input() current: number=0;
 
   constructor() {
     this.fetchResults()
   }
 
   fetchResults(){
+  }
+
+  checkNextPage(){
+    let next=document.getElementById("next")!
+    let previous=document.getElementById("previous")!
+    previous.removeAttribute("disabled")
+    if(this.current>this.results!.length-2) {
+      next.setAttribute("disabled", "disabled")
+    }
+  }
+
+  checkPreviousPage(){
+    let next=document.getElementById("next")!
+    let previous=document.getElementById("previous")!
+    next.removeAttribute("disabled")
+    if(this.current<1) {
+      previous.setAttribute("disabled", "disabled")
+    }
+  }
+
+  nextPage(){
+    if(this.current<this.results!.length-1){
+      this.current+=1
+    }
+    this.checkNextPage()
+
+  }
+  previousPage(){
+    if(this.current>0){
+      this.current-=1
+    }
+    this.checkPreviousPage()
+  }
+
+  getResult(i: number){
+
+    // @ts-ignore
+    return this.results[i]
   }
 
   mapIdToShip(id: string): string {

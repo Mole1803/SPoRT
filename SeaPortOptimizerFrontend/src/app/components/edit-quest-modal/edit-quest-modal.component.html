@@ -20,7 +20,8 @@
 
           </div>
           <div class="mt-5 text-center ">
-            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">{{ editModalService.mode === ModalMode.EDIT ? "Edit Quest"  : "Add Quest"}}</h3>
+            <h3 class="text-base font-semibold leading-6 text-gray-900"
+                id="modal-title">{{ editModalService.mode === ModalMode.EDIT ? "Edit Quest" : "Add Quest"}}</h3>
 
 
             <div class="grid w-full mt-2 ">
@@ -33,7 +34,7 @@
                     <input type="text" name="edit-ship-name" id="edit-ship-name"
                            class="block  border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
                            placeholder="Name"
-                           [(ngModel)]="editModalService.model!.name">
+                           [ngModel]="getName()" (ngModelChange)="setName($event)">
                   </div>
                 </div>
               </div>
@@ -72,7 +73,9 @@
             </div>
 
             <div class="grid w-full mt-2 ">
-              <div class="grid max-w-full  grid-cols-2 gap-x-4 mt-2 justify-between" style="grid-template-columns: repeat(2, minmax(0, 1fr));" [ngClass]="{'safari-inner-spinner-button': editModalService.isSafari(),'other-platform': !editModalService.isSafari()}">
+              <div class="grid max-w-full  grid-cols-2 gap-x-4 mt-2 justify-between"
+                   style="grid-template-columns: repeat(2, minmax(0, 1fr));"
+                   [ngClass]="{'safari-inner-spinner-button': editModalService.isSafari(),'other-platform': !editModalService.isSafari()}">
                 <div class="col-span-1 ">
 
                   <div
@@ -80,7 +83,7 @@
 
                     <input type="number" name="edit-quest-demand" id="edit-quest-demand"
                            class="block border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
-                           placeholder="Capacity"
+                           placeholder="Demand"
                            [ngModel]="getDemand()" (ngModelChange)="setDemand($event)">
                   </div>
                 </div>
@@ -90,7 +93,7 @@
 
                     <input type="number" name="edit-quest-items-per-capacity" id="edit-quest-items-per-capacity"
                            class="block border-0 bg-transparent py-1.5 px-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 text-sm leading-6"
-                           placeholder="Capacity"
+                           placeholder="Items per ship capacity"
                            [ngModel]="getItemsPerCapacity()" (ngModelChange)="setItemsPerCapacity($event)">
                   </div>
 
@@ -110,8 +113,8 @@
                   (click)="editModalService.close()">
             Cancel
           </button>
-          <button type="button"
-                  class="inline-flex w-1/2 ml-2 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+          <button type="button" id="confirm" disabled="disabled"
+                  class="btn inline-flex w-1/2 ml-2 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
                   (click)="editModalService.confirm()">
             {{ editModalService.mode === ModalMode.EDIT ? 'Save' : 'Add'}}
           </button>
