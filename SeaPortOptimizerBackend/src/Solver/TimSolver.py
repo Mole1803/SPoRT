@@ -7,7 +7,7 @@ import copy
 
 
 class TimSolver(Solver):
-    def __init__(self):
+    def __init__(self,id):
         super().__init__(id)
 
         self.possible_steps = []
