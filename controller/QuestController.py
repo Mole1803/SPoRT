@@ -17,7 +17,7 @@ class QuestController:
     @quest_controller.route('/get')
     def get_quest():
         id = request.args.get("id")
-        return DBController.get_quest_db(id).__dict__()
+        return DBController.get_quest_db(id).dict()
 
     @staticmethod
     @jwt_required()
@@ -27,7 +27,7 @@ class QuestController:
         quests = DBController.get_all_quests_from_user_id_db(user)
         erg = []
         for quest in quests:
-            erg.append(quest.__dict__())
+            erg.append(quest.dict())
         return erg
 
     @staticmethod

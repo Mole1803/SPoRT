@@ -15,7 +15,7 @@ class ShipController:
     def get_ship():
         user = UtilityFunctions.get_user_from_jwt(request)
         id = request.args.get("id")
-        return DBController.get_ship_db(id, user).__dict__()
+        return DBController.get_ship_db(id, user).dict()
 
     @staticmethod
     @jwt_required()
@@ -25,7 +25,7 @@ class ShipController:
         ships = DBController.get_all_ships_from_user_id_db(user)
         erg = []
         for ship in ships:
-            erg.append(ship.__dict__())
+            erg.append(ship.dict())
         return erg
 
     @staticmethod
