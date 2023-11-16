@@ -43,94 +43,94 @@ class TimSolver(Solver):
     def start_time_optimized_round(self, rounds_list_para, ships_para, quests_para):
         rounds_list_para.append(Round())
         quests = copy.deepcopy(quests_para)
-        start_steps, ships, quests = self.fill_ships_ideal([], ships_para, quests)
-        if len(quests) == 0:
+        start_steps, ships, quests_1 = self.fill_ships_ideal([], ships_para, quests)
+        if len(quests_1) == 0:
             rounds_list_para.remove(rounds_list_para[-1])
             self.possible_results.append(Result(rounds_list_para))
             return
-        steps_list = self.fill_ships_optimized(start_steps, self.remove_used_ships(start_steps, ships), quests)
+        steps_list = self.fill_ships_optimized(start_steps, self.remove_used_ships(start_steps, ships), quests_1)
         if len(steps_list) == 0:
             final_steps_list = self.fill_remaining_ships_time_opt(start_steps,
                                                                   self.remove_used_ships(start_steps, ships),
-                                                                  quests)
+                                                                  quests_1)
             if len(final_steps_list) == 0:
                 if len(start_steps) == 0:
                     return
                 else:
                     rounds_list_para[-1].steps = start_steps
                     self.start_time_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                    quests)
+                                                    quests_1)
             else:
                 for final_steps in final_steps_list:
-                    quests = self.update_quest_demands(final_steps, copy.deepcopy(quests))
+                    quests_2 = self.update_quest_demands(final_steps, copy.deepcopy(quests_1))
                     rounds_list_para[-1].steps = final_steps
                     self.start_time_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                    quests)
+                                                    quests_2)
         else:
             for steps in steps_list:
-                quests = self.remove_completed_quests(steps, quests)
-                if len(quests) == 0:
+                quests_3 = self.remove_completed_quests(steps, quests_1)
+                if len(quests_3) == 0:
                     rounds_list_para[-1].steps = steps
                     self.possible_results.append(Result(copy.deepcopy(rounds_list_para)))
                     return
                 final_steps_list = self.fill_remaining_ships_time_opt(steps, self.remove_used_ships(steps, ships),
-                                                                      quests)
+                                                                      quests_3)
                 if len(final_steps_list) == 0:
                     rounds_list_para[-1].steps = steps
                     self.start_time_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                    quests)
+                                                    quests_3)
                 else:
                     for final_steps in final_steps_list:
-                        quests = self.update_quest_demands(final_steps, copy.deepcopy(quests))
+                        quests_4 = self.update_quest_demands(final_steps, copy.deepcopy(quests_3))
                         rounds_list_para[-1].steps = final_steps
                         self.start_time_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                        quests)
+                                                        quests_4)
 
     def start_resource_optimized_round(self, rounds_list_para, ships_para, quests_para):
         rounds_list_para.append(Round())
         quests = copy.deepcopy(quests_para)
-        start_steps, ships, quests = self.fill_ships_ideal([], ships_para, quests)
-        if len(quests) == 0:
-            rounds_list_para.remove(rounds_list_para[-1])
+        start_steps, ships, quests_1 = self.fill_ships_ideal([], ships_para, quests)
+        if len(quests_1) == 0:
+            rounds_list_para[-1].steps = copy.deepcopy(start_steps)
             self.possible_results.append(Result(rounds_list_para))
             return
-        steps_list = self.fill_ships_optimized(start_steps, self.remove_used_ships(start_steps, ships), quests)
+        steps_list = self.fill_ships_optimized(start_steps, self.remove_used_ships(start_steps, ships), quests_1)
         if len(steps_list) == 0:
             final_steps_list = self.fill_remaining_ships_resource_opt(start_steps,
                                                                       self.remove_used_ships(start_steps, ships),
-                                                                      quests)
+                                                                      quests_1)
             if len(final_steps_list) == 0:
                 if len(start_steps) == 0:
                     return
                 else:
                     rounds_list_para[-1].steps = start_steps
                     self.start_resource_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                        quests)
+                                                        quests_1)
             else:
                 for final_steps in final_steps_list:
-                    quests = self.update_quest_demands(final_steps, copy.deepcopy(quests))
+                    quests_2 = self.update_quest_demands(final_steps, copy.deepcopy(quests_1))
                     rounds_list_para[-1].steps = final_steps
                     self.start_resource_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                        quests)
+                                                        quests_2)
         else:
             for steps in steps_list:
-                quests = self.remove_completed_quests(steps, quests)
-                if len(quests) == 0:
+                quests_3 = self.remove_completed_quests(steps, quests_1)
+                if len(quests_3) == 0:
                     rounds_list_para[-1].steps = steps
                     self.possible_results.append(Result(copy.deepcopy(rounds_list_para)))
                     return
                 final_steps_list = self.fill_remaining_ships_resource_opt(steps, self.remove_used_ships(steps, ships),
-                                                                          quests)
+                                                                          quests_3)
                 if len(final_steps_list) == 0:
                     rounds_list_para[-1].steps = steps
                     self.start_resource_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                        quests)
+                                                        quests_3)
                 else:
                     for final_steps in final_steps_list:
-                        quests = self.update_quest_demands(final_steps, copy.deepcopy(quests))
+                        quests_4 = self.update_quest_demands(final_steps, copy.deepcopy(quests_3))
                         rounds_list_para[-1].steps = final_steps
                         self.start_resource_optimized_round(copy.deepcopy(rounds_list_para), copy.deepcopy(self.ships),
-                                                            quests)
+                                                            quests_4)
 
     @staticmethod
     def fill_ships_ideal(lilst_of_steps, list_of_ships, list_of_quests):
