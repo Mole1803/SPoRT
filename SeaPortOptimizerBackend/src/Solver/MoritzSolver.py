@@ -46,13 +46,17 @@ class MoritzSolver(Solver):
     @staticmethod
     def _calculate_time_optimized(quests: [Quest], ships: [Ship]) -> list[Result]:
         best_solution = BestSolution(float("inf"))
-        MoritzSolver.time_optimized_rec(quests[0].demand, ships, [], best_solution, 0, quests, 0, [])
+        max_round_dict = {}
+        for ship in ships:
+            max_round_dict[ship.id] = 0
+        MoritzSolver.time_optimized_rec(quests[0].demand, ships, [], best_solution, 0, quests, 0, [],max_round_dict)
         filtered_best_solutions = MoritzSolver._time_optimized_filtered_by_resource(best_solution)
         filtered_best_solutions.results = MoritzSolver.filter_permutations(filtered_best_solutions.results)
 
         steps_list = MoritzSolver.solution_to_steps(filtered_best_solutions.results, quests)
         build_rounds = MoritzSolver.build_rounds(steps_list, best_solution.value)
         return build_rounds
+
 
     @staticmethod
     def _time_optimized_filtered_by_resource(bestSolution: BestSolution) -> BestSolution:
@@ -72,27 +76,39 @@ class MoritzSolver(Solver):
     @staticmethod
     def time_optimized_rec(remaining_resource: float, ships: list[Ship], current_steps: list,
                            best_solution: BestSolution, current_ship: int, quests: list[Quest], current_quest: int,
-                           current_solution: list):
+                           current_solution: list, max_value_dict):
+        max_rounds = MoritzSolver.max_rounds_from_map(max_value_dict)
+        if max_value_dict[ships[current_ship].id] > best_solution.value:
+            return
+
+
         if current_quest >= len(quests):
             # Todo prüfe ob aktuelle quest lösung besser ist als bisherige
-            max_rounds = MoritzSolver.calculate_max_rounds_from_array(current_solution)
+            #max_rounds = MoritzSolver.max_rounds_from_map(max_value_dict)#MoritzSolver.calculate_max_rounds_from_array(current_solution)
             best_solution.append_solution_inverted(current_solution, max_rounds)
             return
 
         if remaining_resource <= 0:
             current_solution.append(tuple(current_steps))
             MoritzSolver.time_optimized_rec(quests[current_quest].demand, ships, [], best_solution, 0, quests,
-                                            current_quest + 1, current_solution)
+                                            current_quest + 1, current_solution, max_value_dict)
             current_solution.pop()
             return
 
         for i, ship in enumerate(ships):
             if ship in current_steps and ship is not current_steps[-1]:
                 continue
+            max_value_dict[ship.id] = max_value_dict.get(ship.id) + 1
             current_steps.append(ship)
             MoritzSolver.time_optimized_rec(remaining_resource - ship.capacity, ships, current_steps, best_solution, i,
-                                            quests, current_quest, current_solution)
+                                            quests, current_quest, current_solution, max_value_dict)
+            max_value_dict[ship.id] = max_value_dict.get(ship.id) - 1
             current_steps.pop()
+
+
+    @staticmethod
+    def max_rounds_from_map(map: dict[str: int]):
+        return max(map.values())
 
     @staticmethod
     def _calculate_resource_optimized(quests, ships):

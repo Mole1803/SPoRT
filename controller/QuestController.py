@@ -1,22 +1,27 @@
 from flask_jwt_extended import jwt_required
-from controller.BaseController import BaseController
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint
 from instance import DBController
 from utils.utility_functions import UtilityFunctions
 
+quest_controller = Blueprint('quest_controller', __name__, url_prefix='/quest')
 
-class QuestController(BaseController, base_route="/quest"):
+
+
+class QuestController:
+    def __init__(self,app):
+        app.register_blueprint(quest_controller)
+
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/get')
+    @quest_controller.route('/get')
     def get_quest():
         id = request.args.get("id")
         return DBController.get_quest_db(id).__dict__()
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/list')
+    @quest_controller.route('/list')
     def get_quests():
         user = UtilityFunctions.get_user_from_jwt(request)
         quests = DBController.get_all_quests_from_user_id_db(user)
@@ -27,7 +32,7 @@ class QuestController(BaseController, base_route="/quest"):
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/add', methods=["POST"])
+    @quest_controller.route('/add', methods=["POST"])
     def add_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()
@@ -45,7 +50,7 @@ class QuestController(BaseController, base_route="/quest"):
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/update', methods=["POST"])
+    @quest_controller.route('/update', methods=["POST"])
     def update_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()
@@ -63,7 +68,7 @@ class QuestController(BaseController, base_route="/quest"):
 
     @staticmethod
     @jwt_required()
-    @BaseController.controllerRoute('/delete', methods=["POST"])
+    @quest_controller.route('/delete', methods=["POST"])
     def delete_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()

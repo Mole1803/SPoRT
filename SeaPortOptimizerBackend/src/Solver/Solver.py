@@ -12,6 +12,12 @@ class Solver(ABC):
         self.ships = ships
         self.quests = quests
 
+    def verify_valid(self):
+        if len(self.ships) == 0:
+            return False
+        if len(self.quests) == 0:
+            return False
+        return True
 
     @abstractmethod
     def calculate_time_optimized(self):

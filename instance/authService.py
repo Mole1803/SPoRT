@@ -28,3 +28,6 @@ class AuthService:
     def __create_salt():
         return os.urandom(32).hex()
 
+    def username_exists(self, username):
+        return UserDB.query.filter_by(name=username).first() is not None
+
