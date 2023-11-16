@@ -31,7 +31,6 @@ class QuestController(BaseController, base_route="/quest"):
     def add_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()
-        print(body)
         name = body["name"]
         is_active = bool(body["isActive"])
         resource = body["resource"]
@@ -48,8 +47,8 @@ class QuestController(BaseController, base_route="/quest"):
     @BaseController.controllerRoute('/update', methods=["POST"])
     def update_quest():
         user = UtilityFunctions.get_user_from_jwt(request)
+        print(request.json)
         body = request.get_json()
-        print(body)
         name = body["name"]
         is_active = bool(body["isActive"])
         resource = body["resource"]

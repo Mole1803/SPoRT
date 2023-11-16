@@ -1,32 +1,36 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {ShipDto} from "../../models/ship-dto";
 import {ShipPrototypeDto} from "../../models/ship-prototype-dto";
 import {GuidGenerator} from "../../utilities/guid-generator";
 import {EditModalService} from "../../services/edit-modal.service";
 import {ModalMode} from "../../enums/modal-mode";
 import {ShipHttpRequestService} from "../../services/ship-http-request.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-ship-manager',
   templateUrl: './ship-manager.component.html',
   styleUrls: ['./ship-manager.component.css']
 })
-export class ShipManagerComponent {
+export class ShipManagerComponent implements OnDestroy{
   @Input() ships: ShipDto[] = [];
   newShipPrototype: ShipPrototypeDto = new ShipPrototypeDto('', 0, true);
-
+  subscription: Subscription=new Subscription();
 
   constructor(public editModalService: EditModalService, public shipHttpRequestService: ShipHttpRequestService) {
     this.editModalService.reset();
 
-    editModalService.confirmationEmitter.subscribe((ship: ShipDto | undefined) => {
+    this.subscription.add(editModalService.confirmationEmitter.subscribe((ship: ShipDto| undefined) => {
         if (ship === undefined) return;
         if (editModalService.mode === ModalMode.EDIT) this.editShip(ship);
         if (editModalService.mode === ModalMode.DELETE) this.deleteShip(ship);
-
       }
-    )
+    ))
     this.fetchShipDto()
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 
   fetchShipDto() {

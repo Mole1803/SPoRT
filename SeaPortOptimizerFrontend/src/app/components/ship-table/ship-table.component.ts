@@ -46,6 +46,7 @@ export class ShipTableComponent extends ShipManagerComponent{
 
   constructor(public override editModalService: EditModalService, public override shipHttpRequestService: ShipHttpRequestService) {
     super(editModalService,shipHttpRequestService);
+    this.editModalService.reset();
 
   }
 

@@ -46,6 +46,7 @@ class ShipController(BaseController, base_route="/ship"):
     def update_ship():
         user = UtilityFunctions.get_user_from_jwt(request)
         body = request.get_json()
+        print(request.json)
         name = body["name"]
         is_active = body["is_active"]
         capacity = body["capacity"]

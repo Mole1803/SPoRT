@@ -27,7 +27,6 @@ export class ShipHttpRequestService {
   }
 
   updateShip(ship: ShipDto) {
-    console.log(ship)
     return this.http.post(this.baseUrl+"/ship/update", ship);
   }
 }
