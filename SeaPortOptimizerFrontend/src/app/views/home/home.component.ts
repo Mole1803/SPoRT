@@ -16,7 +16,7 @@ import {AlertLevel} from "../../enums/alert-level";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  @Input() results: Result[] = [];
+  @Input() results?: Result[];
   ships: ShipDto[] = [];
   quests: QuestDto[] = []
 
@@ -46,9 +46,14 @@ export class HomeComponent {
         }
         return this.resultHttpRequestService.getResult(algorithmChoice.algorithm, algorithmChoice.method)
       }
-    ))
+    )
+      )
     result.subscribe((params => {
       this.results = params
-    }))
+    }),error => {
+      if(error.status == 400) {
+        this.alertHandlerService.showAlertWithAttributes("Error", "Quest list can't be empty.", AlertLevel.ERROR)
+      }
+    })
   }
 }

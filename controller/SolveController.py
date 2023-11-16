@@ -33,6 +33,7 @@ class SolveController:
             return "Invalid developer", 418
 
         if not solver.verify_valid():
+
             return [], 200
 
         if "Time" in algorithm:

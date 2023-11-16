@@ -54,6 +54,7 @@ export class ResultTableComponent{
   }
 
   getResult(i: number){
+
     // @ts-ignore
     return this.results[i]
   }
