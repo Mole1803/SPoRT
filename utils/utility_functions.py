@@ -2,7 +2,7 @@ import os
 import jwt as jwt_lib
 
 secret_key = str(os.getenv('SECRET_KEY'))
-print(secret_key, flush=True)
+
 
 class UtilityFunctions:
     @staticmethod

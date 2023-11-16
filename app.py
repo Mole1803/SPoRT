@@ -16,7 +16,7 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
 
 app.config["JWT_COOKIE_SECURE"] = False
-print(os.getenv('SECRET_KEY'),flush=True)
+
 app.config["JWT_SECRET_KEY"] = str(os.getenv('SECRET_KEY')) #"cf65d36897822be9be6afe519020fbfc111676854c4778d62ceca2af46e1ef47"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=30)
 jwt = JWTManager(app)
