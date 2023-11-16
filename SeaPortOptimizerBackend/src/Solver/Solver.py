@@ -1,7 +1,7 @@
 # from db_mock import MockDBController
 from abc import ABC, abstractmethod
 
-# DBController = MockDBController()
+DBController = MockDBController()
 
 
 class Solver(ABC):
