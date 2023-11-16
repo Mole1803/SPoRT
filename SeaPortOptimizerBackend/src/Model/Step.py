@@ -12,6 +12,6 @@ class Step:
     def dict(self):
         return {"shipId": self.ship_id,
                 "questId": self.quest_id,
-                "usedCapacity": self.spare_capacity
+                "usedCapacity": self.quest_capacity
                 }
 
