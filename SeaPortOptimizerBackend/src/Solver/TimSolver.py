@@ -7,6 +7,7 @@ import copy
 
 
 class TimSolver(Solver):
+<<<<<<< HEAD
     def __init__(self):
         super().__init__(id)
 
@@ -23,6 +24,10 @@ class TimSolver(Solver):
             if len(result.rounds) == len(fastest_result.rounds):
                 best_possible_results.append(result)
         self.possible_results = best_possible_results
+=======
+    def __init__(self,id):
+        super().__init__(id)
+>>>>>>> parent of 54cac18 (Update TimSolver.py)
 
     def calculate_time_optimized(self):
         self.possible_results = []
