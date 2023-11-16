@@ -6,14 +6,14 @@ from SeaPortOptimizerBackend.src.Model.Step import Step
 from SeaPortOptimizerBackend.src.Solver.Solver import Solver
 
 
-def build_recursive_solutions_for_quest_ressource(ships, demand, quest_id, steps_result_list, result, lowestIndexForShip):
+def create_step_combinations_for_quest_resource_optimized(ships, demand, quest_id, steps_result_list, result, lowestIndexForShip):
     remaining_demand = demand
     base_result = result.copy()
     for i in range(lowestIndexForShip, len(ships)):
         demand -= ships[i].capacity
         result.append(Step(ships[i].id, quest_id, ships[i].capacity))
         if demand > 0:
-            steps_result_list = build_recursive_solutions_for_quest_ressource(ships, demand, quest_id, steps_result_list, result, i)
+            steps_result_list = create_step_combinations_for_quest_resource_optimized(ships, demand, quest_id, steps_result_list, result, i)
         else:
             if steps_result_list.remaining_demand == demand * -1:
                 steps_result_list.addSteps([result])
@@ -25,34 +25,15 @@ def build_recursive_solutions_for_quest_ressource(ships, demand, quest_id, steps
     return steps_result_list
 
 
-def build_solutions_for_quest_ressource(ships, demand, quest_id):
-    remaining_demand = demand
-    # results_as_steps = []
-    results_as_steps = Solutions()
-    for i in range(len(ships)):
-        demand -= ships[i].capacity
-        steps = [Step(ships[i].id, quest_id, ships[i].capacity)]
-        if demand > 0:
-            results_as_steps = build_recursive_solutions_for_quest_ressource(ships, demand, quest_id, results_as_steps, steps, i)
-        else:
-            if results_as_steps.remaining_demand == demand * -1:
-                results_as_steps.addSteps([steps])
-            elif results_as_steps.remaining_demand > demand * -1:
-                results_as_steps.setSteps([steps])
-                results_as_steps.remaining_demand = demand * -1
-        demand = remaining_demand
-    return results_as_steps
-
-
-def build_recursive_solutions_for_quest_time_critical(ships, demand, quest_id, steps_result_list, result, lowestIndexForShip):
+def create_step_combinations_for_quest_time_optimized(ships, demand, quest_id, steps_result_list, result, lowestIndexForShip):
     remaining_demand = demand
     base_result = result.copy()
     for i in range(lowestIndexForShip, len(ships)):
         demand -= ships[i].capacity
         result.append(Step(ships[i].id, quest_id, ships[i].capacity))
         if demand > 0:
-            steps_result_list = build_recursive_solutions_for_quest_time_critical(ships, demand, quest_id, steps_result_list, result,
-                                                                    i)
+            steps_result_list = create_step_combinations_for_quest_time_optimized(ships, demand, quest_id, steps_result_list, result,
+                                                                                  i)
         else:
             steps_result_list.append((result, demand * -1))
         demand = remaining_demand
@@ -60,98 +41,63 @@ def build_recursive_solutions_for_quest_time_critical(ships, demand, quest_id, s
     return steps_result_list
 
 
-def build_solutions_for_quest_time_critical(ships, demand, quest_id):
-    remaining_demand = demand
-    results_as_steps = []
-    for i in range(len(ships)):
-        demand -= ships[i].capacity
-        steps = [Step(ships[i].id, quest_id, ships[i].capacity)]
-        if demand > 0:
-            results_as_steps = build_recursive_solutions_for_quest_time_critical(ships, demand, quest_id, results_as_steps, steps, i)
-        else:
-            results_as_steps.append((steps, demand * -1))
-        demand = remaining_demand
-    return results_as_steps
-
-
-def ship_not_in_round(ship_id, round):
-    for step in round:
-        if step.ship_id == ship_id:
-            return False
-    return True
-
-
-def build_result_with_solutions_ressource(result):
+def build_result_from_step_combination(result):
     rounds = [Round([])]
     for step in result:
         added = False
         for round in rounds:
-            if ship_not_in_round(step.ship_id, round):
+            if not round.step_in_round(step):
                 round.add_step(step)
                 added = True
                 break
         if not added:
             rounds.append(Round([step]))
 
-    return rounds
+    return Result(rounds)
 
 
-def build_result_with_solutions_time_critical(result):
-    rounds = [Round([])]
-    for step in result[0]:
-        added = False
-        for round in rounds:
-            if ship_not_in_round(step.ship_id, round):
-                round.add_step(step)
-                added = True
-                break
-        if not added:
-            rounds.append(Round([step]))
-    return [rounds, result[1]]
-
-
-def connect_steps_to_results_ressource(solutions, results, index, result):
+def connect_steps_and_create_all_results_resource_optimized(solutions, results, index, result):
     base_result = result.copy()
     for possible_solutions in solutions[index]:
         result += possible_solutions
         if index == len(solutions) - 1:
-            result = build_result_with_solutions_ressource(result)
-            if len(results) == 0 or len(results[0]) == len(result):
-                results.append(result)
-            elif len(results) > 0 and len(results[0]) > len(result):
-                results = [result]
+            build_result = build_result_from_step_combination(result)
+            if len(results) == 0 or len(results[0]) == len(build_result):
+                results.append(build_result)
+            elif len(results) > 0 and len(results[0]) > len(build_result):
+                results = [build_result]
         else:
-            results = connect_steps_to_results_ressource(solutions, results, index + 1, result)
+            results = connect_steps_and_create_all_results_resource_optimized(solutions, results, index + 1, result)
         result = base_result.copy()
     return results
 
 
-def connect_steps_to_results_time_critical(solutions, results, index, result):
+def connect_steps_and_create_all_results_time_optimized(solutions, results, index, result):
     base_result = result[0].copy()
     remaining_demand = result[1]
     for possible_solutions in solutions[index]:
         result[0] += possible_solutions[0]
         result[1] += possible_solutions[1]
         if index == len(solutions) - 1:
-            result_ = build_result_with_solutions_time_critical(result)
+            build_result = [build_result_from_step_combination(result[0]), result[1]]
             if len(results) > 0:
-                if len(results[0][0]) > len(result_[0]):
-                    results = [result_]
-                elif len(results[0][0]) == len(result_[0]):
-                    if results[0][1] == result_[1]:
-                        results.append(result_)
-                    elif results[0][1] > result_[1]:
-                        results = [result_]
+                if len(results[0][0]) > len(build_result[0]):
+                    results = [build_result]
+                elif len(results[0][0]) == len(build_result[0]):
+                    if results[0][1] == build_result[1]:
+                        results.append(build_result)
+                    elif results[0][1] > build_result[1]:
+                        results = [build_result]
             else:
-                results.append(result_)
+                results.append(build_result)
         else:
-            results = connect_steps_to_results_time_critical(solutions, results, index + 1, result)
+            results = connect_steps_and_create_all_results_time_optimized(solutions, results, index + 1, result)
         result[0] = base_result.copy()
         result[1] = remaining_demand
     return results
 
 
-class Solutions:
+class PossibleResultInSteps:
     def __init__(self):
         self.steps = []
         self.remaining_demand = inf
@@ -173,22 +119,22 @@ class MarcelSolver(Solver):
         super().__init__(id)
 
     def calculate_time_optimized(self):
-        solutions = []
+        if not self.ships or not self.quests:
+            return [Result([Round()])]
+        step_combinations = []
         for quest in self.quests:
-            solutions.append(build_recursive_solutions_for_quest_time_critical(self.ships, quest.demand, quest.id, [], [], 0))
-        results = connect_steps_to_results_time_critical(solutions, [], 0, [[], 0])
-        solution_return = []
-        for result in results:
-            solution_return.append(Result(result[0]))
-        return solution_return
+            step_combinations.append(create_step_combinations_for_quest_time_optimized(self.ships, quest.demand, quest.id, [], [], 0))
+        results_unprepared = connect_steps_and_create_all_results_time_optimized(step_combinations, [], 0, [[], 0])
+        results = []
+        for result in results_unprepared:
+            results.append(Result(result[0]))
+        return results
 
     def calculate_resource_optimized(self):
-        solutions = []
+        if not self.ships or not self.quests:
+            return [Result([Round()])]
+        step_combinations = []
         for quest in self.quests:
-            solutions.append(build_solutions_for_quest_ressource(self.ships, quest.demand, quest.id))
+            step_combinations.append(create_step_combinations_for_quest_resource_optimized(self.ships, quest.demand, quest.id, PossibleResultInSteps(), [], 0))
 
-        results = connect_steps_to_results_ressource(solutions, [], 0, [])
-        solution_return = []
-        for result in results:
-            solution_return.append(Result(result))
-        return solution_return
+        return connect_steps_and_create_all_results_resource_optimized(step_combinations, [], 0, [])

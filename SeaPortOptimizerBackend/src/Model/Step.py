@@ -15,8 +15,3 @@ class Step:
                 "usedCapacity": self.quest_capacity
                 }
 
-    def __eq__(self, other):
-        return self.ship_id == other.ship_id and self.quest_id == other.quest_id
-
-    def __str__(self):
-        return self.ship_id
